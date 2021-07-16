@@ -1,9 +1,11 @@
 #ifndef _MATERIALIZE_LAYOUT_H_
 #define _MATERIALIZE_LAYOUT_H_
 
-#define MATERIALIZE_LAYOUT_ENABLE_ESP_ASYNC_WEB_SERVER defined(_ESPAsyncWebServer_H_) || defined(MATERIALIZE_LAYOUT_USE_ESP_ASYNC_WEB_SERVER)
+#if (defined(_ESPAsyncWebServer_H_) || defined(MATERIALIZE_LAYOUT_USE_ESP_ASYNC_WEB_SERVER))
+#define MATERIALIZE_LAYOUT_ENABLE_ESP_ASYNC_WEB_SERVER
+#endif
 
-#if MATERIALIZE_LAYOUT_ENABLE_ESP_ASYNC_WEB_SERVER
+#ifdef MATERIALIZE_LAYOUT_ENABLE_ESP_ASYNC_WEB_SERVER
 #include "ESPAsyncWebServer.h"
 #endif
 
@@ -37,7 +39,7 @@ private:
   String tempData;
 
 public:
-#if MATERIALIZE_LAYOUT_ENABLE_ESP_ASYNC_WEB_SERVER
+#ifdef MATERIALIZE_LAYOUT_ENABLE_ESP_ASYNC_WEB_SERVER
   void registerInEspAsyncWebServer(AsyncWebServer *s);
   void serveSharedStatic(AsyncWebServerRequest *request, SharedStaticType type);
 #endif
@@ -45,7 +47,7 @@ public:
 
 // ======================= IMPLEMENTATION =======================
 
-#if MATERIALIZE_LAYOUT_ENABLE_ESP_ASYNC_WEB_SERVER
+#ifdef MATERIALIZE_LAYOUT_ENABLE_ESP_ASYNC_WEB_SERVER
 void MaterializeLayout::registerInEspAsyncWebServer(AsyncWebServer *s)
 {
   s->on("/index.html", HTTP_GET, [=](AsyncWebServerRequest *request)
