@@ -1,0 +1,26 @@
+{
+  "name": "Arduino Materialize Layout",
+  "version": "1.0.0",
+  "description": "With this library you can quickly and easily generate web pages powered by Materialize. Library allows you to listen for button click, input events and dynamically update texts on the page",
+  "keywords": "materialize, layout, webpage, web page, generate, generate web page, material design",
+  "repository":
+  {
+    "type": "git",
+    "url": "https://github.com/Di-Strix/ArduinoMaterializeLayout"
+  },
+  "authors":
+  [
+    {
+      "name": "Andrew Ushakov",
+      "email": "",
+      "url": "https://github.com/Di-Strix"
+    }
+  ],
+  "license": "MIT",
+  "homepage": "",
+  "dependencies": {
+    "bblanchon/ArduinoJson": "^6.17.2"
+  },
+  "frameworks": "Arduino",
+  "platforms": "espressif8266"
+}
