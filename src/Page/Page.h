@@ -23,6 +23,14 @@ using DynamicComponentRegistrationServiceT = DynamicComponentRegistrationService
 typedef std::vector<std::variant<std::shared_ptr<TabGroup<dynamicValueGetter>>, std::shared_ptr<Layout<dynamicValueGetter>>>> pageLayoutType;
 typedef std::shared_ptr<DynamicComponentRegistrationServiceT> DynamicComponentRegistrationServiceSharedPtr;
 
+typedef std::shared_ptr<Button> Button_t;
+typedef std::shared_ptr<Field> Field_t;
+typedef std::shared_ptr<StaticText> StaticText_t;
+typedef std::shared_ptr<DynamicText<dynamicValueGetter>> DynamicText_t;
+typedef std::shared_ptr<Layout<dynamicValueGetter>> Layout_t;
+typedef std::shared_ptr<Tab<dynamicValueGetter>> Tab_t;
+typedef std::shared_ptr<TabGroup<dynamicValueGetter>> TabGroup_t;
+
 class Page : private HTMLElement
 {
 private:
