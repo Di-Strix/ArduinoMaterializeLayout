@@ -61,7 +61,6 @@ bool Field::emit(size_t id, String value)
 {
   if (this->getId() == id)
   {
-    Serial.printf("Field with id: %d got new value: %s\n", id, value.c_str());
     this->currentValue = value;
     return true;
   }
