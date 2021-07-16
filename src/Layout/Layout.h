@@ -27,6 +27,7 @@ private:
   std::vector<std::shared_ptr<Layout<T>>> layout;
   LayoutTypes layoutType = LayoutTypes::NONE;
   using Container<T>::getDynamicComponentRegistrationServerPtr;
+  bool vAlign = false;
 
 protected:
   virtual String getHTML();
@@ -34,6 +35,7 @@ protected:
 
 public:
   Layout(std::shared_ptr<DynamicComponentRegistrationService<T>> registrationService, LayoutTypes lt = LayoutTypes::NONE);
+  void setVerticalAlign(bool state);
 
   std::shared_ptr<Layout<T>> createRow();
   std::shared_ptr<Layout<T>> createColumn();
@@ -77,6 +79,10 @@ String Layout<T>::getHTML()
   componentTemplate += className;
   componentTemplate += " ";
   componentTemplate += this->getWidthClass();
+  if (this->vAlign)
+  {
+    componentTemplate += F(" valign-wrapper");
+  }
   componentTemplate += F("\">");
   componentTemplate += this->compileComponents();
   componentTemplate += nestedLayout;
@@ -119,6 +125,12 @@ bool Layout<T>::emit(size_t id, String value)
     }
 
   return found;
+}
+
+template <typename T>
+void Layout<T>::setVerticalAlign(bool state)
+{
+  this->vAlign = state;
 }
 
 #endif //_MATERIALIZE_LAYOUT_H_

@@ -1,6 +1,6 @@
 {
   "name": "Arduino Materialize Layout",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "With this library you can quickly and easily generate web pages powered by Materialize. Library allows you to listen for button click, input events and dynamically update texts on the page",
   "keywords": "materialize, layout, webpage, web page, generate, generate web page, material design",
   "repository":
