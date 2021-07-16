@@ -75,6 +75,8 @@ String Layout<T>::getHTML()
 
   componentTemplate = F("<div class=\"");
   componentTemplate += className;
+  componentTemplate += " ";
+  componentTemplate += this->getWidthClass();
   componentTemplate += F("\">");
   componentTemplate += this->compileComponents();
   componentTemplate += nestedLayout;
