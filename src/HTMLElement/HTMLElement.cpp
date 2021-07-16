@@ -12,7 +12,7 @@ String HTMLElement::getHTML()
 
 void HTMLElement::setWidth(uint8_t width)
 {
-  if (width <= 12 && width >= 0)
+  if (width <= 12)
     this->width = width;
 }
 
