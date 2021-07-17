@@ -46,7 +46,7 @@ String TabGroup<T>::getHTML()
     if (!t)
       continue;
 
-    String tabRef = t->getName();
+    String tabRef = String(t->getId());
     tabRef.replace(" ", "");
     tabRef.replace("#", "");
     tabRef.replace("%", "");
