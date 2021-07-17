@@ -32,7 +32,7 @@ String Page::getHTML()
 
   String elemTemplate = F("<!DOCTYPE html><html lang=\"ru\"><head><meta charset=\"UTF-8\"/><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"/><title>");
   elemTemplate += this->pageTitle;
-  elemTemplate += F("</title><link rel=\"stylesheet\" href=\"normalize.css\"/><link rel=\"stylesheet\" href=\"materialize.css\"/></head><body><div class=\"container\">");
+  elemTemplate += F("</title><link rel=\"stylesheet\" href=\"normalize.css\"/><link rel=\"stylesheet\" href=\"materialize.css\"/></head><body><div class=\"container row\">");
   elemTemplate += contents;
   elemTemplate += F("</div><script src=\"materialize.js\"></script><script src=\"" APPLICATION_JS_HASH ".js\"></script></body></html>");
 

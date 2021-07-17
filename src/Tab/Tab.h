@@ -67,7 +67,8 @@ String Tab<T>::getName()
 template <typename T>
 std::shared_ptr<Layout<T>> Tab<T>::createLayout()
 {
-  auto l = std::make_shared<Layout<T>>(this->registrationService, LayoutTypes::ROW);
+  auto l = std::make_shared<Layout<T>>(this->registrationService, LayoutTypes::COLUMN);
+  l->setWidth(12);
   this->layout.push_back(l);
 
   return l;

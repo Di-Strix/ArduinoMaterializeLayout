@@ -59,7 +59,7 @@ String TabGroup<T>::getHTML()
 
     contents += F("<div id=\"");
     contents += tabRef;
-    contents += F("\">");
+    contents += F("\" class=\"col s12\">");
     contents += t->getHTML();
     contents += F("</div>");
   }
