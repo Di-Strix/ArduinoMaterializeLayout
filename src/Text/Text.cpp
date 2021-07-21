@@ -61,7 +61,7 @@ String StaticText::getHTML()
   String elemTemplate = F("<");
   elemTemplate += tag;
   elemTemplate += F(" class=\"");
-  elemTemplate += this->getWidthClass();
+  elemTemplate += this->classList.value();
   elemTemplate += F("\" data-id=\"");
   elemTemplate += id;
   elemTemplate += F("\" data-dynamic=\"");

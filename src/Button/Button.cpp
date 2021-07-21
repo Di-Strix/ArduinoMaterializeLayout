@@ -5,6 +5,10 @@ Button::Button(String caption, ButtonCallback callback)
   caption.trim();
   this->caption = caption;
   this->callback = callback;
+
+  this->classList.add("waves-effect");
+  this->classList.add("waves-light");
+  this->classList.add("btn");
 }
 
 String Button::getCaption()
@@ -27,7 +31,9 @@ String Button::getHTML()
 {
   String elemTemplate = F("<a data-id=\"");
   elemTemplate += (String)this->getId();
-  elemTemplate += F("\" data-emitOnClick=\"true\" class=\"waves-effect waves-light btn");
+  elemTemplate += F("\" data-emitOnClick=\"true\" class=\"");
+  elemTemplate += this->classList.value();
+  elemTemplate += F("\"");
   if (this->getWidth() > 0)
   {
     elemTemplate += F("\"style=\"width:calc(100%/12*");
