@@ -25,10 +25,26 @@ protected:
   virtual bool emit(size_t id, String value);
 
 public:
+  /**
+   * @brief Constructs a new Tab object
+   * 
+   * @param registrationService dynamic component registration service that is used in the current page
+   * @param tabName the name of the tab
+   */
   Tab(std::shared_ptr<DynamicComponentRegistrationService<T>> registrationService, String tabName);
 
+  /**
+   * @brief Gets the name of the tab
+   * 
+   * @return String 
+   */
   String getName();
 
+  /**
+   * @brief Creates a Layout in the tab
+   * 
+   * @return std::shared_ptr<Layout<T>> where T is type of dynamic component registration service. If the page is created with MaterializeLayout, you can use 'Layout_t' shortcut instead
+   */
   std::shared_ptr<Layout<T>> createLayout();
 };
 

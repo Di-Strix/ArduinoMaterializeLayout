@@ -15,9 +15,33 @@ private:
   std::function<bool(T, T)> areEqual;
 
 public:
+  /**
+   * @brief Constructs a new Dynamic Component Registration Service
+   * 
+   * @param areEqualChecker function that returns true if the two given variables are equal, or false if not
+   */
   DynamicComponentRegistrationService(std::function<bool(T, T)> areEqualChecker);
+
+  /**
+   * @brief Registers the dynamic data getter of the component in the service
+   * 
+   * @param dynamicDataGetter the dynamic data getter of the component
+   * @return unregisterFn function that performs component unregistration from the service
+   */
   unregisterFn registerDynamicGetter(T dynamicDataGetter);
+
+  /**
+   * @brief Unregisters a component with the given dynamic value getter of the component
+   * 
+   * @param dynamicDataGetter 
+   */
   void unregisterGetter(T dynamicDataGetter);
+
+  /**
+   * @brief Gets all registered components
+   * 
+   * @return std::vector<T> the vector which contains all registered components
+   */
   std::vector<T> getRegistrations();
 };
 

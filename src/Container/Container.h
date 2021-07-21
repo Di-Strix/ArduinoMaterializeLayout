@@ -41,9 +41,41 @@ protected:
   bool emitOnContainer(size_t id, String value);
 
 public:
+  /**
+   * @brief Creates a Field in the current container
+   * 
+   * @param name the name of the field
+   * @param defaultValue default value of the field
+   * @return std::shared_ptr<Field>. If the page is created with MaterializeLayout, you can use 'Field_t' shortcut instead
+   */
   std::shared_ptr<Field> createField(String name, String defaultValue);
+
+  /**
+   * @brief Creates a Button in the current container
+   * 
+   * @param caption the caption of the button
+   * @param callback callback that is called when the button is clicked
+   * @return std::shared_ptr<Button>. If the page is created with MaterializeLayout, you can use 'Button_t' shortcut instead
+   */
   std::shared_ptr<Button> createButton(String caption, ButtonCallback callback);
+
+  /**
+   * @brief Creates a Static Text in the current container
+   * 
+   * @param text 
+   * @param textType text type from the TextType enum
+   * @return std::shared_ptr<StaticText>. If the page is created with MaterializeLayout, you can use 'StaticText_t' shortcut instead
+   */
   std::shared_ptr<StaticText> createStaticText(String text, TextType textType = TextType::p);
+
+  /**
+   * @brief Creates a Dynamic Text in the current layout
+   * 
+   * @tparam E either DynamicTextGetter or String
+   * @param text 
+   * @param text Type text type from the TextType enum
+   * @return std::shared_ptr<DynamicText<B>> where B is type of dynamic component registration service. If the page is created with MaterializeLayout, you can use 'DynamicText_t' shortcut instead
+   */
   template <typename E>
   std::shared_ptr<DynamicText<B>> createDynamicText(E text, TextType textType = TextType::p);
 };
