@@ -10,15 +10,52 @@ String HTMLElement::getHTML()
   return "";
 }
 
-void HTMLElement::setWidth(uint8_t width)
+String HTMLElement::getWidthClassPrefix(ScreenSize screenSize)
 {
-  if (width <= 12)
-    this->width = width;
+  switch (screenSize)
+  {
+  default:
+  case ScreenSize::small:
+    return "s";
+    break;
+  case ScreenSize::medium:
+    return "m";
+    break;
+  case ScreenSize::large:
+    return "l";
+    break;
+  case ScreenSize::extraLarge:
+    return "xl";
+    break;
+  }
 }
 
-uint8_t HTMLElement::getWidth()
+void HTMLElement::setWidth(uint8_t width, ScreenSize screenSize)
 {
-  return this->width;
+  if (width > 12)
+    return;
+
+  String classPrefix = this->getWidthClassPrefix(screenSize);
+
+  this->classList.remove(this->widths[(size_t)screenSize]);
+
+  if (width != 0)
+  {
+    this->widths[(size_t)screenSize] = classPrefix + String(width);
+    this->classList.add(this->widths[(size_t)screenSize]);
+  }
+}
+
+uint8_t HTMLElement::getWidth(ScreenSize screenSize)
+{
+  String className = this->widths[(uint8_t)screenSize];
+
+  if (className.isEmpty())
+    return 0;
+
+  size_t classPrefixLength = this->getWidthClassPrefix(screenSize).length();
+
+  return className.substring(classPrefixLength - 1).toInt();
 }
 
 size_t HTMLElement::getId()
@@ -26,9 +63,3 @@ size_t HTMLElement::getId()
   return this->id;
 }
 
-String HTMLElement::getWidthClass()
-{
-  if (this->width > 0)
-    return "s" + (String)this->width;
-  return "";
-}
