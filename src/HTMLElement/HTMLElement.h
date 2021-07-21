@@ -9,14 +9,17 @@
 class HTMLElement
 {
 private:
-  uint8_t width = 0;
   size_t id = 0;
+
+  String widths[4];
+
+  String getWidthClassPrefix(ScreenSize screenSize);
 
 protected:
   HTMLElement();
 
   /** 
-   * @brief Intended to return component's filled HTML template.
+   * @brief Intended to return a filled HTML template of the component.
    * 
    * Placeholder for further implementation.
    * 
@@ -42,32 +45,29 @@ protected:
    */
   size_t getId();
 
-  /** 
-   * @brief Gets css class according to set width.
-   * Uses 12-column grid layout. See "Introduction" section - https://materializecss.com/grid.html
-   * @return String 
-   */
-  String getWidthClass();
-
 public:
   ClassList classList;
   /** 
    * @brief Sets width of the component in HTML if it's possible.
-   * Component must be in column to make this thing work.
+   * Doesn't work for row layout
    * Uses 12-column grid layout. See "Introduction" section - https://materializecss.com/grid.html
    * 
-   * @param width width of the component. range: [0-12]. If 0 - component takes as much space as needed
+   * @param width the width of the component. range: [0-12]. If 0, the component takes up as much space as needed
+   * @param screenSize width that applies to the given screen size and bigger, if no values for bigger screen is set. See "Creating Responsive Layouts" section - https://materializecss.com/grid.html
    * 
    * @return void 
    */
-  void setWidth(uint8_t width);
+  void setWidth(uint8_t width, ScreenSize screenSize = ScreenSize::small);
 
   /** 
-   * @brief Gets width of the component in HTML. 
+   * @brief Gets the width of the component in HTML for the provided screen size. 
    * Uses 12-column grid layout. See "Introduction" section - https://materializecss.com/grid.html
+   * @param screenSize width that is currently set for the provided screen size. See "Creating Responsive Layouts" section - https://materializecss.com/grid.html
    * @return uint8_t 
    */
-  uint8_t getWidth();
+  uint8_t getWidth(ScreenSize screenSize = ScreenSize::small);
+
+
 };
 
 #endif //_HTML_ELEMENT_H_
