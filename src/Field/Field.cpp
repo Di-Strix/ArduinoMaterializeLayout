@@ -7,6 +7,9 @@ Field::Field(String name, String defaultValue)
 
   this->name = name;
   this->defaultValue = defaultValue;
+
+  this->classList.add("input-field");
+  this->classList.add("col");
 }
 
 String Field::getName()
@@ -40,8 +43,8 @@ String Field::getHTML()
 {
   String id = (String)this->getId();
 
-  String elemTemplate = F("<div class=\"input-field col ");
-  elemTemplate += this->getWidthClass();
+  String elemTemplate = F("<div class=\"");
+  elemTemplate += this->classList.value();
   elemTemplate += F("\"><input value=\"");
   elemTemplate += this->defaultValue;
   elemTemplate += F("\" type=\"text\" data-id=\"");

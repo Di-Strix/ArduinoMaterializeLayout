@@ -4,6 +4,7 @@
 #include <Arduino.h>
 
 #include "../IdGenerator.h"
+#include "../ClassList/ClassList.h"
 
 class HTMLElement
 {
@@ -49,6 +50,7 @@ protected:
   String getWidthClass();
 
 public:
+  ClassList classList;
   /** 
    * @brief Sets width of the component in HTML if it's possible.
    * Component must be in column to make this thing work.
