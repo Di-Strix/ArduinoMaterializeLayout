@@ -40,7 +40,19 @@ private:
 
 public:
 #ifdef MATERIALIZE_LAYOUT_ENABLE_ESP_ASYNC_WEB_SERVER
+  /**
+   * @brief registers callbacks to provide MaterializeLayout functionality
+   * 
+   * @param s pointer to the the AsyncWebServer instance
+   */
   void registerInEspAsyncWebServer(AsyncWebServer *s);
+
+  /**
+   * @brief responds to the AsyncWebServerRequest request with the necessary headers and data according to the given SharedStaticType type
+   * 
+   * @param request AsyncWebServerRequest request
+   * @param type SharedStaticType content type
+   */
   void serveSharedStatic(AsyncWebServerRequest *request, SharedStaticType type);
 #endif
 };

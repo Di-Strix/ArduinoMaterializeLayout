@@ -42,16 +42,57 @@ protected:
   DynamicComponentRegistrationServiceSharedPtr getRegistrationService();
 
 public:
+  /**
+   * @brief Constructs a new Page
+   * 
+   * @param title the title of the page which is displayed on the tab
+   */
   Page(String title);
 
+  /**
+   * @brief Recursively compiles all nested elements and returns HTML layout of the page using current params
+   * 
+   * @return String 
+   */
   virtual String getHTML();
+
+  /**
+   * @brief Recursively emits an event on  all nested elements
+   * 
+   * @param id id of the element on which event needs to be emitted
+   * @param value data to be provided to the element
+   * @return true if an element with provided id is found
+   * @return false if an element with provided id isn't found
+   */
   virtual bool emit(size_t id, String value);
 
+  /**
+   * @brief Gets the page title
+   * 
+   * @return String 
+   */
   String getPageTitle();
+
+  /**
+   * @brief Sets the page title
+   * 
+   * @param title the new title
+   */
   void setPageTitle(String title);
 
-  std::shared_ptr<TabGroup<dynamicValueGetter>> createTabGroup();
-  std::shared_ptr<Layout<dynamicValueGetter>> createLayout();
+  /**
+   * @brief Creates a Tab Group on the page
+   * 
+   * @return TabGroup_t
+   */
+  TabGroup_t createTabGroup();
+
+  /**
+   * @brief Creates a Layout on the page
+   * 
+   * @return Layout_t
+   */
+  Layout_t createLayout();
 };
 
 #endif //_MATERIALIZE_LAYOUT_PAGE_H_

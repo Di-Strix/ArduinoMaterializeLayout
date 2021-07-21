@@ -34,10 +34,40 @@ protected:
   virtual String getHTML();
 
 public:
+  /**
+   * @brief Constructs a new Static Text object
+   * 
+   * @param text
+   * @param textType text type from the TextType enum
+   */
   StaticText(String text, TextType textType = TextType::p);
+
+  /**
+   * @brief Gets the current text
+   * 
+   * @return String 
+   */
   String getText();
+
+  /**
+   * @brief Sets the text. If text is static, it will be updated only from the next render
+   * 
+   * @param text new text
+   */
   void setText(String text);
+
+  /**
+   * @brief Set the type of the text from the TextType enum. If text is static, it will be updated only from the next render
+   * 
+   * @param textType 
+   */
   void setTextType(TextType textType);
+
+  /**
+   * @brief Gets the type of the text
+   * 
+   * @return TextType enum
+   */
   TextType getTextType();
 };
 
@@ -53,7 +83,22 @@ private:
   using StaticText::dynamic;
 
 public:
+  /**
+   * @brief Constructs a new Dynamic Text object
+   * 
+   * @param registrationService dynamic component registration service that is used in the current page
+   * @param text 
+   * @param textType text type from the TextType enum
+   */
   DynamicText(std::shared_ptr<DynamicComponentRegistrationService<T>> registrationService, String text, TextType textType = TextType::p);
+
+  /**
+   * @brief Construct a new Dynamic Text object
+   * 
+   * @param registrationService dynamic component registration service that is used in the current page
+   * @param textGetter function which is called when an update cycle is performing
+   * @param textType text type from the TextType enum
+   */
   DynamicText(std::shared_ptr<DynamicComponentRegistrationService<T>> registrationService, DynamicTextGetter textGetter, TextType textType = TextType::p);
   ~DynamicText();
 };
