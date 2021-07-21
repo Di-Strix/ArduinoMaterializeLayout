@@ -6,6 +6,59 @@
 #include "../IdGenerator.h"
 #include "../ClassList/ClassList.h"
 
+enum class Color
+{
+  defaultColor,
+  red,
+  pink,
+  purple,
+  deepPurple,
+  indigo,
+  blue,
+  lightBlue,
+  cyan,
+  teal,
+  green,
+  lightGreen,
+  lime,
+  yellow,
+  amber,
+  orange,
+  deepOrange,
+  brown,
+  grey,
+  blueGrey,
+  black,
+  white,
+  transparent
+};
+
+enum class ColorShade
+{
+  lighten5,
+  lighten4,
+  lighten3,
+  lighten2,
+  lighten1,
+  noShade,
+  darken1,
+  darken2,
+  darken3,
+  darken4,
+  accent1,
+  accent2,
+  accent3,
+  accent4
+};
+
+enum class ScreenSize
+{
+  small,
+  medium,
+  large,
+  extraLarge
+};
+
 class HTMLElement
 {
 private:
@@ -13,7 +66,18 @@ private:
 
   String widths[4];
 
+  Color backgroundColor = Color::defaultColor;
+  ColorShade backgroundColorShade = ColorShade::noShade;
+
+  Color textColor = Color::defaultColor;
+  ColorShade textColorShade = ColorShade::noShade;
+
   String getWidthClassPrefix(ScreenSize screenSize);
+  String colorToString(Color c);
+  String colorShadeToString(ColorShade cs);
+  String getBackgroundColorClass();
+  String getTextColorClass();
+  bool colorShadeIsValid(Color c, ColorShade cs);
 
 protected:
   HTMLElement();
@@ -67,7 +131,50 @@ public:
    */
   uint8_t getWidth(ScreenSize screenSize = ScreenSize::small);
 
+  /**
+   * @brief Sets the background color of the component. See "Color Palette" section - https://materializecss.com/color.html
+   * 
+   * @param color 
+   * @param colorShade 
+   * @return void
+   */
+  void setBackgroundColor(Color color, ColorShade colorShade = ColorShade::noShade);
 
+  /**
+   * @brief Sets the text color of the component. See "Color Palette" section - https://materializecss.com/color.html
+   * 
+   * @param color 
+   * @param colorShade 
+   */
+  void setTextColor(Color color, ColorShade colorShade = ColorShade::noShade);
+
+  /**
+   * @brief Gets current background color
+   * 
+   * @return Color 
+   */
+  Color getBackgroundColor();
+
+  /**
+   * @brief Gets current text color
+   * 
+   * @return Color 
+   */
+  Color getTextColor();
+
+  /**
+   * @brief Gets current background color shade
+   * 
+   * @return ColorShade 
+   */
+  ColorShade getBackgroundColorShade();
+
+  /**
+   * @brief Gets current text color shade
+   * 
+   * @return ColorShade 
+   */
+  ColorShade getTextColorShade();
 };
 
 #endif //_HTML_ELEMENT_H_
