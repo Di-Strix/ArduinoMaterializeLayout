@@ -114,7 +114,7 @@ void MaterializeLayout::registerInEspAsyncWebServer(AsyncWebServer *s)
         };
 
         std::list<updateValue_t> updateData;
-        for (auto reg : *registrations)
+        for (auto reg : registrations)
         {
           updateData.push_back({(String)reg.id, reg.getter()});
         }

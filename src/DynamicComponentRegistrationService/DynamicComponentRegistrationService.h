@@ -42,7 +42,7 @@ public:
    * 
    * @return std::list<T> the list which contains all registered components
    */
-  std::list<T> *getRegistrations();
+  std::list<T> getRegistrations();
 };
 
 // ======================= IMPLEMENTATION =======================
