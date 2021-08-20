@@ -32,15 +32,6 @@ private:
 protected:
   std::list<HTMLElement *> children;
 
-  /** 
-   * @brief Intended to return a filled HTML template of the component.
-   * 
-   * Placeholder for further implementation.
-   * 
-   * @return String 
-   */
-  virtual String getHTML();
-
   virtual void onEmit(String value){};
 
 public:
@@ -59,6 +50,15 @@ public:
   void removeChild(HTMLElement *child);
 
   std::list<HTMLElement *> removeAllChildren();
+
+  /** 
+   * @brief Intended to return a filled HTML template of the component.
+   * 
+   * Placeholder for further implementation.
+   * 
+   * @return String 
+   */
+  virtual String getHTML();
 
   /** 
    * @brief Emits an event on the current node.
@@ -170,7 +170,14 @@ bool HTMLElement<T>::emit(size_t id, String value)
 template <typename T>
 String HTMLElement<T>::getHTML()
 {
-  return "";
+  String html;
+
+  for (auto el : this->children)
+  {
+    html += el->getHTML();
+  }
+
+  return html;
 }
 
 template <typename T>
