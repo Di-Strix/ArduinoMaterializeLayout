@@ -7,8 +7,6 @@
 #include "../DynamicComponentRegistrationService\DynamicComponentRegistrationService.h"
 #include "../HTMLElement/HTMLElement.h"
 
-using DynamicTextGetter = std::function<String()>;
-
 enum class TextType
 {
   h1,
@@ -20,27 +18,31 @@ enum class TextType
   p
 };
 
-class StaticText : public HTMLElement
+template <typename T>
+class StaticText : public HTMLElement<T>
 {
-  template <typename T>
-  friend class Container;
-
 private:
+  using HTMLElement<T>::appendChild;
+  using HTMLElement<T>::removeAllChildren;
+  using HTMLElement<T>::removeChild;
+
   String text;
   TextType textType;
+  unregisterFn unregister;
 
 protected:
   bool dynamic = false;
-  virtual String getHTML();
 
 public:
+  String getHTML();
   /**
    * @brief Constructs a new Static Text object
    * 
    * @param text
    * @param textType text type from the TextType enum
    */
-  StaticText(String text, TextType textType = TextType::p);
+  StaticText(DynamicComponentRegistrationService<T> *registrationService);
+  ~StaticText();
 
   /**
    * @brief Gets the current text
@@ -72,73 +74,102 @@ public:
 };
 
 template <typename T>
-class DynamicText : public StaticText
+class DynamicText : public StaticText<T>
 {
-  template <typename A>
-  friend class Container;
-
 private:
-  std::shared_ptr<DynamicComponentRegistrationService<T>> registrationService;
-  unregisterFn unregister;
-  using StaticText::dynamic;
-
-public:
-  /**
-   * @brief Constructs a new Dynamic Text object
-   * 
-   * @param registrationService dynamic component registration service that is used in the current page
-   * @param text 
-   * @param textType text type from the TextType enum
-   */
-  DynamicText(std::shared_ptr<DynamicComponentRegistrationService<T>> registrationService, String text, TextType textType = TextType::p);
-
-  /**
-   * @brief Construct a new Dynamic Text object
-   * 
-   * @param registrationService dynamic component registration service that is used in the current page
-   * @param textGetter function which is called when an update cycle is performing
-   * @param textType text type from the TextType enum
-   */
-  DynamicText(std::shared_ptr<DynamicComponentRegistrationService<T>> registrationService, DynamicTextGetter textGetter, TextType textType = TextType::p);
-  ~DynamicText();
+  bool dynamic = true;
 };
 
 // ======================= IMPLEMENTATION =======================
 
 template <typename T>
-DynamicText<T>::DynamicText(std::shared_ptr<DynamicComponentRegistrationService<T>> registrationService, String text, TextType textType) : StaticText(text, textType)
+StaticText<T>::StaticText(DynamicComponentRegistrationService<T> *registrationService) : HTMLElement<T>(registrationService)
 {
-  this->registrationService = registrationService;
-  this->dynamic = true;
-
-  if (this->registrationService)
-    this->unregister = this->registrationService->registerDynamicGetter({this->getId(), [=]()
-                                                                         { return this->getText(); }});
-  else
-    Serial.println("Reg server does not exist");
+  if (this->dynamic)
+  {
+    this->unregister = registrationService.registerDynamicGetter([this]()
+                                                                 { return this->getText(); });
+  }
 }
 
 template <typename T>
-DynamicText<T>::DynamicText(std::shared_ptr<DynamicComponentRegistrationService<T>> registrationService, DynamicTextGetter textGetter, TextType textType) : StaticText(textGetter(), textType)
-{
-  this->registrationService = registrationService;
-  this->dynamic = true;
-
-  if (this->registrationService)
-    this->unregister = this->registrationService->registerDynamicGetter({this->getId(), [=]()
-                                                                         {
-                                                                           String text = textGetter();
-                                                                           this->setText(text);
-                                                                           return text;
-                                                                         }});
-  else
-    Serial.println("Reg server does not exist");
-}
-
-template <typename T>
-DynamicText<T>::~DynamicText()
+StaticText<T>::~StaticText()
 {
   this->unregister();
+}
+
+template <typename T>
+void StaticText<T>::setText(String text)
+{
+  text.trim();
+  this->text = text;
+}
+
+template <typename T>
+void StaticText<T>::setTextType(TextType textType)
+{
+  this->textType = textType;
+}
+
+template <typename T>
+String StaticText<T>::getText()
+{
+  return this->text;
+}
+
+template <typename T>
+TextType StaticText<T>::getTextType()
+{
+  return this->textType;
+}
+
+template <typename T>
+String StaticText<T>::getHTML()
+{
+  String tag = "";
+  String id = (String)this->getId();
+
+  switch (this->textType)
+  {
+  case TextType::h1:
+    tag = "h1";
+    break;
+  case TextType::h2:
+    tag = "h2";
+    break;
+  case TextType::h3:
+    tag = "h3";
+    break;
+  case TextType::h4:
+    tag = "h4";
+    break;
+  case TextType::h5:
+    tag = "h5";
+    break;
+  case TextType::h6:
+    tag = "h6";
+    break;
+  case TextType::p:
+  default:
+    tag = "p";
+    break;
+  }
+
+  String elemTemplate = F("<");
+  elemTemplate += tag;
+  elemTemplate += F(" class=\"");
+  elemTemplate += this->classList.value();
+  elemTemplate += F("\" data-id=\"");
+  elemTemplate += id;
+  elemTemplate += F("\" data-dynamic=\"");
+  elemTemplate += this->dynamic ? F("true") : F("false");
+  elemTemplate += F("\">");
+  elemTemplate += this->getText();
+  elemTemplate += F("</");
+  elemTemplate += tag;
+  elemTemplate += F(">");
+
+  return elemTemplate;
 }
 
 #endif //_MATERIALIZE_LAYOUT_TEXT_H_
