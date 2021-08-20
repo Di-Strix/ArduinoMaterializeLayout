@@ -5,63 +5,17 @@
 
 #include "../IdGenerator.h"
 #include "../ClassList/ClassList.h"
+#include "../DynamicComponentRegistrationService/DynamicComponentRegistrationService.h"
 
-enum class Color
-{
-  defaultColor,
-  red,
-  pink,
-  purple,
-  deepPurple,
-  indigo,
-  blue,
-  lightBlue,
-  cyan,
-  teal,
-  green,
-  lightGreen,
-  lime,
-  yellow,
-  amber,
-  orange,
-  deepOrange,
-  brown,
-  grey,
-  blueGrey,
-  black,
-  white,
-  transparent
-};
+#include "HTMLElemetTypes.h"
+#include "HTMLElementHelperFunctions.h"
 
-enum class ColorShade
-{
-  lighten5,
-  lighten4,
-  lighten3,
-  lighten2,
-  lighten1,
-  noShade,
-  darken1,
-  darken2,
-  darken3,
-  darken4,
-  accent1,
-  accent2,
-  accent3,
-  accent4
-};
-
-enum class ScreenSize
-{
-  small,
-  medium,
-  large,
-  extraLarge
-};
-
+template <typename T>
 class HTMLElement
 {
 private:
+  DynamicComponentRegistrationService<T> *registrationService;
+
   size_t id = 0;
 
   String widths[4];
@@ -72,15 +26,11 @@ private:
   Color textColor = Color::defaultColor;
   ColorShade textColorShade = ColorShade::noShade;
 
-  String getWidthClassPrefix(ScreenSize screenSize);
-  String colorToString(Color c);
-  String colorShadeToString(ColorShade cs);
   String getBackgroundColorClass();
   String getTextColorClass();
-  bool colorShadeIsValid(Color c, ColorShade cs);
 
 protected:
-  HTMLElement();
+  std::list<HTMLElement *> children;
 
   /** 
    * @brief Intended to return a filled HTML template of the component.
@@ -91,17 +41,12 @@ protected:
    */
   virtual String getHTML();
 
-  /** 
-   * @brief Emits an event.
-   * 
-   * Placeholder for further implementation.
-   * 
-   * @param id event id
-   * @param value additional data that component may require
-   * 
-   * @return bool 
-   */
-  virtual bool emit(size_t id, String value = "") { return false; };
+  virtual void onEmit(String value){};
+
+public:
+  ClassList classList;
+
+  HTMLElement(DynamicComponentRegistrationService<T> *registrationService);
 
   /** 
    * @brief Returns an id of the element. The id is used to emit an event on certain component
@@ -109,8 +54,22 @@ protected:
    */
   size_t getId();
 
-public:
-  ClassList classList;
+  void appendChild(HTMLElement *child);
+
+  void removeChild(HTMLElement *child);
+
+  std::list<HTMLElement *> removeAllChildren();
+
+  /** 
+   * @brief Emits an event on the current node.
+   * 
+   * @param id event id
+   * @param value additional data that component may require
+   * 
+   * @return bool 
+   */
+  bool emit(size_t id, String value = "");
+
   /** 
    * @brief Sets width of the component in HTML if it's possible.
    * Doesn't work for row layout
@@ -176,5 +135,167 @@ public:
    */
   ColorShade getTextColorShade();
 };
+
+// ======================= IMPLEMENTATION =======================
+
+template <typename T>
+HTMLElement<T>::HTMLElement(DynamicComponentRegistrationService<T> *registrationService)
+{
+  this->registrationService = registrationService;
+  this->id = IdGenerator::Instance().getId();
+}
+
+template <typename T>
+bool HTMLElement<T>::emit(size_t id, String value)
+{
+  if (this->getId() == id)
+  {
+    this->onEmit(value);
+    return true;
+  }
+
+  bool found = false;
+
+  for (auto el : this->children)
+  {
+    found = el->emit(id, value);
+
+    if (found)
+      break;
+  }
+
+  return found;
+}
+
+template <typename T>
+String HTMLElement<T>::getHTML()
+{
+  return "";
+}
+
+template <typename T>
+void HTMLElement<T>::appendChild(HTMLElement *child)
+{
+  this->children.push_back(child);
+}
+
+template <typename T>
+void HTMLElement<T>::removeChild(HTMLElement *child)
+{
+  this->children.remove_if([child](HTMLElement *el)
+                           { return el == child; });
+}
+
+template <typename T>
+std::list<HTMLElement<T> *> HTMLElement<T>::removeAllChildren()
+{
+  auto children = this->children;
+  this->children.clear();
+  return children;
+}
+
+template <typename T>
+String HTMLElement<T>::getBackgroundColorClass()
+{
+  return colorToString(this->backgroundColor) + F(" ") + colorShadeToString(this->backgroundColorShade);
+}
+
+template <typename T>
+String HTMLElement<T>::getTextColorClass()
+{
+  if (this->textColor == Color::defaultColor)
+    return String();
+
+  String cClass = colorToString(this->textColor) + F("-text");
+
+  if (this->textColorShade != ColorShade::noShade)
+    cClass += F(" text-") + colorShadeToString(this->textColorShade);
+
+  return cClass;
+}
+
+template <typename T>
+void HTMLElement<T>::setWidth(uint8_t width, ScreenSize screenSize)
+{
+  if (width > 12)
+    return;
+
+  String classPrefix = getWidthClassPrefix(screenSize);
+
+  this->classList.remove(this->widths[(size_t)screenSize]);
+
+  if (width != 0)
+  {
+    this->widths[(size_t)screenSize] = classPrefix + String(width);
+    this->classList.add(this->widths[(size_t)screenSize]);
+  }
+}
+
+template <typename T>
+uint8_t HTMLElement<T>::getWidth(ScreenSize screenSize)
+{
+  String className = this->widths[(uint8_t)screenSize];
+
+  if (className.isEmpty())
+    return 0;
+
+  size_t classPrefixLength = getWidthClassPrefix(screenSize).length();
+
+  return className.substring(classPrefixLength - 1).toInt();
+}
+
+template <typename T>
+size_t HTMLElement<T>::getId()
+{
+  return this->id;
+}
+
+template <typename T>
+void HTMLElement<T>::setBackgroundColor(Color color, ColorShade colorShade)
+{
+  this->classList.remove(this->getBackgroundColorClass());
+
+  this->backgroundColor = color;
+  if (colorShadeIsValid(color, colorShade))
+    this->backgroundColorShade = colorShade;
+
+  this->classList.add(this->getBackgroundColorClass());
+}
+
+template <typename T>
+void HTMLElement<T>::setTextColor(Color color, ColorShade colorShade)
+{
+  this->classList.remove(this->getTextColorClass());
+
+  this->textColor = color;
+  if (colorShadeIsValid(color, colorShade))
+    this->textColorShade = colorShade;
+
+  this->classList.add(this->getTextColorClass());
+}
+
+template <typename T>
+Color HTMLElement<T>::getBackgroundColor()
+{
+  return this->backgroundColor;
+}
+
+template <typename T>
+Color HTMLElement<T>::getTextColor()
+{
+  return this->textColor;
+}
+
+template <typename T>
+ColorShade HTMLElement<T>::getBackgroundColorShade()
+{
+  return this->backgroundColorShade;
+}
+
+template <typename T>
+ColorShade HTMLElement<T>::getTextColorShade()
+{
+  return this->textColorShade;
+}
 
 #endif //_HTML_ELEMENT_H_
