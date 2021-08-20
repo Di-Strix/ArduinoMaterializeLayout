@@ -12,8 +12,17 @@
 template <class T>
 class TabGroup : public HTMLElement<T>
 {
-protected:
-  virtual String getHTML();
+  using HTMLElement<T>::HTMLElement;
+
+private:
+  using HTMLElement<T>::appendChild;
+  using HTMLElement<T>::removeChild;
+  using HTMLElement<T>::removeAllChildren;
+
+  std::list<Tab<T> *> tabs;
+
+public:
+  String getHTML();
 };
 
 // ======================= IMPLEMENTATION =======================
@@ -30,7 +39,7 @@ String TabGroup<T>::getHTML()
     contentsList += F("<li class=\"tab col s3\"><a href=\"#");
     contentsList += tabRef;
     contentsList += F("\">");
-    contentsList += t->getName();
+    contentsList += t->getTabName();
     contentsList += F("</a></li>");
 
     contents += F("<div id=\"");
