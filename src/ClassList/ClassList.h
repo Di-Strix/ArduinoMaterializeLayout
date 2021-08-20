@@ -2,12 +2,13 @@
 #define _MATERIALIZE_LAYOUT_CLASS_LIST_H_
 
 #include <Arduino.h>
-#include <vector>
+#include <list>
+#include <algorithm>
 
 class ClassList
 {
 private:
-  std::vector<String> classList;
+  std::list<String> classList;
 
 public:
   /**

@@ -29,10 +29,14 @@ bool ClassList::contains(String className)
 
 String ClassList::item(size_t index)
 {
-  if (index + 1 > this->classList.capacity())
+  if (index + 1 > this->classList.size())
     return "";
 
-  return this->classList[index];
+  auto ref = this->classList.cbegin();
+  for (size_t i = 0; i < index; i++)
+    ref++;
+
+  return *ref;
 }
 
 void ClassList::remove(String className)
@@ -42,11 +46,9 @@ void ClassList::remove(String className)
   if (className.isEmpty())
     return;
 
-  for (auto i = this->classList.cbegin(); i < this->classList.cend(); i++)
-  {
-    if (*i == className)
-      this->classList.erase(i);
-  }
+  auto it = std::find(this->classList.cbegin(), this->classList.cend(), className);
+  if (it != this->classList.cend())
+    this->classList.erase(it);
 }
 
 void ClassList::replace(String className, String newClassName)
@@ -56,11 +58,9 @@ void ClassList::replace(String className, String newClassName)
   if (className.isEmpty())
     return;
 
-  for (auto i = this->classList.begin(); i < this->classList.end(); i++)
-  {
-    if (*i == className)
-      *i = newClassName;
-  }
+  auto it = std::find(this->classList.begin(), this->classList.end(), className);
+    if (*it == className)
+      *it = newClassName;
 }
 
 void ClassList::toggle(String className)
