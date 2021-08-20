@@ -105,12 +105,24 @@ void MaterializeLayout::registerInEspAsyncWebServer(AsyncWebServer *s)
   s->on(
       "/materializeLayoutActions/update", HTTP_GET, [=](AsyncWebServerRequest *request)
       {
-        auto registrations = this->getRegistrationService()->getRegistrations();
+        auto registrations = this->getRegistrationService().getRegistrations();
+
+        struct updateValue_t
+        {
+          String id;
+          String data;
+        };
+
+        std::list<updateValue_t> updateData;
+        for (auto reg : *registrations)
+        {
+          updateData.push_back({(String)reg.id, reg.getter()});
+        }
 
         DynamicJsonDocument doc(ESP.getMaxFreeBlockSize() - 512);
-        for (auto reg : registrations)
+        for (auto val : updateData)
         {
-          doc[(String)reg.id] = reg.getter();
+          doc[val.id] = val.data;
         }
         doc.shrinkToFit();
 
