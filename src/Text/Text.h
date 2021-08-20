@@ -76,6 +76,8 @@ public:
 template <typename T>
 class DynamicText : public StaticText<T>
 {
+  using StaticText<T>::StaticText;
+
 private:
   bool dynamic = true;
 };
@@ -87,8 +89,8 @@ StaticText<T>::StaticText(DynamicComponentRegistrationService<T> *registrationSe
 {
   if (this->dynamic)
   {
-    this->unregister = registrationService.registerDynamicGetter([this]()
-                                                                 { return this->getText(); });
+    this->unregister = registrationService->registerDynamicGetter({this->getId(), [this]()
+                                                                   { return this->getText(); }});
   }
 }
 

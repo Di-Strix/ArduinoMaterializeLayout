@@ -15,6 +15,8 @@
 template <typename T>
 class Layout : public HTMLElement<T>
 {
+  using HTMLElement<T>::HTMLElement;
+
 private:
   using HTMLElement<T>::children;
 

@@ -3,12 +3,12 @@
 
 #include <Arduino.h>
 
+#include "HTMLElemetTypes.h"
+#include "HTMLElementHelperFunctions.h"
+
 #include "../IdGenerator.h"
 #include "../ClassList/ClassList.h"
 #include "../DynamicComponentRegistrationService/DynamicComponentRegistrationService.h"
-
-#include "HTMLElemetTypes.h"
-#include "HTMLElementHelperFunctions.h"
 
 template <typename T>
 class HTMLElement
