@@ -1,24 +1,24 @@
-#ifndef _FIELD_H_
-#define _FIELD_H_
+#ifndef _MATERIALIZE_LAYOUT_FIELD_H_
+#define _MATERIALIZE_LAYOUT_FIELD_H_
 
 #include <Arduino.h>
 
+#include "../DynamicComponentRegistrationService/DynamicComponentRegistrationService.h"
 #include "../HTMLElement/HTMLElement.h"
-#include "../IdGenerator.h"
 
-class Field : public HTMLElement
+template <typename T>
+class Field : public HTMLElement<T>
 {
-  template <typename T>
-  friend class Container;
-
 private:
+  using HTMLElement<T>::appendChild;
+  using HTMLElement<T>::removeAllChildren;
+  using HTMLElement<T>::removeChild;
+
   String name;
   String defaultValue;
-  String currentValue = "";
+  String currentValue;
 
-protected:
-  virtual String getHTML();
-  virtual bool emit(size_t id, String value);
+  void onEmit(String value);
 
 public:
   /**
@@ -27,7 +27,9 @@ public:
    * @param name the name of the field
    * @param defaultValue default value of the field
    */
-  Field(String name, String defaultValue);
+  Field(DynamicComponentRegistrationService<T> *registrationService);
+
+  String getHTML();
 
   /**
    * @brief Gets the name of the field
@@ -69,4 +71,75 @@ public:
   String getCurrentValue();
 };
 
-#endif //_FIELD_H_
+// ======================= IMPLEMENTATION =======================
+
+template <typename T>
+Field<T>::Field(DynamicComponentRegistrationService<T> *registrationService) : HTMLElement<T>(registrationService)
+{
+  this->name = (String)this->getId();
+
+  this->classList.add(F("input-field"));
+  this->classList.add(F("col"));
+}
+
+template <typename T>
+String Field<T>::getName()
+{
+  return this->name;
+}
+
+template <typename T>
+void Field<T>::setName(String name)
+{
+  name.trim();
+  this->name = name;
+}
+
+template <typename T>
+String Field<T>::getDefaultValue()
+{
+  return this->defaultValue;
+}
+
+template <typename T>
+void Field<T>::setDefaultValue(String defaultValue)
+{
+  defaultValue.trim();
+  this->defaultValue = defaultValue;
+}
+
+template <typename T>
+String Field<T>::getCurrentValue()
+{
+  return this->currentValue;
+}
+
+template <typename T>
+String Field<T>::getHTML()
+{
+  String id = (String)this->getId();
+
+  String elemTemplate = F("<div class=\"");
+  elemTemplate += this->classList.value();
+  elemTemplate += F("\"><input value=\"");
+  elemTemplate += this->defaultValue;
+  elemTemplate += F("\" type=\"text\" data-id=\"");
+  elemTemplate += id;
+  elemTemplate += F("\" data-emitOnChange=\"true\" id=\"");
+  elemTemplate += id;
+  elemTemplate += F("\"><label for=\"");
+  elemTemplate += id;
+  elemTemplate += F("\">");
+  elemTemplate += this->name;
+  elemTemplate += F("</label></div>");
+
+  return elemTemplate;
+}
+
+template <typename T>
+void Field<T>::onEmit(String value)
+{
+  this->currentValue = value;
+}
+
+#endif //_MATERIALIZE_LAYOUT_FIELD_H_
