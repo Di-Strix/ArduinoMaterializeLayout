@@ -2,7 +2,7 @@
 #define _MATERIALIZE_LAYOUT_TAB_GROUP_H_
 
 #include <Arduino.h>
-#include <vector>
+#include <list>
 #include <memory>
 
 #include "../DynamicComponentRegistrationService/DynamicComponentRegistrationService.h"
@@ -10,42 +10,13 @@
 #include "../Tab/Tab.h"
 
 template <class T>
-class TabGroup : public HTMLElement
+class TabGroup : public HTMLElement<T>
 {
-  friend class Page;
-
-private:
-  std::vector<std::shared_ptr<Tab<T>>> tabs;
-  std::shared_ptr<DynamicComponentRegistrationService<T>> registrationService;
-
 protected:
   virtual String getHTML();
-  virtual bool emit(size_t id, String value);
-
-public:
-  /**
-   * @brief Constructs a new Tab Group object
-   * 
-   * @param registrationService dynamic component registration service that is used in the current page
-   */
-  TabGroup(std::shared_ptr<DynamicComponentRegistrationService<T>> registrationService);
-
-  /**
-   * @brief Creates a Tab in the tab group
-   * 
-   * @param tabName the name of the tab
-   * @return std::shared_ptr<Tab<T>> where T is type of dynamic component registration service. If the page is created with MaterializeLayout, you can use 'TabGroup_t' shortcut instead
-   */
-  std::shared_ptr<Tab<T>> createTab(String tabName);
 };
 
 // ======================= IMPLEMENTATION =======================
-
-template <class T>
-TabGroup<T>::TabGroup(std::shared_ptr<DynamicComponentRegistrationService<T>> registrationService) : HTMLElement()
-{
-  this->registrationService = registrationService;
-}
 
 template <class T>
 String TabGroup<T>::getHTML()
@@ -54,13 +25,7 @@ String TabGroup<T>::getHTML()
   String contentsList, contents;
   for (auto t : this->tabs)
   {
-    if (!t)
-      continue;
-
     String tabRef = String(t->getId());
-    tabRef.replace(" ", "");
-    tabRef.replace("#", "");
-    tabRef.replace("%", "");
 
     contentsList += F("<li class=\"tab col s3\"><a href=\"#");
     contentsList += tabRef;
@@ -81,31 +46,6 @@ String TabGroup<T>::getHTML()
   elemTemplate += contents;
 
   return elemTemplate;
-}
-
-template <class T>
-std::shared_ptr<Tab<T>> TabGroup<T>::createTab(String tabName)
-{
-  auto t = std::make_shared<Tab<T>>(this->registrationService, tabName);
-  this->tabs.push_back(t);
-  return t;
-}
-
-template <class T>
-bool TabGroup<T>::emit(size_t id, String value)
-{
-  bool found = false;
-  for (auto t : this->tabs)
-  {
-    if (!t)
-      continue;
-    found = t->emit(id, value);
-
-    if (found)
-      break;
-  }
-
-  return found;
 }
 
 #endif //_MATERIALIZE_LAYOUT_TAB_GROUP_H_
