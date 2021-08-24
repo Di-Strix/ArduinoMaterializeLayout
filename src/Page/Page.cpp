@@ -1,6 +1,6 @@
 #include "Page.h"
 
-Page::Page(String title) : MaterializeLayoutComponent<HTMLElement>(&this->registrationService)
+Page::Page(String title) : MaterializeLayoutComponent_t<HTMLElement>(&this->registrationService)
 {
   this->setPageTitle(title);
 }
@@ -34,7 +34,7 @@ void Page::setPageTitle(String title)
   this->pageTitle = title;
 }
 
-DCRS_t Page::getRegistrationService()
+DCRS_t *Page::getRegistrationService()
 {
-  return this->registrationService;
+  return &this->registrationService;
 }

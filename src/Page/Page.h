@@ -32,10 +32,10 @@ private:
   DCRS_t registrationService = DCRS_t([](dynamicValueGetter f, dynamicValueGetter s)
 
 protected:
-  DCRS_t getRegistrationService();
+  DCRS_t *getRegistrationService();
 
 public:
-  using MaterializeLayoutComponent<HTMLElement>::emit;
+  using MaterializeLayoutComponent_t<HTMLElement>::emit;
 
   /**
    * @brief Constructs a new Page
