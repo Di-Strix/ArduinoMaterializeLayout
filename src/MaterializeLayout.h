@@ -132,7 +132,7 @@ void MaterializeLayout::registerInEspAsyncWebServer(AsyncWebServer *s)
   }
 
   s->on(
-      "/materializeLayoutActions/emitAction", HTTP_POST, [=](AsyncWebServerRequest *request) {}, NULL,
+      String(F("/materializeLayoutActions/emitAction")).c_str(), HTTP_POST, [=](AsyncWebServerRequest *request) {}, NULL,
       [&](AsyncWebServerRequest *request, uint8_t *data, size_t len, size_t index, size_t total)
       {
         for (size_t i = 0; i < len; i++)
@@ -152,7 +152,7 @@ void MaterializeLayout::registerInEspAsyncWebServer(AsyncWebServer *s)
       });
 
   s->on(
-      "/materializeLayoutActions/update", HTTP_GET, [=](AsyncWebServerRequest *request)
+      String(F("/materializeLayoutActions/update")).c_str(), HTTP_GET, [=](AsyncWebServerRequest *request)
       {
         auto registrations = this->getRegistrationService()->getRegistrations();
 
