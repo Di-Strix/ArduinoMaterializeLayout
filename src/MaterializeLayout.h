@@ -11,6 +11,7 @@
 
 #include <ArduinoJson.h>
 #include "Page/Page.h"
+#include "ComponentFactory/ComponentFactory.h"
 #include "SharedStatic.h"
 
 enum class SharedStaticType
