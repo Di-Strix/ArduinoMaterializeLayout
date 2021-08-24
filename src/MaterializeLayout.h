@@ -10,17 +10,11 @@
 #endif
 
 #include <ArduinoJson.h>
+#include "MaterializeLayoutTypes.h"
 #include "Page/Page.h"
 #include "ComponentFactory/ComponentFactory.h"
 #include "SharedStatic.h"
 
-enum class SharedStaticType
-{
-  MATERIALIZE_CSS,
-  MATERIALIZE_JS,
-  NORMALIZE_CSS,
-  APPLICATION_JS,
-};
 
 template <typename T>
 inline DynamicJsonDocument dynamiclyDeserializeJson(T data)
