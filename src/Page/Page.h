@@ -14,7 +14,7 @@
 
 #include "../SharedStatic.h"
 
-class Page : private HTMLElement<dynamicValueGetter>
+class Page : public HTMLElement<dynamicValueGetter>
 {
 private:
   String pageTitle;
