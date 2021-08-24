@@ -1,4 +1,5 @@
-#endif //_MATERIALIZE_LAYOUT_TYPES_H_#define _MATERIALIZE_LAYOUT_TYPES_H_
+#ifndef _MATERIALIZE_LAYOUT_TYPES_H_
+#define _MATERIALIZE_LAYOUT_TYPES_H_
 
 #include <Arduino.h>
 #include <map>
