@@ -1,13 +1,16 @@
 #include "Page.h"
 
-Page::Page(String title) : MaterializeLayoutComponent_t<HTMLElement>(&this->registrationService)
+Page::Page(String title, std::function<PageSources()> srcGetter) : MaterializeLayoutComponent_t<HTMLElement>(&this->registrationService)
 {
   this->setPageTitle(title);
+  this->srcGetter = srcGetter;
 }
 
 String Page::getHTML()
 {
   String contents;
+
+  PageSources src = this->srcGetter();
 
   for (auto el : this->children)
   {
@@ -16,9 +19,27 @@ String Page::getHTML()
 
   String elemTemplate = F("<!DOCTYPE html><html lang=\"ru\"><head><meta charset=\"UTF-8\"/><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"/><title>");
   elemTemplate += this->pageTitle;
-  elemTemplate += F("</title><link rel=\"stylesheet\" href=\"normalize.css\"/><link rel=\"stylesheet\" href=\"materialize.css\"/><link rel=\"stylesheet\" href=\"chartist.css\"/></head><body><div class=\"container row\">");
+  elemTemplate += F("</title>");
+
+  for (auto fileName : src.stylesFileNames)
+  {
+    elemTemplate += F("<link rel=\"stylesheet\" href=\"");
+    elemTemplate += fileName;
+    elemTemplate += F(".css\"/>");
+  }
+
+  elemTemplate += F("</head><body><div class=\"container row\">");
   elemTemplate += contents;
-  elemTemplate += F("</div><script src=\"materialize.js\"></script><script src=\"chartist.js\"></script><script src=\"" APPLICATION_JS_HASH ".js\"></script></body></html>");
+  elemTemplate += F("</div>");
+
+  for (auto fileName : src.scriptFileNames)
+  {
+    elemTemplate += F("<script src=\"");
+    elemTemplate += fileName;
+    elemTemplate += F(".js\"></script>");
+  }
+
+  elemTemplate += F("</body></html>");
 
   return elemTemplate;
 }

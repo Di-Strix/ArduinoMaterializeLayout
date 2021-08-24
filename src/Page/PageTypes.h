@@ -5,6 +5,12 @@
 
 #include "../DynamicComponentRegistrationService/DynamicComponentRegistrationService.h"
 
+struct PageSources
+{
+  std::list<String> stylesFileNames;
+  std::list<String> scriptFileNames;
+};
+
 struct dynamicValueGetter
 {
   size_t id;

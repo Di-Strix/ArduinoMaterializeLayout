@@ -19,6 +19,8 @@ class Page : private HTMLElement<dynamicValueGetter>
 private:
   String pageTitle;
   DCRS_t registrationService = DCRS_t([](dynamicValueGetter f, dynamicValueGetter s)
+                                      { return f.id == s.id; });
+  std::function<PageSources()> srcGetter;
 
 protected:
   DCRS_t *getRegistrationService();
@@ -31,7 +33,9 @@ public:
    * 
    * @param title the title of the page which is displayed on the tab
    */
-  Page(String title);
+  Page(
+      String title, std::function<PageSources()> srcGetter = []() -> PageSources
+      { return {}; });
 
   /**
    * @brief Recursively compiles all nested elements and returns HTML layout of the page using current params
