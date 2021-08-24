@@ -154,7 +154,7 @@ void MaterializeLayout::registerInEspAsyncWebServer(AsyncWebServer *s)
   s->on(
       "/materializeLayoutActions/update", HTTP_GET, [=](AsyncWebServerRequest *request)
       {
-        auto registrations = this->getRegistrationService().getRegistrations();
+        auto registrations = this->getRegistrationService()->getRegistrations();
 
         struct updateValue_t
         {
