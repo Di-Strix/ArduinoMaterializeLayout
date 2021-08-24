@@ -34,7 +34,7 @@ void Page::setPageTitle(String title)
   this->pageTitle = title;
 }
 
-DynamicComponentRegistrationService_t Page::getRegistrationService()
+DCRS_t Page::getRegistrationService()
 {
   return this->registrationService;
 }

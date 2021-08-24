@@ -17,4 +17,6 @@ using MaterializeLayoutComponent_t = TemplateClass<dynamicValueGetter>;
 template <template <typename> class TemplateClass>
 using MaterializeLayoutComponent = MaterializeLayoutComponent_t<TemplateClass> *;
 
+using DCRS_t = MaterializeLayoutComponent_t<DynamicComponentRegistrationService>;
+
 #endif //_MATERIALIZE_LAYOUT_PAGE_TYPES_H_

@@ -29,11 +29,10 @@ class Page : private HTMLElement<dynamicValueGetter>
 {
 private:
   String pageTitle;
-  DynamicComponentRegistrationService_t registrationService = DynamicComponentRegistrationService_t([](dynamicValueGetter f, dynamicValueGetter s)
-                                                                                                    { return f.id == s.id; });
+  DCRS_t registrationService = DCRS_t([](dynamicValueGetter f, dynamicValueGetter s)
 
 protected:
-  DynamicComponentRegistrationService_t getRegistrationService();
+  DCRS_t getRegistrationService();
 
 public:
   using MaterializeLayoutComponent<HTMLElement>::emit;
