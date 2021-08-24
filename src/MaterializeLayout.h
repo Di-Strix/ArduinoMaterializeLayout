@@ -29,14 +29,16 @@ inline DynamicJsonDocument dynamiclyDeserializeJson(T data)
 
 class MaterializeLayout : public Page
 {
-  using Page::Page;
-
 private:
   using Page::getRegistrationService;
   String tempData;
 
   std::map<String, MaterializeLayoutModule> modules;
+
+  PageSources compileSrc();
+
 public:
+  MaterializeLayout(String pageTitle);
 
   bool injectModule(String moduleName, MaterializeLayoutModule moduleInfo);
 
