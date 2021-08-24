@@ -14,17 +14,6 @@
 
 #include "../SharedStatic.h"
 
-struct dynamicValueGetter
-{
-  size_t id;
-  std::function<String()> getter;
-};
-
-template <template <typename> class TemplateClass>
-using MaterializeLayoutComponent = TemplateClass<dynamicValueGetter>;
-
-using DynamicComponentRegistrationService_t = MaterializeLayoutComponent<DynamicComponentRegistrationService>;
-
 class Page : private HTMLElement<dynamicValueGetter>
 {
 private:
