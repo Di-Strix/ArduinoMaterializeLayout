@@ -6,6 +6,7 @@
 #include <memory>
 #include <functional>
 
+#include "PageTypes.h"
 #include "../DynamicComponentRegistrationService/DynamicComponentRegistrationService.h"
 #include "../HTMLElement/HTMLElement.h"
 #include "../Layout/Layout.h"
