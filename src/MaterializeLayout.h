@@ -203,6 +203,6 @@ void MaterializeLayout::serveSharedStatic(AsyncWebServerRequest *request, Shared
   request->send(res);
 }
 
-#endif
+#endif //MATERIALIZE_LAYOUT_ENABLE_ESP_ASYNC_WEB_SERVER
 
 #endif
