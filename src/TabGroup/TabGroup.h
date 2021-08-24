@@ -14,13 +14,6 @@ class TabGroup : public HTMLElement<T>
 {
   using HTMLElement<T>::HTMLElement;
 
-private:
-  using HTMLElement<T>::appendChild;
-  using HTMLElement<T>::removeChild;
-  using HTMLElement<T>::removeAllChildren;
-
-  std::list<Tab<T> *> tabs;
-
 public:
   String getHTML();
 };
@@ -32,8 +25,10 @@ String TabGroup<T>::getHTML()
 {
 
   String contentsList, contents;
-  for (auto t : this->tabs)
+  for (auto ch : this->children)
   {
+    auto t = static_cast<Tab<T> *>(ch);
+
     String tabRef = String(t->getId());
 
     contentsList += F("<li class=\"tab col s3\"><a href=\"#");
