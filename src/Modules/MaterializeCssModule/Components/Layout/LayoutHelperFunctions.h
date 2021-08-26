@@ -4,6 +4,6 @@
 #include <Arduino.h>
 #include "LayoutTypes.h"
 
-String getLayoutTypeClass(LayoutTypes lt);
+String getLayoutTypeClass(LayoutType lt);
 
 #endif //_MATERIALIZE_LAYOUT_LAYOUT_HELPER_FUNCTIONS_H_

@@ -1,7 +1,7 @@
 #ifndef _MATERIALIZE_LAYOUT_LAYOUT_TYPES_H_
 #define _MATERIALIZE_LAYOUT_LAYOUT_TYPES_H_
 
-enum class LayoutTypes
+enum class LayoutType
 {
   NONE,
   ROW,

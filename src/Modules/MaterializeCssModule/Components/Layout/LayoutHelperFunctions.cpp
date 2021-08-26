@@ -1,15 +1,15 @@
 #include "LayoutHelperFunctions.h"
 
-String getLayoutTypeClass(LayoutTypes lt)
+String getLayoutTypeClass(LayoutType lt)
 {
   switch (lt)
   {
-  case LayoutTypes::NONE:
+  case LayoutType::NONE:
   default:
     return String();
-  case LayoutTypes::COLUMN:
+  case LayoutType::COLUMN:
     return F("col");
-  case LayoutTypes::ROW:
+  case LayoutType::ROW:
     return F("row");
   }
 }
