@@ -16,13 +16,13 @@ PageSources MaterializeLayout::compileSrc()
 
   for (auto [moduleName, moduleInfo] : this->modules)
   {
-    if (moduleInfo.CSS.fileName && moduleInfo.CSS.file)
+    if ((moduleInfo.CSS.fileName && moduleInfo.CSS.file) || moduleInfo.inlineCSS)
     {
-      src.styles.push_front({moduleInfo.CSS.fileName});
+      src.styles.push_front({moduleInfo.CSS.fileName, moduleInfo.inlineCSS});
     }
-    if (moduleInfo.JS.fileName && moduleInfo.JS.file)
+    if ((moduleInfo.JS.fileName && moduleInfo.JS.file) || moduleInfo.inlineJS)
     {
-      src.scripts.push_front({moduleInfo.JS.fileName});
+      src.scripts.push_front({moduleInfo.JS.fileName, moduleInfo.inlineJS});
     }
 
     for (auto handler : moduleInfo.handlers)

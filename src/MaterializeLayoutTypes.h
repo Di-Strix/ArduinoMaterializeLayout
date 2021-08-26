@@ -29,8 +29,10 @@ struct Handler
 struct MaterializeLayoutModule
 {
   SrcFile CSS;
-
   SrcFile JS;
+
+  String inlineCSS;
+  String inlineJS;
 
   std::map<int, AbstractComponentCreator *> declarations;
 
