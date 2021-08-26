@@ -9,8 +9,6 @@
 #include "PageTypes.h"
 #include "../DynamicComponentRegistrationService/DynamicComponentRegistrationService.h"
 #include "../HTMLElement/HTMLElement.h"
-#include "../Layout/Layout.h"
-#include "../TabGroup/TabGroup.h"
 
 class Page : public HTMLElement<dynamicValueGetter>
 {

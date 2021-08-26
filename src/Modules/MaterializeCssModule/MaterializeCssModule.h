@@ -4,12 +4,12 @@
 #include "../../ComponentFactory/ComponentFactory.h"
 #include "../../MaterializeLayoutTypes.h"
 #include "MaterializeCssStatic.h"
-#include "../../Button/Button.h"
-#include "../../Field/Field.h"
-#include "../../Layout/Layout.h"
-#include "../../Tab/Tab.h"
-#include "../../TabGroup/TabGroup.h"
-#include "../../Text/Text.h"
+#include "Components/Button/Button.h"
+#include "Components/Field/Field.h"
+#include "Components/Layout/Layout.h"
+#include "Components/Tab/Tab.h"
+#include "Components/TabGroup/TabGroup.h"
+#include "Components/Text/Text.h"
 
 #define MaterializeCssComponent (int)MaterializeCssComponentEnum
 

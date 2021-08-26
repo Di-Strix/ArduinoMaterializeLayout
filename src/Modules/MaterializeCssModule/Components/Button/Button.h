@@ -4,8 +4,8 @@
 #include <Arduino.h>
 #include <functional>
 
-#include "../DynamicComponentRegistrationService/DynamicComponentRegistrationService.h"
-#include "../HTMLElement/HTMLElement.h"
+#include "../../../../DynamicComponentRegistrationService/DynamicComponentRegistrationService.h"
+#include "../../../../HTMLElement/HTMLElement.h"
 
 typedef std::function<void()> ButtonCallback;
 

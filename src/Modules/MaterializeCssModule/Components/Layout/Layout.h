@@ -6,8 +6,8 @@
 #include <variant>
 #include <list>
 
-#include "../DynamicComponentRegistrationService/DynamicComponentRegistrationService.h"
-#include "../HTMLElement/HTMLElement.h"
+#include "../../../../DynamicComponentRegistrationService/DynamicComponentRegistrationService.h"
+#include "../../../../HTMLElement/HTMLElement.h"
 
 #include "LayoutTypes.h"
 #include "LayoutHelperFunctions.h"

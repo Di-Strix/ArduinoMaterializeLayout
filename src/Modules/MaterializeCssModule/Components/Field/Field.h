@@ -3,8 +3,8 @@
 
 #include <Arduino.h>
 
-#include "../DynamicComponentRegistrationService/DynamicComponentRegistrationService.h"
-#include "../HTMLElement/HTMLElement.h"
+#include "../../../../DynamicComponentRegistrationService/DynamicComponentRegistrationService.h"
+#include "../../../../HTMLElement/HTMLElement.h"
 
 template <typename T>
 class Field : public HTMLElement<T>
