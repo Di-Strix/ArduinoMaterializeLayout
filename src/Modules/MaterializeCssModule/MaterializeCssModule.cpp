@@ -11,6 +11,9 @@ MaterializeLayoutModule getMaterializeCssModule()
             MATERIALIZE_JS,
             MATERIALIZE_JS_LENGTH },
 
+        "",
+        "",
+
         {
             { MaterializeCssComponent::Button, new ComponentCreator<MaterializeLayoutComponent_t<Button>>() },
             { MaterializeCssComponent::Field, new ComponentCreator<MaterializeLayoutComponent_t<Field>>() },
