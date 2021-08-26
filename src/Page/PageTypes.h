@@ -5,10 +5,15 @@
 
 #include "../DynamicComponentRegistrationService/DynamicComponentRegistrationService.h"
 
+struct PageSource {
+  String fileName;
+  String inlineSrc;
+};
+
 struct PageSources
 {
-  std::list<String> stylesFileNames;
-  std::list<String> scriptFileNames;
+  std::list<PageSource> styles;
+  std::list<PageSource> scripts;
 };
 
 struct dynamicValueGetter

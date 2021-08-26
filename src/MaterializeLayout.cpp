@@ -16,11 +16,11 @@ PageSources MaterializeLayout::compileSrc()
   {
     if (moduleInfo.CSS.fileName && moduleInfo.CSS.file)
     {
-      src.stylesFileNames.push_front(moduleInfo.CSS.fileName);
+      src.styles.push_front({moduleInfo.CSS.fileName});
     }
     if (moduleInfo.JS.fileName && moduleInfo.JS.file)
     {
-      src.scriptFileNames.push_front(moduleInfo.JS.fileName);
+      src.scripts.push_front({moduleInfo.JS.fileName});
     }
   }
 
