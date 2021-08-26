@@ -4,13 +4,12 @@
 #include <Arduino.h>
 #include <list>
 
-class ChartLine
-{
-private:
+class ChartLine {
+  private:
   std::list<String> array;
   size_t arraySize;
 
-public:
+  public:
   ChartLine(size_t arraySize);
 
   void setArraySize(size_t newSize);

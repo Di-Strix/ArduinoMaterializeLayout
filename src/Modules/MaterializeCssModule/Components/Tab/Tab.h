@@ -3,26 +3,25 @@
 
 #include <Arduino.h>
 #include <list>
-#include <variant>
 #include <memory>
+#include <variant>
 
 #include "../../../../DynamicComponentRegistrationService/DynamicComponentRegistrationService.h"
 #include "../Layout/Layout.h"
 
 template <typename T>
-class Tab : public HTMLElement<T>
-{
-private:
+class Tab : public HTMLElement<T> {
+  private:
   String name;
 
-public:
+  public:
   /**
    * @brief Constructs a new Tab object
    * 
    * @param registrationService dynamic component registration service that is used in the current page
    * @param tabName the name of the tab
    */
-  Tab(DynamicComponentRegistrationService<T> *registrationService);
+  Tab(DynamicComponentRegistrationService<T>* registrationService);
 
   /**
    * @brief Gets the name of the tab
@@ -37,7 +36,8 @@ public:
 // ======================= IMPLEMENTATION =======================
 
 template <typename T>
-Tab<T>::Tab(DynamicComponentRegistrationService<T> *registrationService) : HTMLElement<T>(registrationService)
+Tab<T>::Tab(DynamicComponentRegistrationService<T>* registrationService)
+    : HTMLElement<T>(registrationService)
 {
 }
 

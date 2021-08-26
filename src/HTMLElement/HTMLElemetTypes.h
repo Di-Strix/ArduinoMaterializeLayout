@@ -1,8 +1,7 @@
 #ifndef _MATERIALIZE_LAYOUT_HTML_ELEMENT_TYPES_H_
 #define _MATERIALIZE_LAYOUT_HTML_ELEMENT_TYPES_H_
 
-enum class Color
-{
+enum class Color {
   defaultColor,
   red,
   pink,
@@ -28,8 +27,7 @@ enum class Color
   transparent
 };
 
-enum class ColorShade
-{
+enum class ColorShade {
   lighten5,
   lighten4,
   lighten3,
@@ -46,8 +44,7 @@ enum class ColorShade
   accent4
 };
 
-enum class ScreenSize
-{
+enum class ScreenSize {
   small,
   medium,
   large,

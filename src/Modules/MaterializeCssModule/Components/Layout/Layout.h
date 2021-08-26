@@ -2,30 +2,29 @@
 #define _MATERIALIZE_LAYOUT_ELEMENT_H_
 
 #include <Arduino.h>
+#include <list>
 #include <memory>
 #include <variant>
-#include <list>
 
 #include "../../../../DynamicComponentRegistrationService/DynamicComponentRegistrationService.h"
 #include "../../../../HTMLElement/HTMLElement.h"
 
-#include "LayoutTypes.h"
 #include "LayoutHelperFunctions.h"
+#include "LayoutTypes.h"
 
 template <typename T>
-class Layout : public HTMLElement<T>
-{
+class Layout : public HTMLElement<T> {
   using HTMLElement<T>::HTMLElement;
 
-private:
+  private:
   using HTMLElement<T>::children;
 
   LayoutType layoutType = LayoutType::NONE;
 
-protected:
+  protected:
   String getHTML();
 
-public:
+  public:
   /**
    * @brief Enables or disables vertical align in the container
    * 
@@ -47,8 +46,7 @@ String Layout<T>::getHTML()
 {
   String componentTemplate, nestedLayout, className;
 
-  for (auto l : this->children)
-  {
+  for (auto l : this->children) {
     nestedLayout += l->getHTML();
   }
 

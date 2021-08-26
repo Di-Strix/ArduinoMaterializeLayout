@@ -2,26 +2,24 @@
 #define _MATERIALIZE_LAYOUT_PAGE_H_
 
 #include <Arduino.h>
+#include <functional>
 #include <list>
 #include <memory>
-#include <functional>
 
-#include "PageTypes.h"
 #include "../DynamicComponentRegistrationService/DynamicComponentRegistrationService.h"
 #include "../HTMLElement/HTMLElement.h"
+#include "PageTypes.h"
 
-class Page : public HTMLElement<dynamicValueGetter>
-{
-private:
+class Page : public HTMLElement<dynamicValueGetter> {
+  private:
   String pageTitle;
-  DCRS_t registrationService = DCRS_t([](dynamicValueGetter f, dynamicValueGetter s)
-                                      { return f.id == s.id; });
+  DCRS_t registrationService = DCRS_t([](dynamicValueGetter f, dynamicValueGetter s) { return f.id == s.id; });
   std::function<PageSources()> srcGetter;
 
-protected:
-  DCRS_t *getRegistrationService();
+  protected:
+  DCRS_t* getRegistrationService();
 
-public:
+  public:
   using MaterializeLayoutComponent_t<HTMLElement>::emit;
 
   /**
@@ -30,8 +28,7 @@ public:
    * @param title the title of the page which is displayed on the tab
    */
   Page(
-      String title, std::function<PageSources()> srcGetter = []() -> PageSources
-      { return {}; });
+      String title, std::function<PageSources()> srcGetter = []() -> PageSources { return {}; });
 
   /**
    * @brief Recursively compiles all nested elements and returns HTML layout of the page using current params

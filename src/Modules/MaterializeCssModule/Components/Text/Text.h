@@ -7,8 +7,7 @@
 #include "../../../../DynamicComponentRegistrationService\DynamicComponentRegistrationService.h"
 #include "../../../../HTMLElement/HTMLElement.h"
 
-enum class TextType
-{
+enum class TextType {
   h1,
   h2,
   h3,
@@ -19,9 +18,8 @@ enum class TextType
 };
 
 template <typename T>
-class StaticText : public HTMLElement<T>
-{
-private:
+class StaticText : public HTMLElement<T> {
+  private:
   using HTMLElement<T>::appendChild;
   using HTMLElement<T>::removeAllChildren;
   using HTMLElement<T>::removeChild;
@@ -29,10 +27,10 @@ private:
   String text;
   TextType textType = TextType::p;
 
-protected:
+  protected:
   constexpr virtual bool isDynamic() { return false; };
 
-public:
+  public:
   String getHTML();
   /**
    * @brief Constructs a new Static Text object
@@ -72,15 +70,14 @@ public:
 };
 
 template <typename T>
-class DynamicText : public StaticText<T>
-{
-private:
+class DynamicText : public StaticText<T> {
+  private:
   unregisterFn unregister;
 
   constexpr virtual bool isDynamic() { return true; };
 
-public:
-  DynamicText(DynamicComponentRegistrationService<T> *registrationService);
+  public:
+  DynamicText(DynamicComponentRegistrationService<T>* registrationService);
   ~DynamicText();
 };
 
@@ -117,8 +114,7 @@ String StaticText<T>::getHTML()
   String tag = "";
   String id = (String)this->getId();
 
-  switch (this->textType)
-  {
+  switch (this->textType) {
   case TextType::h1:
     tag = "h1";
     break;
@@ -161,10 +157,10 @@ String StaticText<T>::getHTML()
 }
 
 template <typename T>
-DynamicText<T>::DynamicText(DynamicComponentRegistrationService<T> *registrationService) : StaticText<T>(registrationService)
+DynamicText<T>::DynamicText(DynamicComponentRegistrationService<T>* registrationService)
+    : StaticText<T>(registrationService)
 {
-  this->unregister = registrationService->registerDynamicGetter({this->getId(), [this]() -> UpdateMsg
-                                                                 { return {F("MaterializeCssHandler"), this->getText()}; }});
+  this->unregister = registrationService->registerDynamicGetter({ this->getId(), [this]() -> UpdateMsg { return { F("MaterializeCssHandler"), this->getText() }; } });
 }
 
 template <typename T>

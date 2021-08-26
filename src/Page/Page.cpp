@@ -1,6 +1,7 @@
 #include "Page.h"
 
-Page::Page(String title, std::function<PageSources()> srcGetter) : MaterializeLayoutComponent_t<HTMLElement>(&this->registrationService)
+Page::Page(String title, std::function<PageSources()> srcGetter)
+    : MaterializeLayoutComponent_t<HTMLElement>(&this->registrationService)
 {
   this->setPageTitle(title);
   this->srcGetter = srcGetter;
@@ -12,8 +13,7 @@ String Page::getHTML()
 
   PageSources src = this->srcGetter();
 
-  for (auto el : this->children)
-  {
+  for (auto el : this->children) {
     contents += el->getHTML();
   }
 
@@ -21,16 +21,13 @@ String Page::getHTML()
   elemTemplate += this->pageTitle;
   elemTemplate += F("</title>");
 
-  for (auto source : src.styles)
-  {
-    if (!source.fileName.isEmpty())
-    {
+  for (auto source : src.styles) {
+    if (!source.fileName.isEmpty()) {
       elemTemplate += F("<link rel=\"stylesheet\" href=\"");
       elemTemplate += source.fileName;
       elemTemplate += F(".css\"/>");
     }
-    if (!source.inlineSrc.isEmpty())
-    {
+    if (!source.inlineSrc.isEmpty()) {
       elemTemplate += F("<style>");
       elemTemplate += source.inlineSrc;
       elemTemplate += F("</style>");
@@ -41,16 +38,13 @@ String Page::getHTML()
   elemTemplate += contents;
   elemTemplate += F("</div>");
 
-  for (auto source : src.scripts)
-  {
-    if (!source.fileName.isEmpty())
-    {
+  for (auto source : src.scripts) {
+    if (!source.fileName.isEmpty()) {
       elemTemplate += F("<script src=\"");
       elemTemplate += source.fileName;
       elemTemplate += F(".js\"></script>");
     }
-    if (!source.inlineSrc.isEmpty())
-    {
+    if (!source.inlineSrc.isEmpty()) {
       elemTemplate += F("<script>");
       elemTemplate += source.inlineSrc;
       elemTemplate += F("</script>");
@@ -73,7 +67,7 @@ void Page::setPageTitle(String title)
   this->pageTitle = title;
 }
 
-DCRS_t *Page::getRegistrationService()
+DCRS_t* Page::getRegistrationService()
 {
   return &this->registrationService;
 }

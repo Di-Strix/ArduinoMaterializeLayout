@@ -22,8 +22,7 @@ void ChartLine::clear()
 
 void ChartLine::pushValue(String value)
 {
-  if (this->array.size() == this->arraySize)
-  {
+  if (this->array.size() == this->arraySize) {
     this->array.pop_front();
   }
   this->array.push_back(value);

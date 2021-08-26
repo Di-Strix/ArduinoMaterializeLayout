@@ -10,8 +10,7 @@
 
 #define ChartistComponent (int)ChartistComponentEnum
 
-enum class ChartistComponentEnum
-{
+enum class ChartistComponentEnum {
   Chart
 };
 

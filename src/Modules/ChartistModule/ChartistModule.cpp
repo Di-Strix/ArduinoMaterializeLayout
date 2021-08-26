@@ -2,21 +2,22 @@
 
 const MaterializeLayoutModule getChartistModule()
 {
-    return {
-        {"chartist",
-         CHARTIST_CSS,
-         CHARTIST_CSS_LENGTH},
+  return {
+    { "chartist",
+        CHARTIST_CSS,
+        CHARTIST_CSS_LENGTH },
 
-        {"chartist",
-         CHARTIST_JS,
-         CHARTIST_JS_LENGTH},
-        F(".chart-overflow-visible > svg {overflow: visible;}"),
-        "",
-        {
-            {ChartistComponent::Chart, new ComponentCreator<MaterializeLayoutComponent_t<Chart>>()},
-        },
-        {{F("ChartistHandler"),
-          F(
+    { "chartist",
+        CHARTIST_JS,
+        CHARTIST_JS_LENGTH },
+    F(".chart-overflow-visible > svg {overflow: visible;}"),
+    "",
+    {
+        { ChartistComponent::Chart, new ComponentCreator<MaterializeLayoutComponent_t<Chart>>() },
+    },
+    { { F("ChartistHandler"),
+        F(
+            // clang-format off
               "this.charts = [];"
               "document.querySelectorAll('[data-chart=true]').forEach(ch => {"
                 "const chObj = {"
@@ -28,8 +29,14 @@ const MaterializeLayoutModule getChartistModule()
                         "),"
                     "};"
                 "this.charts.push(chObj);"
-              "});"),
-          F(
-              "const chObj = this.charts.filter(c => c.id === el.dataset.id)[0];"
-              "chObj.chart.update(JSON.parse(value));")}}};
+              "});"
+            // clang-format on
+            ),
+        F(
+            // clang-formating off
+            "const chObj = this.charts.filter(c => c.id === el.dataset.id)[0];"
+            "chObj.chart.update(JSON.parse(value));"
+            // clang-formating on
+            ) } }
+  };
 }

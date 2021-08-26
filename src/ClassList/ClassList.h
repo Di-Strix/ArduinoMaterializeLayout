@@ -2,15 +2,14 @@
 #define _MATERIALIZE_LAYOUT_CLASS_LIST_H_
 
 #include <Arduino.h>
-#include <list>
 #include <algorithm>
+#include <list>
 
-class ClassList
-{
-private:
+class ClassList {
+  private:
   std::list<String> classList;
 
-public:
+  public:
   /**
    * @brief adds a class to the classList
    * 

@@ -2,42 +2,40 @@
 #define _MATERIALIZE_LAYOUT_CHARTIST_H_
 
 #include <Arduino.h>
-#include <list>
-#include <variant>
 #include <ArduinoJson.h>
 #include <DebugPrintMacros.h>
+#include <list>
+#include <variant>
 
 #include "../../../DynamicComponentRegistrationService\DynamicComponentRegistrationService.h"
 #include "../../../HTMLElement/HTMLElement.h"
 #include "ChartLine/ChartLine.h"
 
-enum class ChartAspectRatio
-{
-  square,        // 1:1
-  minorSecond,   // 15:16
-  majorSecond,   // 8:9
-  minorThird,    // 5:6
-  majorThird,    // 4:5
+enum class ChartAspectRatio {
+  square, // 1:1
+  minorSecond, // 15:16
+  majorSecond, // 8:9
+  minorThird, // 5:6
+  majorThird, // 4:5
   perfectFourth, // 3:4
-  perfectFifth,  // 2:3
-  minorSixth,    // 5:8
+  perfectFifth, // 2:3
+  minorSixth, // 5:8
   goldenSection, // 1:1.618
-  majorSixth,    // 3:5
-  minorSeventh,  // 9:16
-  majorSeventh,  // 8:15
-  octave,        // 1:2
-  majorTenth,    // 2:5
+  majorSixth, // 3:5
+  minorSeventh, // 9:16
+  majorSeventh, // 8:15
+  octave, // 1:2
+  majorTenth, // 2:5
   majorEleventh, // 3:8
-  majorTwelfth,  // 1:3
-  doubleOctave   // 1:4
+  majorTwelfth, // 1:3
+  doubleOctave // 1:4
 };
 
 template <typename T>
-class Chart : public HTMLElement<T>
-{
-private:
+class Chart : public HTMLElement<T> {
+  private:
   size_t arraySize = 24;
-  std::list<ChartLine *> lines;
+  std::list<ChartLine*> lines;
   std::list<String> legendNames;
 
   unregisterFn unregister;
@@ -46,8 +44,8 @@ private:
 
   String getAspectRatioClass(ChartAspectRatio ar);
 
-public:
-  Chart(DynamicComponentRegistrationService<T> *registrationService);
+  public:
+  Chart(DynamicComponentRegistrationService<T>* registrationService);
   ~Chart();
 
   String collectChartData();
@@ -62,22 +60,22 @@ public:
   void setAspectRatio(ChartAspectRatio ar);
   ChartAspectRatio getAspectRatio();
 
-  ChartLine *createLine();
+  ChartLine* createLine();
 };
 
 // ======================= IMPLEMENTATION =======================
 
 template <typename T>
-Chart<T>::Chart(DynamicComponentRegistrationService<T> *registrationService) : HTMLElement<T>(registrationService)
+Chart<T>::Chart(DynamicComponentRegistrationService<T>* registrationService)
+    : HTMLElement<T>(registrationService)
 {
   this->classList.add(F("ct-chart"));
   this->classList.add(F("chart-overflow-visible"));
   this->setAspectRatio(this->aspectRatio);
 
-  this->unregister = registrationService->registerDynamicGetter({this->getId(), [this]() -> UpdateMsg
-                                                                 {
-                                                                   return {F("ChartistHandler"), this->collectChartData()};
-                                                                 }});
+  this->unregister = registrationService->registerDynamicGetter({ this->getId(), [this]() -> UpdateMsg {
+                                                                   return { F("ChartistHandler"), this->collectChartData() };
+                                                                 } });
 }
 
 template <typename T>
@@ -85,8 +83,7 @@ Chart<T>::~Chart()
 {
   this->unregister();
 
-  for (auto chl : this->lines)
-  {
+  for (auto chl : this->lines) {
     chl->~ChartLine();
     delete chl;
   }
@@ -96,8 +93,7 @@ template <typename T>
 void Chart<T>::setArraySize(size_t newSize)
 {
   this->arraySize = newSize;
-  for (auto chl : this->lines)
-  {
+  for (auto chl : this->lines) {
     if (chl)
       chl->setArraySize(newSize);
   }
@@ -110,7 +106,7 @@ size_t Chart<T>::getArraySize()
 }
 
 template <typename T>
-ChartLine *Chart<T>::createLine()
+ChartLine* Chart<T>::createLine()
 {
   auto chl = new ChartLine(this->arraySize);
   this->lines.push_back(chl);
@@ -120,8 +116,7 @@ ChartLine *Chart<T>::createLine()
 template <typename T>
 void Chart<T>::pushLegend(String legendName)
 {
-  if (this->legendNames.size() == this->arraySize)
-  {
+  if (this->legendNames.size() == this->arraySize) {
     this->legendNames.pop_front();
   }
   this->legendNames.push_back(legendName);
@@ -155,8 +150,7 @@ ChartAspectRatio Chart<T>::getAspectRatio()
 template <typename T>
 String Chart<T>::getAspectRatioClass(ChartAspectRatio ar)
 {
-  switch (ar)
-  {
+  switch (ar) {
   case ChartAspectRatio::square:
     return F("square");
 
@@ -216,23 +210,19 @@ template <typename T>
 String Chart<T>::collectChartData()
 {
   size_t size = JSON_ARRAY_SIZE(this->arraySize * (this->lines.size() + 1));
-  for (auto chartLine : this->lines)
-  {
+  for (auto chartLine : this->lines) {
     auto lineValues = chartLine->getValues();
-    for (auto v : lineValues)
-    {
+    for (auto v : lineValues) {
       size += JSON_STRING_SIZE(v.length());
     }
   }
-  for (auto l : this->legendNames)
-  {
+  for (auto l : this->legendNames) {
     size += JSON_STRING_SIZE(l.length());
   }
 
   DynamicJsonDocument doc(size);
 
-  if (doc.capacity() == 0)
-  {
+  if (doc.capacity() == 0) {
     DEBUG_ESP_PRINTF("Not enough memory to allocate DynamicJsonDocument. Required space: %i", size);
     return "";
   }
@@ -240,19 +230,16 @@ String Chart<T>::collectChartData()
   auto labels = doc.createNestedArray(F("labels"));
   auto series = doc.createNestedArray(F("series"));
 
-  for (auto chartLine : this->lines)
-  {
+  for (auto chartLine : this->lines) {
     auto arr = series.createNestedArray();
 
     auto lineValues = chartLine->getValues();
-    for (auto v : lineValues)
-    {
+    for (auto v : lineValues) {
       arr.add(v);
     }
   }
 
-  for (auto l : this->legendNames)
-  {
+  for (auto l : this->legendNames) {
     labels.add(l);
   }
 

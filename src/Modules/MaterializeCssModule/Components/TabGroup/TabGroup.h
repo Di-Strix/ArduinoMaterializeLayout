@@ -10,11 +10,10 @@
 #include "../Tab/Tab.h"
 
 template <class T>
-class TabGroup : public HTMLElement<T>
-{
+class TabGroup : public HTMLElement<T> {
   using HTMLElement<T>::HTMLElement;
 
-public:
+  public:
   String getHTML();
 };
 
@@ -25,9 +24,8 @@ String TabGroup<T>::getHTML()
 {
 
   String contentsList, contents;
-  for (auto ch : this->children)
-  {
-    auto t = static_cast<Tab<T> *>(ch);
+  for (auto ch : this->children) {
+    auto t = static_cast<Tab<T>*>(ch);
 
     String tabRef = String(t->getId());
 
