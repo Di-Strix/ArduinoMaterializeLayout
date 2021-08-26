@@ -34,7 +34,9 @@ String Page::getHTML()
     }
   }
 
-  elemTemplate += F("</head><body><div class=\"container row\">");
+  elemTemplate += F("</head><body class=\"");
+  elemTemplate += this->classList.value();
+  elemTemplate += F("\"><div class=\"container row\">");
   elemTemplate += contents;
   elemTemplate += F("</div>");
 
