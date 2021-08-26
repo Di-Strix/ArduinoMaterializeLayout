@@ -11,6 +11,8 @@ MaterializeLayout::MaterializeLayout(String pageTitle) : Page(pageTitle, [this](
 PageSources MaterializeLayout::compileSrc()
 {
   PageSources src;
+  String moduleHandlers;
+  size_t counter = 0;
 
   for (auto [moduleName, moduleInfo] : this->modules)
   {
@@ -22,7 +24,34 @@ PageSources MaterializeLayout::compileSrc()
     {
       src.scripts.push_front({moduleInfo.JS.fileName});
     }
+
+    for (auto handler : moduleInfo.handlers)
+    {
+      if (handler.onInitFN.isEmpty() && handler.updateFN.isEmpty())
+        continue;
+
+      moduleHandlers += F("class ");
+      moduleHandlers += handler.name;
+      moduleHandlers += F(" extends Handler {"
+                          "onInit() {");
+      moduleHandlers += handler.onInitFN;
+      moduleHandlers += F("}"
+                          "update(el, value) {");
+      moduleHandlers += handler.updateFN;
+      moduleHandlers += F("}};");
+      moduleHandlers += F("dynamicUpdateService.addHandler('");
+      moduleHandlers += handler.name;
+      moduleHandlers += F("', new ");
+      moduleHandlers += handler.name;
+      moduleHandlers += F("());");
+
+      counter++;
+    }
   }
+
+  moduleHandlers += F("dynamicUpdateService.init();");
+
+  src.scripts.push_back({"", moduleHandlers});
 
   return src;
 }

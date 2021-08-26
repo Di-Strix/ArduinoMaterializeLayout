@@ -19,6 +19,13 @@ struct SrcFile
   size_t fileLength;
 };
 
+struct Handler
+{
+  String name;
+  String onInitFN;
+  String updateFN;
+};
+
 struct MaterializeLayoutModule
 {
   SrcFile CSS;
@@ -26,6 +33,8 @@ struct MaterializeLayoutModule
   SrcFile JS;
 
   std::map<int, AbstractComponentCreator *> declarations;
+
+  std::list<Handler> handlers;
 };
 
 #endif //_MATERIALIZE_LAYOUT_TYPES_H_
