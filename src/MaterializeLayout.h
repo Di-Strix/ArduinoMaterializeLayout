@@ -18,6 +18,7 @@
 #include "Modules/NormalizeCssModule/NormalizeCssModule.h"
 #include "Modules/MaterializeCssModule/MaterializeCssModule.h"
 #include "Modules/MainAppModule/MainAppModule.h"
+#include "Modules/ChartistModule/ChartistModule.h"
 
 template <typename T>
 inline DynamicJsonDocument dynamiclyDeserializeJson(T data)
