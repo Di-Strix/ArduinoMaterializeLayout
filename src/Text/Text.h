@@ -27,7 +27,7 @@ private:
   using HTMLElement<T>::removeChild;
 
   String text;
-  TextType textType;
+  TextType textType = TextType::p;
 
 protected:
   constexpr virtual bool isDynamic() { return false; };
