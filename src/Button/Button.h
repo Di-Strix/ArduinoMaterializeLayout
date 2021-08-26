@@ -100,9 +100,9 @@ String Button<T>::getHTML()
   {
     elemTemplate += F("\"style=\"width:calc(100%/12*");
     elemTemplate += this->getWidth();
-    elemTemplate += F(");");
+    elemTemplate += F(");\"");
   }
-  elemTemplate += F("\">");
+  elemTemplate += F(">");
   elemTemplate += this->caption;
   elemTemplate += F("</a>\n");
 
