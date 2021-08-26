@@ -21,22 +21,40 @@ String Page::getHTML()
   elemTemplate += this->pageTitle;
   elemTemplate += F("</title>");
 
-  for (auto fileName : src.stylesFileNames)
+  for (auto source : src.styles)
   {
-    elemTemplate += F("<link rel=\"stylesheet\" href=\"");
-    elemTemplate += fileName;
-    elemTemplate += F(".css\"/>");
+    if (!source.fileName.isEmpty())
+    {
+      elemTemplate += F("<link rel=\"stylesheet\" href=\"");
+      elemTemplate += source.fileName;
+      elemTemplate += F(".css\"/>");
+    }
+    if (!source.inlineSrc.isEmpty())
+    {
+      elemTemplate += F("<style>");
+      elemTemplate += source.inlineSrc;
+      elemTemplate += F("</style>");
+    }
   }
 
   elemTemplate += F("</head><body><div class=\"container row\">");
   elemTemplate += contents;
   elemTemplate += F("</div>");
 
-  for (auto fileName : src.scriptFileNames)
+  for (auto source : src.scripts)
   {
-    elemTemplate += F("<script src=\"");
-    elemTemplate += fileName;
-    elemTemplate += F(".js\"></script>");
+    if (!source.fileName.isEmpty())
+    {
+      elemTemplate += F("<script src=\"");
+      elemTemplate += source.fileName;
+      elemTemplate += F(".js\"></script>");
+    }
+    if (!source.inlineSrc.isEmpty())
+    {
+      elemTemplate += F("<script>");
+      elemTemplate += source.inlineSrc;
+      elemTemplate += F("</script>");
+    }
   }
 
   elemTemplate += F("</body></html>");
