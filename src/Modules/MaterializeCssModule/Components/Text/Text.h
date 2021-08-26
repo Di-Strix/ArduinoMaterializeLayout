@@ -4,8 +4,8 @@
 #include <Arduino.h>
 #include <memory>
 
-#include "../DynamicComponentRegistrationService\DynamicComponentRegistrationService.h"
-#include "../HTMLElement/HTMLElement.h"
+#include "../../../../DynamicComponentRegistrationService\DynamicComponentRegistrationService.h"
+#include "../../../../HTMLElement/HTMLElement.h"
 
 enum class TextType
 {

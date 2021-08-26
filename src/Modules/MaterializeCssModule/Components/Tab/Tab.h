@@ -6,7 +6,7 @@
 #include <variant>
 #include <memory>
 
-#include "../DynamicComponentRegistrationService/DynamicComponentRegistrationService.h"
+#include "../../../../DynamicComponentRegistrationService/DynamicComponentRegistrationService.h"
 #include "../Layout/Layout.h"
 
 template <typename T>
