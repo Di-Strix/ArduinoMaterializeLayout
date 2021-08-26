@@ -118,6 +118,7 @@ void MaterializeLayout::registerInEspAsyncWebServer(AsyncWebServer *s)
           String page = this->getHTML();
           AsyncWebServerResponse *res = request->beginResponse(200, F("text/html;charset=utf-8"), page);
           res->addHeader(F("Cache-Control"), F("no-cache"));
+          res->addHeader(F("X-Content-Type-Options"), F("nosniff"));
           request->send(res);
         });
 
@@ -147,6 +148,7 @@ void MaterializeLayout::registerInEspAsyncWebServer(AsyncWebServer *s)
         {
           AsyncWebServerResponse *response = request->beginResponse(200, F("text/plain;charset=utf-8"), "");
           response->addHeader(F("Cache-Control"), F("no-cache"));
+          response->addHeader(F("X-Content-Type-Options"), F("nosniff"));
           request->send(response);
 
           DynamicJsonDocument doc = dynamiclyDeserializeJson(this->tempData);
@@ -181,9 +183,10 @@ void MaterializeLayout::registerInEspAsyncWebServer(AsyncWebServer *s)
         }
 
         DynamicJsonDocument doc(size + JSON_OBJECT_SIZE(updateData.size()) * JSON_OBJECT_SIZE(2));
+        auto rootObj = doc.createNestedObject();
         for (auto val : updateData)
         {
-          auto obj = doc.createNestedObject(val.id);
+          auto obj = rootObj.createNestedObject(val.id);
 
           obj[F("handlerId")] = val.data.handlerId;
           obj[F("value")] = val.data.value;
@@ -195,6 +198,7 @@ void MaterializeLayout::registerInEspAsyncWebServer(AsyncWebServer *s)
 
         AsyncWebServerResponse *response = request->beginResponse(200, F("application/json;charset=utf-8"), res);
         response->addHeader(F("Cache-Control"), F("no-cache"));
+        response->addHeader(F("X-Content-Type-Options"), F("nosniff"));
         request->send(response);
       });
 }
@@ -215,6 +219,7 @@ void MaterializeLayout::serveSharedStatic(AsyncWebServerRequest *request, Shared
 
   res->addHeader(F("Content-Encoding"), F("gzip"));
   res->addHeader(F("Cache-Control"), F("max-age=31536000, immutable"));
+  res->addHeader(F("X-Content-Type-Options"), F("nosniff"));
   request->send(res);
 }
 
