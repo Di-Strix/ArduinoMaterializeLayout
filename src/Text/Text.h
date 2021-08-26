@@ -164,7 +164,7 @@ template <typename T>
 DynamicText<T>::DynamicText(DynamicComponentRegistrationService<T> *registrationService) : StaticText<T>(registrationService)
 {
   this->unregister = registrationService->registerDynamicGetter({this->getId(), [this]() -> UpdateMsg
-                                                                 { return {F("MaterializeCss"), this->getText()}; }});
+                                                                 { return {F("MaterializeCssHandler"), this->getText()}; }});
 }
 
 template <typename T>
