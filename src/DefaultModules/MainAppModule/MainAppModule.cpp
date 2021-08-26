@@ -6,7 +6,7 @@ MaterializeLayoutModule getMainAppModule()
         {"",
          0,
          0},
-        {"da0696ca905132b7340f1a5d9b5a1d17",
+        {"f6cc125703de810dcfc41a47649d9dbe",
          APPLICATION_JS,
          APPLICATION_JS_LENGTH}};
 }
