@@ -12,6 +12,7 @@
 #include "Components/Text/Text.h"
 
 #define MaterializeCssComponent (int)MaterializeCssComponentEnum
+#define MATERIALIZE_CSS_MODULE F("materialize")
 
 enum class MaterializeCssComponentEnum
 {
