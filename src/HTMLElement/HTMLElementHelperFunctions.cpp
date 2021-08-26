@@ -2,8 +2,7 @@
 
 String getWidthClassPrefix(ScreenSize screenSize)
 {
-  switch (screenSize)
-  {
+  switch (screenSize) {
   default:
   case ScreenSize::small:
     return "s";
@@ -22,8 +21,7 @@ String getWidthClassPrefix(ScreenSize screenSize)
 
 String colorShadeToString(ColorShade cs)
 {
-  switch (cs)
-  {
+  switch (cs) {
   case ColorShade::lighten5:
     return F("lighten-5");
     break;
@@ -72,8 +70,7 @@ String colorShadeToString(ColorShade cs)
 
 bool colorShadeIsValid(Color c, ColorShade cs)
 {
-  switch (c)
-  {
+  switch (c) {
   case Color::brown:
   case Color::grey:
   case Color::blueGrey:
@@ -96,8 +93,7 @@ bool colorShadeIsValid(Color c, ColorShade cs)
 
 String colorToString(Color c)
 {
-  switch (c)
-  {
+  switch (c) {
   default:
   case Color::defaultColor:
     return "";

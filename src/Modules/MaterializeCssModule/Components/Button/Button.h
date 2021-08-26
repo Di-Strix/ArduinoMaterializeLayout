@@ -10,9 +10,8 @@
 typedef std::function<void()> ButtonCallback;
 
 template <typename T>
-class Button : public HTMLElement<T>
-{
-private:
+class Button : public HTMLElement<T> {
+  private:
   using HTMLElement<T>::appendChild;
   using HTMLElement<T>::removeAllChildren;
   using HTMLElement<T>::removeChild;
@@ -22,14 +21,14 @@ private:
 
   void onEmit(String value);
 
-public:
+  public:
   /**
   * @brief Constructs a new Button object
   * 
   * @param caption the caption of the button
   * @param callback callback that is called when the button is clicked
   */
-  Button(DynamicComponentRegistrationService<T> *registrationService);
+  Button(DynamicComponentRegistrationService<T>* registrationService);
 
   virtual String getHTML();
 
@@ -62,7 +61,8 @@ public:
 // ======================= IMPLEMENTATION =======================
 
 template <typename T>
-Button<T>::Button(DynamicComponentRegistrationService<T> *registrationService) : HTMLElement<T>(registrationService)
+Button<T>::Button(DynamicComponentRegistrationService<T>* registrationService)
+    : HTMLElement<T>(registrationService)
 {
   this->classList.add(F("waves-effect"));
   this->classList.add(F("waves-light"));
@@ -96,8 +96,7 @@ String Button<T>::getHTML()
   elemTemplate += F("\" data-MCSS-emitOnClick=\"true\" class=\"");
   elemTemplate += this->classList.value();
   elemTemplate += F("\"");
-  if (this->getWidth() > 0)
-  {
+  if (this->getWidth() > 0) {
     elemTemplate += F("\"style=\"width:calc(100%/12*");
     elemTemplate += this->getWidth();
     elemTemplate += F(");\"");

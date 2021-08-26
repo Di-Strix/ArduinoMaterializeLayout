@@ -2,19 +2,18 @@
 #define _MATERIALIZE_LAYOUT_DYNAMIC_COMPONENT_REGISTRATION_SERVICE_H_
 
 #include <Arduino.h>
-#include <list>
 #include <functional>
+#include <list>
 
 typedef std::function<void()> unregisterFn;
 
 template <typename T>
-class DynamicComponentRegistrationService
-{
-private:
+class DynamicComponentRegistrationService {
+  private:
   std::list<T> registrations;
   std::function<bool(T, T)> areEqual;
 
-public:
+  public:
   /**
    * @brief Constructs a new Dynamic Component Registration Service
    * 
@@ -58,8 +57,7 @@ unregisterFn DynamicComponentRegistrationService<T>::registerDynamicGetter(T dyn
 {
   this->registrations.push_back(dynamicDataGetter);
 
-  return [=]()
-  {
+  return [=]() {
     this->unregisterGetter(dynamicDataGetter);
   };
 }
@@ -69,8 +67,7 @@ void DynamicComponentRegistrationService<T>::unregisterGetter(T dynamicDataGette
 {
   std::list<T> filteredRegistrations;
 
-  for (T registration : this->registrations)
-  {
+  for (T registration : this->registrations) {
     if (!this->areEqual(registration, dynamicDataGetter))
       filteredRegistrations.push_back(registration);
   }

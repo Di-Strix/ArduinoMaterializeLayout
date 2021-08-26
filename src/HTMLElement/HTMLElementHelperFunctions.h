@@ -1,8 +1,8 @@
 #ifndef _MATERIALIZE_LAYOUT_HTML_ELEMENT_HELPER_FUNCTIONS_H_
 #define _MATERIALIZE_LAYOUT_HTML_ELEMENT_HELPER_FUNCTIONS_H_
 
-#include <Arduino.h>
 #include "HTMLElemetTypes.h"
+#include <Arduino.h>
 
 String getWidthClassPrefix(ScreenSize screenSize);
 

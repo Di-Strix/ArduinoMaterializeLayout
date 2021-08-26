@@ -3,18 +3,17 @@
 
 #include <Arduino.h>
 
-#include "HTMLElemetTypes.h"
 #include "HTMLElementHelperFunctions.h"
+#include "HTMLElemetTypes.h"
 
-#include "../IdGenerator.h"
 #include "../ClassList/ClassList.h"
 #include "../DynamicComponentRegistrationService/DynamicComponentRegistrationService.h"
+#include "../IdGenerator.h"
 
 template <typename T>
-class HTMLElement
-{
-private:
-  DynamicComponentRegistrationService<T> *registrationService;
+class HTMLElement {
+  private:
+  DynamicComponentRegistrationService<T>* registrationService;
 
   size_t id = 0;
 
@@ -29,15 +28,15 @@ private:
   String getBackgroundColorClass();
   String getTextColorClass();
 
-protected:
-  std::list<HTMLElement *> children;
+  protected:
+  std::list<HTMLElement*> children;
 
-  virtual void onEmit(String value){};
+  virtual void onEmit(String value) {};
 
-public:
+  public:
   ClassList classList;
 
-  HTMLElement(DynamicComponentRegistrationService<T> *registrationService);
+  HTMLElement(DynamicComponentRegistrationService<T>* registrationService);
 
   /** 
    * @brief Returns an id of the element. The id is used to emit an event on certain component
@@ -45,11 +44,11 @@ public:
    */
   size_t getId();
 
-  void appendChild(HTMLElement *child);
+  void appendChild(HTMLElement* child);
 
-  void removeChild(HTMLElement *child);
+  void removeChild(HTMLElement* child);
 
-  std::list<HTMLElement *> removeAllChildren();
+  std::list<HTMLElement*> removeAllChildren();
 
   /** 
    * @brief Intended to return a filled HTML template of the component.
@@ -139,7 +138,7 @@ public:
 // ======================= IMPLEMENTATION =======================
 
 template <typename T>
-HTMLElement<T>::HTMLElement(DynamicComponentRegistrationService<T> *registrationService)
+HTMLElement<T>::HTMLElement(DynamicComponentRegistrationService<T>* registrationService)
 {
   this->registrationService = registrationService;
   this->id = IdGenerator::Instance().getId();
@@ -148,16 +147,14 @@ HTMLElement<T>::HTMLElement(DynamicComponentRegistrationService<T> *registration
 template <typename T>
 bool HTMLElement<T>::emit(size_t id, String value)
 {
-  if (this->getId() == id)
-  {
+  if (this->getId() == id) {
     this->onEmit(value);
     return true;
   }
 
   bool found = false;
 
-  for (auto el : this->children)
-  {
+  for (auto el : this->children) {
     found = el->emit(id, value);
 
     if (found)
@@ -172,8 +169,7 @@ String HTMLElement<T>::getHTML()
 {
   String html;
 
-  for (auto el : this->children)
-  {
+  for (auto el : this->children) {
     html += el->getHTML();
   }
 
@@ -181,20 +177,19 @@ String HTMLElement<T>::getHTML()
 }
 
 template <typename T>
-void HTMLElement<T>::appendChild(HTMLElement *child)
+void HTMLElement<T>::appendChild(HTMLElement* child)
 {
   this->children.push_back(child);
 }
 
 template <typename T>
-void HTMLElement<T>::removeChild(HTMLElement *child)
+void HTMLElement<T>::removeChild(HTMLElement* child)
 {
-  this->children.remove_if([child](HTMLElement *el)
-                           { return el == child; });
+  this->children.remove_if([child](HTMLElement* el) { return el == child; });
 }
 
 template <typename T>
-std::list<HTMLElement<T> *> HTMLElement<T>::removeAllChildren()
+std::list<HTMLElement<T>*> HTMLElement<T>::removeAllChildren()
 {
   auto children = this->children;
   this->children.clear();
@@ -231,8 +226,7 @@ void HTMLElement<T>::setWidth(uint8_t width, ScreenSize screenSize)
 
   this->classList.remove(this->widths[(size_t)screenSize]);
 
-  if (width != 0)
-  {
+  if (width != 0) {
     this->widths[(size_t)screenSize] = classPrefix + String(width);
     this->classList.add(this->widths[(size_t)screenSize]);
   }

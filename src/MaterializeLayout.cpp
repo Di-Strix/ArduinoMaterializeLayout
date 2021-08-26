@@ -1,7 +1,7 @@
 #include "MaterializeLayout.h"
 
-MaterializeLayout::MaterializeLayout(String pageTitle) : Page(pageTitle, [this]() -> PageSources
-                                                              { return this->compileSrc(); })
+MaterializeLayout::MaterializeLayout(String pageTitle)
+    : Page(pageTitle, [this]() -> PageSources { return this->compileSrc(); })
 {
   this->injectModule(F("normalize"), getNormalizeCssModule());
   this->injectModule(MATERIALIZE_CSS_MODULE, getMaterializeCssModule());
@@ -14,19 +14,15 @@ PageSources MaterializeLayout::compileSrc()
   String moduleHandlers;
   size_t counter = 0;
 
-  for (auto [moduleName, moduleInfo] : this->modules)
-  {
-    if ((moduleInfo.CSS.fileName && moduleInfo.CSS.file) || moduleInfo.inlineCSS)
-    {
-      src.styles.push_front({moduleInfo.CSS.fileName, moduleInfo.inlineCSS});
+  for (auto [moduleName, moduleInfo] : this->modules) {
+    if ((moduleInfo.CSS.fileName && moduleInfo.CSS.file) || moduleInfo.inlineCSS) {
+      src.styles.push_front({ moduleInfo.CSS.fileName, moduleInfo.inlineCSS });
     }
-    if ((moduleInfo.JS.fileName && moduleInfo.JS.file) || moduleInfo.inlineJS)
-    {
-      src.scripts.push_front({moduleInfo.JS.fileName, moduleInfo.inlineJS});
+    if ((moduleInfo.JS.fileName && moduleInfo.JS.file) || moduleInfo.inlineJS) {
+      src.scripts.push_front({ moduleInfo.JS.fileName, moduleInfo.inlineJS });
     }
 
-    for (auto handler : moduleInfo.handlers)
-    {
+    for (auto handler : moduleInfo.handlers) {
       if (handler.onInitFN.isEmpty() && handler.updateFN.isEmpty())
         continue;
 
@@ -51,7 +47,7 @@ PageSources MaterializeLayout::compileSrc()
 
   moduleHandlers += F("dynamicUpdateService.init();");
 
-  src.scripts.push_back({"", moduleHandlers});
+  src.scripts.push_back({ "", moduleHandlers });
 
   return src;
 }

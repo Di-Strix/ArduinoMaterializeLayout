@@ -10,8 +10,7 @@ struct PageSource {
   String inlineSrc;
 };
 
-struct PageSources
-{
+struct PageSources {
   std::list<PageSource> styles;
   std::list<PageSource> scripts;
 };
@@ -21,8 +20,7 @@ struct UpdateMsg {
   String value;
 };
 
-struct dynamicValueGetter
-{
+struct dynamicValueGetter {
   size_t id;
   std::function<UpdateMsg()> getter;
 };
@@ -31,7 +29,7 @@ template <template <typename> class TemplateClass>
 using MaterializeLayoutComponent_t = TemplateClass<dynamicValueGetter>;
 
 template <template <typename> class TemplateClass>
-using MaterializeLayoutComponent = MaterializeLayoutComponent_t<TemplateClass> *;
+using MaterializeLayoutComponent = MaterializeLayoutComponent_t<TemplateClass>*;
 
 using DCRS_t = MaterializeLayoutComponent_t<DynamicComponentRegistrationService>;
 

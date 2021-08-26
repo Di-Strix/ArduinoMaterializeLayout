@@ -12,13 +12,13 @@
 #include <ArduinoJson.h>
 #include <map>
 
-#include "MaterializeLayoutTypes.h"
-#include "Page/Page.h"
 #include "ComponentFactory/ComponentFactory.h"
-#include "Modules/NormalizeCssModule/NormalizeCssModule.h"
-#include "Modules/MaterializeCssModule/MaterializeCssModule.h"
-#include "Modules/MainAppModule/MainAppModule.h"
+#include "MaterializeLayoutTypes.h"
 #include "Modules/ChartistModule/ChartistModule.h"
+#include "Modules/MainAppModule/MainAppModule.h"
+#include "Modules/MaterializeCssModule/MaterializeCssModule.h"
+#include "Modules/NormalizeCssModule/NormalizeCssModule.h"
+#include "Page/Page.h"
 
 template <typename T>
 inline DynamicJsonDocument dynamiclyDeserializeJson(T data)
@@ -29,9 +29,8 @@ inline DynamicJsonDocument dynamiclyDeserializeJson(T data)
   return doc;
 }
 
-class MaterializeLayout : public Page
-{
-private:
+class MaterializeLayout : public Page {
+  private:
   using Page::getRegistrationService;
   String tempData;
 
@@ -39,7 +38,7 @@ private:
 
   PageSources compileSrc();
 
-public:
+  public:
   MaterializeLayout(String pageTitle);
 
   bool injectModule(String moduleName, MaterializeLayoutModule moduleInfo);
@@ -51,7 +50,7 @@ public:
   MaterializeLayoutComponent<C> createAndAppendComponent(String moduleName, int component, MaterializeLayoutComponent<HTMLElement> parent);
 
   template <template <class> class C>
-  MaterializeLayoutComponent<C> createAndAppendComponent(String moduleName, int component, MaterializeLayout *parent);
+  MaterializeLayoutComponent<C> createAndAppendComponent(String moduleName, int component, MaterializeLayout* parent);
 
 #ifdef MATERIALIZE_LAYOUT_ENABLE_ESP_ASYNC_WEB_SERVER
   /**
@@ -59,7 +58,7 @@ public:
    * 
    * @param s pointer to the the AsyncWebServer instance
    */
-  void registerInEspAsyncWebServer(AsyncWebServer *s);
+  void registerInEspAsyncWebServer(AsyncWebServer* s);
 
   /**
    * @brief responds to the AsyncWebServerRequest request with the necessary headers and data according to the given SharedStaticType type
@@ -67,7 +66,7 @@ public:
    * @param request AsyncWebServerRequest request
    * @param type SharedStaticType content type
    */
-  void serveSharedStatic(AsyncWebServerRequest *request, SharedStaticType type, const uint8_t *file, size_t fileLength);
+  void serveSharedStatic(AsyncWebServerRequest* request, SharedStaticType type, const uint8_t* file, size_t fileLength);
 #endif
 };
 
@@ -100,7 +99,7 @@ MaterializeLayoutComponent<C> MaterializeLayout::createAndAppendComponent(String
 }
 
 template <template <class> class C>
-MaterializeLayoutComponent<C> MaterializeLayout::createAndAppendComponent(String moduleName, int component, MaterializeLayout *parent)
+MaterializeLayoutComponent<C> MaterializeLayout::createAndAppendComponent(String moduleName, int component, MaterializeLayout* parent)
 {
   auto el = this->createComponent<C>(moduleName, component);
   if (!el)
@@ -111,42 +110,33 @@ MaterializeLayoutComponent<C> MaterializeLayout::createAndAppendComponent(String
 }
 
 #ifdef MATERIALIZE_LAYOUT_ENABLE_ESP_ASYNC_WEB_SERVER
-void MaterializeLayout::registerInEspAsyncWebServer(AsyncWebServer *s)
+void MaterializeLayout::registerInEspAsyncWebServer(AsyncWebServer* s)
 {
-  s->on("/index.html", HTTP_GET, [=](AsyncWebServerRequest *request)
-        {
-          String page = this->getHTML();
-          AsyncWebServerResponse *res = request->beginResponse(200, F("text/html;charset=utf-8"), page);
-          res->addHeader(F("Cache-Control"), F("no-cache"));
-          res->addHeader(F("X-Content-Type-Options"), F("nosniff"));
-          request->send(res);
-        });
+  s->on("/index.html", HTTP_GET, [=](AsyncWebServerRequest* request) {
+    String page = this->getHTML();
+    AsyncWebServerResponse* res = request->beginResponse(200, F("text/html;charset=utf-8"), page);
+    res->addHeader(F("Cache-Control"), F("no-cache"));
+    res->addHeader(F("X-Content-Type-Options"), F("nosniff"));
+    request->send(res);
+  });
 
-  for (auto [moduleName, moduleInfo] : this->modules)
-  {
-    if (moduleInfo.CSS.fileName && moduleInfo.CSS.file)
-    {
-      s->on(("/" + moduleInfo.CSS.fileName + ".css").c_str(), [=](AsyncWebServerRequest *r)
-            { this->serveSharedStatic(r, SharedStaticType::CSS, moduleInfo.CSS.file, moduleInfo.CSS.fileLength); });
+  for (auto [moduleName, moduleInfo] : this->modules) {
+    if (moduleInfo.CSS.fileName && moduleInfo.CSS.file) {
+      s->on(("/" + moduleInfo.CSS.fileName + ".css").c_str(), [=](AsyncWebServerRequest* r) { this->serveSharedStatic(r, SharedStaticType::CSS, moduleInfo.CSS.file, moduleInfo.CSS.fileLength); });
     }
-    if (moduleInfo.JS.fileName && moduleInfo.JS.file)
-    {
-      s->on(("/" + moduleInfo.JS.fileName + ".js").c_str(), [=](AsyncWebServerRequest *r)
-            { this->serveSharedStatic(r, SharedStaticType::JS, moduleInfo.JS.file, moduleInfo.JS.fileLength); });
+    if (moduleInfo.JS.fileName && moduleInfo.JS.file) {
+      s->on(("/" + moduleInfo.JS.fileName + ".js").c_str(), [=](AsyncWebServerRequest* r) { this->serveSharedStatic(r, SharedStaticType::JS, moduleInfo.JS.file, moduleInfo.JS.fileLength); });
     }
   }
 
   s->on(
-      String(F("/materializeLayoutActions/emitAction")).c_str(), HTTP_POST, [=](AsyncWebServerRequest *request) {}, NULL,
-      [&](AsyncWebServerRequest *request, uint8_t *data, size_t len, size_t index, size_t total)
-      {
-        for (size_t i = 0; i < len; i++)
-        {
+      String(F("/materializeLayoutActions/emitAction")).c_str(), HTTP_POST, [=](AsyncWebServerRequest* request) {}, NULL,
+      [&](AsyncWebServerRequest* request, uint8_t* data, size_t len, size_t index, size_t total) {
+        for (size_t i = 0; i < len; i++) {
           this->tempData += (char)data[i];
         }
-        if (index + len == total)
-        {
-          AsyncWebServerResponse *response = request->beginResponse(200, F("text/plain;charset=utf-8"), "");
+        if (index + len == total) {
+          AsyncWebServerResponse* response = request->beginResponse(200, F("text/plain;charset=utf-8"), "");
           response->addHeader(F("Cache-Control"), F("no-cache"));
           response->addHeader(F("X-Content-Type-Options"), F("nosniff"));
           request->send(response);
@@ -158,12 +148,10 @@ void MaterializeLayout::registerInEspAsyncWebServer(AsyncWebServer *s)
       });
 
   s->on(
-      String(F("/materializeLayoutActions/update")).c_str(), HTTP_GET, [=](AsyncWebServerRequest *request)
-      {
+      String(F("/materializeLayoutActions/update")).c_str(), HTTP_GET, [=](AsyncWebServerRequest* request) {
         auto registrations = this->getRegistrationService()->getRegistrations();
 
-        struct updateValue_t
-        {
+        struct updateValue_t {
           String id;
           UpdateMsg data;
         };
@@ -171,9 +159,8 @@ void MaterializeLayout::registerInEspAsyncWebServer(AsyncWebServer *s)
         std::list<updateValue_t> updateData;
         size_t size = 0;
 
-        for (auto reg : registrations)
-        {
-          updateValue_t v = {(String)reg.id, reg.getter()};
+        for (auto reg : registrations) {
+          updateValue_t v = { (String)reg.id, reg.getter() };
 
           size += v.id.length() + 1;
           size += v.data.handlerId.length() + 1;
@@ -184,8 +171,7 @@ void MaterializeLayout::registerInEspAsyncWebServer(AsyncWebServer *s)
 
         DynamicJsonDocument doc(size + JSON_OBJECT_SIZE(updateData.size()) * JSON_OBJECT_SIZE(2));
         auto rootObj = doc.createNestedObject();
-        for (auto val : updateData)
-        {
+        for (auto val : updateData) {
           auto obj = rootObj.createNestedObject(val.id);
 
           obj[F("handlerId")] = val.data.handlerId;
@@ -196,19 +182,18 @@ void MaterializeLayout::registerInEspAsyncWebServer(AsyncWebServer *s)
         String res;
         serializeJson(doc, res);
 
-        AsyncWebServerResponse *response = request->beginResponse(200, F("application/json;charset=utf-8"), res);
+        AsyncWebServerResponse* response = request->beginResponse(200, F("application/json;charset=utf-8"), res);
         response->addHeader(F("Cache-Control"), F("no-cache"));
         response->addHeader(F("X-Content-Type-Options"), F("nosniff"));
         request->send(response);
       });
 }
 
-void MaterializeLayout::serveSharedStatic(AsyncWebServerRequest *request, SharedStaticType type, const uint8_t *file, size_t fileLength)
+void MaterializeLayout::serveSharedStatic(AsyncWebServerRequest* request, SharedStaticType type, const uint8_t* file, size_t fileLength)
 {
-  AsyncWebServerResponse *res = nullptr;
+  AsyncWebServerResponse* res = nullptr;
 
-  switch (type)
-  {
+  switch (type) {
   case SharedStaticType::CSS:
     res = request->beginResponse_P(200, F("text/css;charset=utf-8"), file, fileLength);
     break;

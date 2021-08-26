@@ -3,17 +3,16 @@
 #ifndef _MATERIALIZE_LAYOUT_ID_GENERATOR_H_
 #define _MATERIALIZE_LAYOUT_ID_GENERATOR_H_
 
-class IdGenerator
-{
-private:
-  IdGenerator(){};
-  IdGenerator(const IdGenerator &);
-  IdGenerator &operator=(const IdGenerator &);
+class IdGenerator {
+  private:
+  IdGenerator() {};
+  IdGenerator(const IdGenerator&);
+  IdGenerator& operator=(const IdGenerator&);
 
   size_t counter = 0;
 
-public:
-  static IdGenerator &Instance()
+  public:
+  static IdGenerator& Instance()
   {
     static IdGenerator idGenerator;
     return idGenerator;

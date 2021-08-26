@@ -18,8 +18,7 @@ bool ClassList::contains(String className)
   if (className.isEmpty())
     return false;
 
-  for (String c : this->classList)
-  {
+  for (String c : this->classList) {
     if (c.equals(className))
       return true;
   }
@@ -59,8 +58,8 @@ void ClassList::replace(String className, String newClassName)
     return;
 
   auto it = std::find(this->classList.begin(), this->classList.end(), className);
-    if (*it == className)
-      *it = newClassName;
+  if (*it == className)
+    *it = newClassName;
 }
 
 void ClassList::toggle(String className)
@@ -79,8 +78,7 @@ void ClassList::toggle(String className)
 String ClassList::value()
 {
   String result;
-  for (String c : this->classList)
-  {
+  for (String c : this->classList) {
     result += c + " ";
   }
 

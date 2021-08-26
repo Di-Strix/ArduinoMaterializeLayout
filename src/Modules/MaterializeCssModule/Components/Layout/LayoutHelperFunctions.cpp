@@ -2,8 +2,7 @@
 
 String getLayoutTypeClass(LayoutType lt)
 {
-  switch (lt)
-  {
+  switch (lt) {
   case LayoutType::NONE:
   default:
     return String();

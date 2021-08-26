@@ -7,9 +7,8 @@
 #include "../../../../HTMLElement/HTMLElement.h"
 
 template <typename T>
-class Field : public HTMLElement<T>
-{
-private:
+class Field : public HTMLElement<T> {
+  private:
   using HTMLElement<T>::appendChild;
   using HTMLElement<T>::removeAllChildren;
   using HTMLElement<T>::removeChild;
@@ -20,14 +19,14 @@ private:
 
   void onEmit(String value);
 
-public:
+  public:
   /**
    * @brief Constructs a new Field object
    * 
    * @param name the name of the field
    * @param defaultValue default value of the field
    */
-  Field(DynamicComponentRegistrationService<T> *registrationService);
+  Field(DynamicComponentRegistrationService<T>* registrationService);
 
   String getHTML();
 
@@ -74,7 +73,8 @@ public:
 // ======================= IMPLEMENTATION =======================
 
 template <typename T>
-Field<T>::Field(DynamicComponentRegistrationService<T> *registrationService) : HTMLElement<T>(registrationService)
+Field<T>::Field(DynamicComponentRegistrationService<T>* registrationService)
+    : HTMLElement<T>(registrationService)
 {
   this->name = (String)this->getId();
 
