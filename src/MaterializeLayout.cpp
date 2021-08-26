@@ -14,13 +14,13 @@ PageSources MaterializeLayout::compileSrc()
 
   for (auto [moduleName, moduleInfo] : this->modules)
   {
-    if (moduleInfo.CSSFileName && moduleInfo.CSSFile)
+    if (moduleInfo.CSS.fileName && moduleInfo.CSS.file)
     {
-      src.stylesFileNames.push_front(moduleInfo.CSSFileName);
+      src.stylesFileNames.push_front(moduleInfo.CSS.fileName);
     }
-    if (moduleInfo.JSFileName && moduleInfo.JSFile)
+    if (moduleInfo.JS.fileName && moduleInfo.JS.file)
     {
-      src.scriptFileNames.push_front(moduleInfo.JSFileName);
+      src.scriptFileNames.push_front(moduleInfo.JS.fileName);
     }
   }
 

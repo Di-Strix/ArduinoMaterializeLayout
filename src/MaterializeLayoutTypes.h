@@ -12,15 +12,18 @@ enum class SharedStaticType
   JS
 };
 
+struct SrcFile
+{
+  String fileName;
+  const uint8_t *file;
+  size_t fileLength;
+};
+
 struct MaterializeLayoutModule
 {
-  String CSSFileName;
-  const uint8_t *CSSFile;
-  size_t CSSFileLength;
+  SrcFile CSS;
 
-  String JSFileName;
-  const uint8_t *JSFile;
-  size_t JSFileLength;
+  SrcFile JS;
 
   std::map<int, AbstractComponentCreator *> declarations;
 };

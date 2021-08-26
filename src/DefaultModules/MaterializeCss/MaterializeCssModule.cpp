@@ -3,13 +3,13 @@
 MaterializeLayoutModule getMaterializeCssModule()
 {
     return {
-        "materialize",
-        MATERIALIZE_CSS,
-        MATERIALIZE_CSS_LENGTH,
+        { "materialize",
+            MATERIALIZE_CSS,
+            MATERIALIZE_CSS_LENGTH },
 
-        "materialize",
-        MATERIALIZE_JS,
-        MATERIALIZE_JS_LENGTH,
+        { "materialize",
+            MATERIALIZE_JS,
+            MATERIALIZE_JS_LENGTH },
 
         {
             {MaterializeCssComponent::Button, new ComponentCreator<MaterializeLayoutComponent_t<Button>>()},
