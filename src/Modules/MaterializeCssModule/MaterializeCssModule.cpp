@@ -23,7 +23,7 @@ MaterializeLayoutModule getMaterializeCssModule()
 
         {
             {
-                "MaterializeCss",
+                F("MaterializeCssHandler"),
                 F("const debounce = (callback, delay) => {"
                     "let timeoutId = -1;"
                     "return (...props) => {"
