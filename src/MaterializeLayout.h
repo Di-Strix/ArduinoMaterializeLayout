@@ -166,12 +166,20 @@ void MaterializeLayout::registerInEspAsyncWebServer(AsyncWebServer *s)
         };
 
         std::list<updateValue_t> updateData;
+        size_t size = 0;
+
         for (auto reg : registrations)
         {
-          updateData.push_back({(String)reg.id, reg.getter()});
+          updateValue_t v = {(String)reg.id, reg.getter()};
+
+          size += v.id.length() + 1;
+          size += v.data.handlerId.length() + 1;
+          size += v.data.value.length() + 1;
+
+          updateData.push_back(v);
         }
 
-        DynamicJsonDocument doc(ESP.getMaxFreeBlockSize() - 512);
+        DynamicJsonDocument doc(size + JSON_OBJECT_SIZE(updateData.size()) * JSON_OBJECT_SIZE(2));
         for (auto val : updateData)
         {
           auto obj = doc.createNestedObject(val.id);
