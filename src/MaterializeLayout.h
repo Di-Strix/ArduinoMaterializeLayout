@@ -15,9 +15,9 @@
 #include "MaterializeLayoutTypes.h"
 #include "Page/Page.h"
 #include "ComponentFactory/ComponentFactory.h"
-#include "DefaultModules/NormalizeCssModule/NormalizeCssModule.h"
-#include "DefaultModules/MaterializeCss/MaterializeCssModule.h"
-#include "DefaultModules/MainAppModule/MainAppModule.h"
+#include "Modules/NormalizeCssModule/NormalizeCssModule.h"
+#include "Modules/MaterializeCssModule/MaterializeCssModule.h"
+#include "Modules/MainAppModule/MainAppModule.h"
 #include "SharedStatic.h"
 
 template <typename T>
