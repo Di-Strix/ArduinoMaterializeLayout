@@ -4,7 +4,7 @@ MaterializeLayout::MaterializeLayout(String pageTitle) : Page(pageTitle, [this](
                                                               { return this->compileSrc(); })
 {
   this->injectModule(F("normalize"), getNormalizeCssModule());
-  this->injectModule(F("materialize"), getMaterializeCssModule());
+  this->injectModule(MATERIALIZE_CSS_MODULE, getMaterializeCssModule());
   this->injectModule(F("mainApp"), getMainAppModule());
 }
 
