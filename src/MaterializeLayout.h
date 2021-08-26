@@ -123,15 +123,15 @@ void MaterializeLayout::registerInEspAsyncWebServer(AsyncWebServer *s)
 
   for (auto [moduleName, moduleInfo] : this->modules)
   {
-    if (moduleInfo.CSSFileName && moduleInfo.CSSFile)
+    if (moduleInfo.CSS.fileName && moduleInfo.CSS.file)
     {
-      s->on(("/" + moduleInfo.CSSFileName + ".css").c_str(), [=](AsyncWebServerRequest *r)
-            { this->serveSharedStatic(r, SharedStaticType::CSS, moduleInfo.CSSFile, moduleInfo.CSSFileLength); });
+      s->on(("/" + moduleInfo.CSS.fileName + ".css").c_str(), [=](AsyncWebServerRequest *r)
+            { this->serveSharedStatic(r, SharedStaticType::CSS, moduleInfo.CSS.file, moduleInfo.CSS.fileLength); });
     }
-    if (moduleInfo.JSFileName && moduleInfo.JSFile)
+    if (moduleInfo.JS.fileName && moduleInfo.JS.file)
     {
-      s->on(("/" + moduleInfo.JSFileName + ".js").c_str(), [=](AsyncWebServerRequest *r)
-            { this->serveSharedStatic(r, SharedStaticType::JS, moduleInfo.JSFile, moduleInfo.JSFileLength); });
+      s->on(("/" + moduleInfo.JS.fileName + ".js").c_str(), [=](AsyncWebServerRequest *r)
+            { this->serveSharedStatic(r, SharedStaticType::JS, moduleInfo.JS.file, moduleInfo.JS.fileLength); });
     }
   }
 
