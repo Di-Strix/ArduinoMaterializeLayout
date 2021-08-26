@@ -20,7 +20,7 @@ class Layout : public HTMLElement<T>
 private:
   using HTMLElement<T>::children;
 
-  LayoutTypes layoutType = LayoutTypes::NONE;
+  LayoutType layoutType = LayoutType::NONE;
 
 protected:
   String getHTML();
@@ -35,9 +35,9 @@ public:
    */
   void setVerticalAlign(bool state);
 
-  void setLayoutType(LayoutTypes lt);
+  void setLayoutType(LayoutType lt);
 
-  LayoutTypes getLayoutType();
+  LayoutType getLayoutType();
 };
 
 // ======================= IMPLEMENTATION =======================
@@ -68,7 +68,7 @@ void Layout<T>::setVerticalAlign(bool state)
 }
 
 template <typename T>
-void Layout<T>::setLayoutType(LayoutTypes lt)
+void Layout<T>::setLayoutType(LayoutType lt)
 {
   this->classList.remove(getLayoutTypeClass(this->layoutType));
 
@@ -77,7 +77,7 @@ void Layout<T>::setLayoutType(LayoutTypes lt)
 }
 
 template <typename T>
-LayoutTypes Layout<T>::getLayoutType()
+LayoutType Layout<T>::getLayoutType()
 {
   return this->layoutType;
 }
