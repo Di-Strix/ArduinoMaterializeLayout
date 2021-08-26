@@ -12,8 +12,6 @@
 #include "../Layout/Layout.h"
 #include "../TabGroup/TabGroup.h"
 
-#include "../SharedStatic.h"
-
 class Page : public HTMLElement<dynamicValueGetter>
 {
 private:

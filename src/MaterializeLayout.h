@@ -18,7 +18,6 @@
 #include "Modules/NormalizeCssModule/NormalizeCssModule.h"
 #include "Modules/MaterializeCssModule/MaterializeCssModule.h"
 #include "Modules/MainAppModule/MainAppModule.h"
-#include "SharedStatic.h"
 
 template <typename T>
 inline DynamicJsonDocument dynamiclyDeserializeJson(T data)
