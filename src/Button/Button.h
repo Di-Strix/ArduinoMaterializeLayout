@@ -93,7 +93,7 @@ String Button<T>::getHTML()
 {
   String elemTemplate = F("<a data-id=\"");
   elemTemplate += (String)this->getId();
-  elemTemplate += F("\" data-emitOnClick=\"true\" class=\"");
+  elemTemplate += F("\" data-MCSS-emitOnClick=\"true\" class=\"");
   elemTemplate += this->classList.value();
   elemTemplate += F("\"");
   if (this->getWidth() > 0)

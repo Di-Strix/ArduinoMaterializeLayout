@@ -28,10 +28,9 @@ private:
 
   String text;
   TextType textType;
-  unregisterFn unregister;
 
 protected:
-  bool dynamic = false;
+  constexpr virtual bool isDynamic() { return false; };
 
 public:
   String getHTML();
@@ -41,8 +40,7 @@ public:
    * @param text
    * @param textType text type from the TextType enum
    */
-  StaticText(DynamicComponentRegistrationService<T> *registrationService);
-  ~StaticText();
+  using HTMLElement<T>::HTMLElement;
 
   /**
    * @brief Gets the current text
@@ -76,29 +74,17 @@ public:
 template <typename T>
 class DynamicText : public StaticText<T>
 {
-  using StaticText<T>::StaticText;
-
 private:
-  bool dynamic = true;
+  unregisterFn unregister;
+
+  constexpr virtual bool isDynamic() { return true; };
+
+public:
+  DynamicText(DynamicComponentRegistrationService<T> *registrationService);
+  ~DynamicText();
 };
 
 // ======================= IMPLEMENTATION =======================
-
-template <typename T>
-StaticText<T>::StaticText(DynamicComponentRegistrationService<T> *registrationService) : HTMLElement<T>(registrationService)
-{
-  if (this->dynamic)
-  {
-    this->unregister = registrationService->registerDynamicGetter({this->getId(), [this]()
-                                                                   { return this->getText(); }});
-  }
-}
-
-template <typename T>
-StaticText<T>::~StaticText()
-{
-  this->unregister();
-}
 
 template <typename T>
 void StaticText<T>::setText(String text)
@@ -164,7 +150,7 @@ String StaticText<T>::getHTML()
   elemTemplate += F("\" data-id=\"");
   elemTemplate += id;
   elemTemplate += F("\" data-dynamic=\"");
-  elemTemplate += this->dynamic ? F("true") : F("false");
+  elemTemplate += this->isDynamic() ? F("true") : F("false");
   elemTemplate += F("\">");
   elemTemplate += this->getText();
   elemTemplate += F("</");
@@ -172,6 +158,19 @@ String StaticText<T>::getHTML()
   elemTemplate += F(">");
 
   return elemTemplate;
+}
+
+template <typename T>
+DynamicText<T>::DynamicText(DynamicComponentRegistrationService<T> *registrationService) : StaticText<T>(registrationService)
+{
+  this->unregister = registrationService->registerDynamicGetter({this->getId(), [this]() -> UpdateMsg
+                                                                 { return {F("MaterializeCss"), this->getText()}; }});
+}
+
+template <typename T>
+DynamicText<T>::~DynamicText()
+{
+  this->unregister();
 }
 
 #endif //_MATERIALIZE_LAYOUT_TEXT_H_

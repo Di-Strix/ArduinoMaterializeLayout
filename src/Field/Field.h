@@ -125,7 +125,7 @@ String Field<T>::getHTML()
   elemTemplate += this->defaultValue;
   elemTemplate += F("\" type=\"text\" data-id=\"");
   elemTemplate += id;
-  elemTemplate += F("\" data-emitOnChange=\"true\" id=\"");
+  elemTemplate += F("\" data-MCSS-emitOnChange=\"true\" id=\"");
   elemTemplate += id;
   elemTemplate += F("\"><label for=\"");
   elemTemplate += id;

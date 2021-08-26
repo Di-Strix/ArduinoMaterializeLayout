@@ -163,7 +163,7 @@ void MaterializeLayout::registerInEspAsyncWebServer(AsyncWebServer *s)
         struct updateValue_t
         {
           String id;
-          String data;
+          UpdateMsg data;
         };
 
         std::list<updateValue_t> updateData;
@@ -175,7 +175,10 @@ void MaterializeLayout::registerInEspAsyncWebServer(AsyncWebServer *s)
         DynamicJsonDocument doc(ESP.getMaxFreeBlockSize() - 512);
         for (auto val : updateData)
         {
-          doc[val.id] = val.data;
+          auto obj = doc.createNestedObject(val.id);
+
+          obj[F("handlerId")] = val.data.handlerId;
+          obj[F("value")] = val.data.value;
         }
         doc.shrinkToFit();
 

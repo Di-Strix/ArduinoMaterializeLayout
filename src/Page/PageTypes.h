@@ -16,10 +16,15 @@ struct PageSources
   std::list<PageSource> scripts;
 };
 
+struct UpdateMsg {
+  String handlerId;
+  String value;
+};
+
 struct dynamicValueGetter
 {
   size_t id;
-  std::function<String()> getter;
+  std::function<UpdateMsg()> getter;
 };
 
 template <template <typename> class TemplateClass>
