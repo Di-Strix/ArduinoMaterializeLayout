@@ -45,7 +45,7 @@ void setup()
   // Print the ip address to the serial
   Serial.println("Visit http://" + WiFi.localIP().toString() + "/index.html to view the page");
 
-  // Use automatic integration with ESPAsyncWebServer. Let the library to do all the dirty work
+  // Use automatic integration with ESPAsyncWebServer. Let the library do all the dirty work
   page.registerInEspAsyncWebServer(&server);
 
   /**
