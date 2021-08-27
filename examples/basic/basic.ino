@@ -88,7 +88,7 @@ void setup()
    * 
    * So let's create a row to put the page heading into it.
    * 
-   * We can use createAndAppendComponent function to create and add a component to the specified component automatically.
+   * We can use createAndAppendComponent function to create and add a component to the specified component at once.
    * So lines
    *    auto rootLayout = page.createComponent<Layout>(MATERIALIZE_CSS_MODULE, MaterializeCssComponent::Layout); 
    *    page.appendChild(rootLayout);
@@ -100,7 +100,7 @@ void setup()
   headingRow->setLayoutType(LayoutType::ROW); // Set layout type
 
   /**
-   * There are two types text that can be created
+   * There are two variants of text class that can be created
    * 1: Static text. Only updated on page re-render(when browser requests the page)
    * 2: Dynamic text. Text contents updates on the page every second
    * 
