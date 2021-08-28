@@ -29,7 +29,7 @@ String TabGroup<T>::getHTML()
 
     String tabRef = String(t->getId());
 
-    contentsList += F("<li class=\"tab col s3\"><a href=\"#");
+    contentsList += F("<li class=\"tab col\"><a href=\"#");
     contentsList += tabRef;
     contentsList += F("\">");
     contentsList += t->getTabName();
