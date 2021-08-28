@@ -170,9 +170,8 @@ void MaterializeLayout::registerInEspAsyncWebServer(AsyncWebServer* s)
         }
 
         DynamicJsonDocument doc(size + JSON_OBJECT_SIZE(updateData.size()) * JSON_OBJECT_SIZE(2));
-        auto rootObj = doc.createNestedObject();
         for (auto val : updateData) {
-          auto obj = rootObj.createNestedObject(val.id);
+          auto obj = doc.createNestedObject(val.id);
 
           obj[F("handlerId")] = val.data.handlerId;
           obj[F("value")] = val.data.value;
@@ -181,6 +180,9 @@ void MaterializeLayout::registerInEspAsyncWebServer(AsyncWebServer* s)
 
         String res;
         serializeJson(doc, res);
+
+        if (res == F("null"))
+          res = F("{}");
 
         AsyncWebServerResponse* response = request->beginResponse(200, F("application/json;charset=utf-8"), res);
         response->addHeader(F("Cache-Control"), F("no-cache"));
