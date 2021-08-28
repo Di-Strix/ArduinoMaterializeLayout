@@ -111,7 +111,8 @@ String Button<T>::getHTML()
 template <typename T>
 void Button<T>::onEmit(String value)
 {
-  this->callback();
+  if (this->callback)
+    this->callback();
 }
 
 #endif //_MATERIALIZE_LAYOUT_BUTTON_H_
