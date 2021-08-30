@@ -97,6 +97,10 @@ void Chart<T>::setArraySize(size_t newSize)
     if (chl)
       chl->setArraySize(newSize);
   }
+
+  while (this->legendNames.size() > this->arraySize) {
+    this->legendNames.pop_front();
+  }
 }
 
 template <typename T>

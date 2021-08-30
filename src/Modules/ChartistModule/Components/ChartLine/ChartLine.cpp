@@ -8,6 +8,10 @@ ChartLine::ChartLine(size_t arraySize)
 void ChartLine::setArraySize(size_t newSize)
 {
   this->arraySize = newSize;
+
+  while (this->array.size() > this->arraySize) {
+    this->array.pop_front();
+  }
 }
 
 size_t ChartLine::getArraySize()
