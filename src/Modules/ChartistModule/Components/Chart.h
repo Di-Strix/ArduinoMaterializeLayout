@@ -251,7 +251,6 @@ String Chart<T>::collectChartData()
 
   String res;
   serializeJson(doc, res);
-  // DEBUG_ESP_PRINTF("json: %s\n", res.c_str());
 
   return res;
 }
