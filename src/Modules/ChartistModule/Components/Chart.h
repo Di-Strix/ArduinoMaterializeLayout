@@ -224,7 +224,7 @@ String Chart<T>::collectChartData()
     size += JSON_STRING_SIZE(l.length());
   }
 
-  DynamicJsonDocument doc(size);
+  DynamicJsonDocument doc(size + 128);
 
   if (doc.capacity() == 0) {
     DEBUG_ESP_PRINTF("Not enough memory to allocate DynamicJsonDocument. Required space: %i", size);
