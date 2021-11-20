@@ -33,8 +33,7 @@ void setup()
 
   page.registerInEspAsyncWebServer(&server);
 
-  auto rootLayout = page.createComponent<Layout>(MATERIALIZE_CSS_MODULE, MaterializeCssComponent::Layout);
-  page.appendChild(rootLayout);
+  auto rootLayout = page.createAndAppendComponent<Layout>(MATERIALIZE_CSS_MODULE, MaterializeCssComponent::Layout, &page);
   auto rootRow = page.createAndAppendComponent<Layout>(MATERIALIZE_CSS_MODULE, MaterializeCssComponent::Layout, rootLayout);
   rootRow->setLayoutType(LayoutType::ROW);
 
