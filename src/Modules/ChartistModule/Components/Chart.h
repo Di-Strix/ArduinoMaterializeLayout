@@ -7,7 +7,7 @@
 #include <list>
 #include <variant>
 
-#include "../../../DynamicComponentRegistrationService\DynamicComponentRegistrationService.h"
+#include "../../../DynamicComponentRegistrationService/DynamicComponentRegistrationService.h"
 #include "../../../HTMLElement/HTMLElement.h"
 #include "ChartLine/ChartLine.h"
 
