@@ -5,7 +5,6 @@
 #include <ArduinoJson.h>
 #include <DebugPrintMacros.h>
 #include <list>
-#include <variant>
 
 #include "../../../DynamicComponentRegistrationService/DynamicComponentRegistrationService.h"
 #include "../../../HTMLElement/HTMLElement.h"
