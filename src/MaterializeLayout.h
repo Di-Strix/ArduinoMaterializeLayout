@@ -12,15 +12,15 @@
 #include <ArduinoJson.h>
 #include <map>
 
-#include "Debugging/Debugging.h"
+#include <Debugging/Debugging.h>
 
-#include "ComponentFactory/ComponentFactory.h"
-#include "MaterializeLayoutTypes.h"
-#include "Modules/ChartistModule/ChartistModule.h"
-#include "Modules/MainAppModule/MainAppModule.h"
-#include "Modules/MaterializeCssModule/MaterializeCssModule.h"
-#include "Modules/NormalizeCssModule/NormalizeCssModule.h"
-#include "Page/Page.h"
+#include <ComponentFactory/ComponentFactory.h>
+#include <MaterializeLayoutTypes.h>
+#include <Modules/ChartistModule/ChartistModule.h>
+#include <Modules/MainAppModule/MainAppModule.h>
+#include <Modules/MaterializeCssModule/MaterializeCssModule.h>
+#include <Modules/NormalizeCssModule/NormalizeCssModule.h>
+#include <Page/Page.h>
 
 template <typename T>
 inline DynamicJsonDocument dynamiclyDeserializeJson(T data)

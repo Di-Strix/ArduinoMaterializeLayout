@@ -6,9 +6,9 @@
 #include <list>
 #include <memory>
 
-#include "../DynamicComponentRegistrationService/DynamicComponentRegistrationService.h"
-#include "../HTMLElement/HTMLElement.h"
 #include "PageTypes.h"
+#include <DynamicComponentRegistrationService/DynamicComponentRegistrationService.h>
+#include <HTMLElement/HTMLElement.h>
 
 class Page : public HTMLElement<dynamicValueGetter> {
   private:

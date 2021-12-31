@@ -1,9 +1,9 @@
 #ifndef _MATERIALIZE_LAYOUT_COMPONENT_FACTORY_H_
 #define _MATERIALIZE_LAYOUT_COMPONENT_FACTORY_H_
 
-#include "../HTMLElement/HTMLElement.h"
-#include "../Page/Page.h"
 #include <Arduino.h>
+#include <HTMLElement/HTMLElement.h>
+#include <Page/Page.h>
 #include <map>
 
 class AbstractComponentCreator {

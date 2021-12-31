@@ -5,8 +5,8 @@
 #include <list>
 #include <memory>
 
-#include "../../../../DynamicComponentRegistrationService/DynamicComponentRegistrationService.h"
 #include "../Layout/Layout.h"
+#include <DynamicComponentRegistrationService/DynamicComponentRegistrationService.h>
 
 template <typename T>
 class Tab : public HTMLElement<T> {

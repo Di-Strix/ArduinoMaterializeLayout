@@ -4,7 +4,7 @@
 #include <Arduino.h>
 #include <map>
 
-#include "ComponentFactory/ComponentFactory.h"
+#include <ComponentFactory/ComponentFactory.h>
 
 enum class SharedStaticType {
   CSS,

@@ -6,9 +6,9 @@
 #include "HTMLElementHelperFunctions.h"
 #include "HTMLElemetTypes.h"
 
-#include "../ClassList/ClassList.h"
-#include "../DynamicComponentRegistrationService/DynamicComponentRegistrationService.h"
-#include "../IdGenerator.h"
+#include <ClassList/ClassList.h>
+#include <DynamicComponentRegistrationService/DynamicComponentRegistrationService.h>
+#include <IdGenerator.h>
 
 template <typename T>
 class HTMLElement {

@@ -7,9 +7,9 @@
 
 #include <Debugging/Debugging.h>
 
-#include "../../../DynamicComponentRegistrationService/DynamicComponentRegistrationService.h"
-#include "../../../HTMLElement/HTMLElement.h"
 #include "ChartLine/ChartLine.h"
+#include <DynamicComponentRegistrationService/DynamicComponentRegistrationService.h>
+#include <HTMLElement/HTMLElement.h>
 
 enum class ChartAspectRatio {
   square, // 1:1
