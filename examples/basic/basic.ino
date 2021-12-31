@@ -3,7 +3,15 @@
  * In this example used ESPAsyncWebServer.h which is used to provide the easiest page hosting setup
  */
 
+/**
+ * Platform-specific imports
+ */
+#if defined(ARDUINO_ARCH_ESP8266)
 #include <ESP8266WiFi.h>
+#elif defined(ARDUINO_ARCH_ESP32)
+#include <WiFi.h>
+#endif
+
 #include <ESPAsyncWebServer.h>
 
 /** 
@@ -39,7 +47,7 @@ void setup()
   if (connResult != WL_CONNECTED) {
     Serial.println("Connection failed, please, check entered WiFi SSID and password");
     delay(1000);
-    ESP.reset();
+    ESP.restart();
   }
 
   // Print the ip address to the serial
