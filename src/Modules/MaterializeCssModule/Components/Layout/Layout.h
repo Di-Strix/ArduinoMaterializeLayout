@@ -4,7 +4,6 @@
 #include <Arduino.h>
 #include <list>
 #include <memory>
-#include <variant>
 
 #include "../../../../DynamicComponentRegistrationService/DynamicComponentRegistrationService.h"
 #include "../../../../HTMLElement/HTMLElement.h"
