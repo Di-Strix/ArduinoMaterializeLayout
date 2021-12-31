@@ -25,7 +25,11 @@
 template <typename T>
 inline DynamicJsonDocument dynamiclyDeserializeJson(T data)
 {
+#if defined(ARDUINO_ARCH_ESP8266)
   DynamicJsonDocument doc(ESP.getMaxFreeBlockSize() - 512);
+#elif defined(ARDUINO_ARCH_ESP32)
+  DynamicJsonDocument doc(ESP.getMaxAllocHeap());
+#endif
   deserializeJson(doc, data);
   doc.shrinkToFit();
   return doc;
