@@ -12,6 +12,8 @@
 #include <ArduinoJson.h>
 #include <map>
 
+#include "Debugging/Debugging.h"
+
 #include "ComponentFactory/ComponentFactory.h"
 #include "MaterializeLayoutTypes.h"
 #include "Modules/ChartistModule/ChartistModule.h"
