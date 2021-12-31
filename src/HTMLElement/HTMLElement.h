@@ -199,7 +199,11 @@ std::list<HTMLElement<T>*> HTMLElement<T>::removeAllChildren()
 template <typename T>
 String HTMLElement<T>::getBackgroundColorClass()
 {
-  return colorToString(this->backgroundColor) + F(" ") + colorShadeToString(this->backgroundColorShade);
+  String cClass = colorToString(this->backgroundColor);
+  cClass += F(" ");
+  cClass += colorShadeToString(this->backgroundColorShade);
+
+  return cClass;
 }
 
 template <typename T>
@@ -208,10 +212,13 @@ String HTMLElement<T>::getTextColorClass()
   if (this->textColor == Color::defaultColor)
     return String();
 
-  String cClass = colorToString(this->textColor) + F("-text");
+  String cClass = colorToString(this->textColor);
+  cClass += F("-text");
 
-  if (this->textColorShade != ColorShade::noShade)
-    cClass += F(" text-") + colorShadeToString(this->textColorShade);
+  if (this->textColorShade != ColorShade::noShade) {
+    cClass += F(" text-");
+    cClass += colorShadeToString(this->textColorShade);
+  }
 
   return cClass;
 }
