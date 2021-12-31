@@ -14,7 +14,10 @@ PageSources MaterializeLayout::compileSrc()
   String moduleHandlers;
   size_t counter = 0;
 
-  for (auto [moduleName, moduleInfo] : this->modules) {
+  for (auto moduleObj : this->modules) {
+    auto moduleName = moduleObj.first;
+    auto moduleInfo = moduleObj.second;
+
     if ((moduleInfo.CSS.fileName && moduleInfo.CSS.file) || moduleInfo.inlineCSS) {
       src.styles.push_front({ moduleInfo.CSS.fileName, moduleInfo.inlineCSS });
     }

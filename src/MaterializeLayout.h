@@ -126,7 +126,10 @@ void MaterializeLayout::registerInEspAsyncWebServer(AsyncWebServer* s)
     request->send(res);
   });
 
-  for (auto [moduleName, moduleInfo] : this->modules) {
+  for (auto moduleObj : this->modules) {
+    auto moduleName = moduleObj.first;
+    auto moduleInfo = moduleObj.second;
+
     if (moduleInfo.CSS.fileName && moduleInfo.CSS.file) {
       s->on(("/" + moduleInfo.CSS.fileName + ".css").c_str(), [=](AsyncWebServerRequest* r) { this->serveSharedStatic(r, SharedStaticType::CSS, moduleInfo.CSS.file, moduleInfo.CSS.fileLength); });
     }
