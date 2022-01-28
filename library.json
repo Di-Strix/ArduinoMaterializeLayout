@@ -12,12 +12,10 @@
   [
     {
       "name": "Andrew Ushakov",
-      "email": "",
       "url": "https://github.com/Di-Strix"
     }
   ],
   "license": "MIT",
-  "homepage": "",
   "dependencies": {
     "bblanchon/ArduinoJson": "^6.17.2",
     "me-no-dev/ESP Async WebServer": "^1.2.3"
