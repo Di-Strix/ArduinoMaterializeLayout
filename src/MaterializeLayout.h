@@ -1,5 +1,4 @@
-#ifndef _MATERIALIZE_LAYOUT_H_
-#define _MATERIALIZE_LAYOUT_H_
+#pragma once
 
 #include <ArduinoJson.h>
 #include <map>
@@ -99,6 +98,3 @@ MaterializeLayoutComponent<C> MaterializeLayout::createAndAppendComponent(String
   parent->appendChild(el);
   return el;
 }
-
-
-#endif

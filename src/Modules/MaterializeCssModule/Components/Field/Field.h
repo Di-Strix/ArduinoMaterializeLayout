@@ -1,5 +1,4 @@
-#ifndef _MATERIALIZE_LAYOUT_FIELD_H_
-#define _MATERIALIZE_LAYOUT_FIELD_H_
+#pragma once
 
 #include <Arduino.h>
 
@@ -141,5 +140,3 @@ void Field<T>::onEmit(String value)
 {
   this->currentValue = value;
 }
-
-#endif //_MATERIALIZE_LAYOUT_FIELD_H_

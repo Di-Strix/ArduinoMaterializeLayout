@@ -1,5 +1,4 @@
-#ifndef _MATERIALIZE_LAYOUT_TEXT_H_
-#define _MATERIALIZE_LAYOUT_TEXT_H_
+#pragma once
 
 #include <Arduino.h>
 #include <memory>
@@ -168,5 +167,3 @@ DynamicText<T>::~DynamicText()
 {
   this->unregister();
 }
-
-#endif //_MATERIALIZE_LAYOUT_TEXT_H_

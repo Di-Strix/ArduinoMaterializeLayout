@@ -1,5 +1,4 @@
-#ifndef _MATERIALIZE_LAYOUT_COMPONENT_FACTORY_H_
-#define _MATERIALIZE_LAYOUT_COMPONENT_FACTORY_H_
+#pragma once
 
 #include "../HTMLElement/HTMLElement.h"
 #include "../Page/Page.h"
@@ -16,5 +15,3 @@ class ComponentCreator : public AbstractComponentCreator {
   public:
   MaterializeLayoutComponent<HTMLElement> create(DCRS_t* s) const { return new C(s); }
 };
-
-#endif //_MATERIALIZE_LAYOUT_COMPONENT_FACTORY_H_

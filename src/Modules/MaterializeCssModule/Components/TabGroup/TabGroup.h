@@ -1,5 +1,4 @@
-#ifndef _MATERIALIZE_LAYOUT_TAB_GROUP_H_
-#define _MATERIALIZE_LAYOUT_TAB_GROUP_H_
+#pragma once
 
 #include <Arduino.h>
 #include <list>
@@ -49,5 +48,3 @@ String TabGroup<T>::getHTML()
 
   return elemTemplate;
 }
-
-#endif //_MATERIALIZE_LAYOUT_TAB_GROUP_H_

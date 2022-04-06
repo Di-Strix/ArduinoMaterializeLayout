@@ -1,5 +1,4 @@
-#ifndef _MATERIALIZE_LAYOUT_BUTTON_H_
-#define _MATERIALIZE_LAYOUT_BUTTON_H_
+#pragma once
 
 #include <Arduino.h>
 #include <functional>
@@ -114,5 +113,3 @@ void Button<T>::onEmit(String value)
   if (this->callback)
     this->callback();
 }
-
-#endif //_MATERIALIZE_LAYOUT_BUTTON_H_

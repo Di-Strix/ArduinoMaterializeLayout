@@ -1,7 +1,6 @@
 #include <Arduino.h>
 
-#ifndef _MATERIALIZE_LAYOUT_ID_GENERATOR_H_
-#define _MATERIALIZE_LAYOUT_ID_GENERATOR_H_
+#pragma once
 
 class IdGenerator {
   private:
@@ -20,5 +19,3 @@ class IdGenerator {
 
   size_t getId() { return this->counter += 1; }
 };
-
-#endif //_MATERIALIZE_LAYOUT_ID_GENERATOR_H_

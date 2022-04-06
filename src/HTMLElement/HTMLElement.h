@@ -1,5 +1,4 @@
-#ifndef _HTML_ELEMENT_H_
-#define _HTML_ELEMENT_H_
+#pragma once
 
 #include <Arduino.h>
 
@@ -298,5 +297,3 @@ ColorShade HTMLElement<T>::getTextColorShade()
 {
   return this->textColorShade;
 }
-
-#endif //_HTML_ELEMENT_H_

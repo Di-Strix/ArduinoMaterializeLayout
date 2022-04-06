@@ -1,5 +1,4 @@
-#ifndef _MATERIALIZE_LAYOUT_TAB_H_
-#define _MATERIALIZE_LAYOUT_TAB_H_
+#pragma once
 
 #include <Arduino.h>
 #include <list>
@@ -56,5 +55,3 @@ void Tab<T>::setTabName(String tabName)
 
   this->name = tabName;
 }
-
-#endif //_MATERIALIZE_LAYOUT_TAB_H_

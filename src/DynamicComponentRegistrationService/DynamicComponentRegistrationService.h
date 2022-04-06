@@ -1,5 +1,4 @@
-#ifndef _MATERIALIZE_LAYOUT_DYNAMIC_COMPONENT_REGISTRATION_SERVICE_H_
-#define _MATERIALIZE_LAYOUT_DYNAMIC_COMPONENT_REGISTRATION_SERVICE_H_
+#pragma once
 
 #include <Arduino.h>
 #include <functional>
@@ -81,5 +80,3 @@ std::list<T> DynamicComponentRegistrationService<T>::getRegistrations()
 {
   return this->registrations;
 }
-
-#endif //_MATERIALIZE_LAYOUT_DYNAMIC_COMPONENT_REGISTRATION_SERVICE_H_

@@ -1,5 +1,4 @@
-#ifndef _MATERIALIZE_LAYOUT_CHARTIST_H_
-#define _MATERIALIZE_LAYOUT_CHARTIST_H_
+#pragma once
 
 #include <Arduino.h>
 #include <ArduinoJson.h>
@@ -253,5 +252,3 @@ String Chart<T>::collectChartData()
 
   return res;
 }
-
-#endif //_MATERIALIZE_LAYOUT_CHARTIST_H_

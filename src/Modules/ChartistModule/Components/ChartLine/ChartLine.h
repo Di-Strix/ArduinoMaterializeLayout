@@ -1,5 +1,4 @@
-#ifndef _MATERIALIZE_LAYOUT_CHARTIST_LINE_H_
-#define _MATERIALIZE_LAYOUT_CHARTIST_LINE_H_
+#pragma once
 
 #include <Arduino.h>
 #include <list>
@@ -21,5 +20,3 @@ class ChartLine {
 
   std::list<String> getValues();
 };
-
-#endif //_MATERIALIZE_LAYOUT_CHARTIST_LINE_H_

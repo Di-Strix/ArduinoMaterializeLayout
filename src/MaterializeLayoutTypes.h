@@ -1,5 +1,4 @@
-#ifndef _MATERIALIZE_LAYOUT_TYPES_H_
-#define _MATERIALIZE_LAYOUT_TYPES_H_
+#pragma once
 
 #include <Arduino.h>
 #include <map>
@@ -34,5 +33,3 @@ struct MaterializeLayoutModule {
 
   std::list<Handler> handlers;
 };
-
-#endif //_MATERIALIZE_LAYOUT_TYPES_H_

@@ -1,5 +1,4 @@
-#ifndef _MATERIALIZE_LAYOUT_CLASS_LIST_H_
-#define _MATERIALIZE_LAYOUT_CLASS_LIST_H_
+#pragma once
 
 #include <Arduino.h>
 #include <algorithm>
@@ -63,5 +62,3 @@ class ClassList {
    */
   String value();
 };
-
-#endif //_MATERIALIZE_LAYOUT_CLASS_LIST_H_

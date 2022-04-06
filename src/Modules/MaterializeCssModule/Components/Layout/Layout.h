@@ -1,5 +1,4 @@
-#ifndef _MATERIALIZE_LAYOUT_ELEMENT_H_
-#define _MATERIALIZE_LAYOUT_ELEMENT_H_
+#pragma once
 
 #include <Arduino.h>
 #include <list>
@@ -79,5 +78,3 @@ LayoutType Layout<T>::getLayoutType()
 {
   return this->layoutType;
 }
-
-#endif //_MATERIALIZE_LAYOUT_H_

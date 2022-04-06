@@ -1,5 +1,4 @@
-#ifndef _MATERIALIZE_LAYOUT_CHARTIST_MODULE_H_
-#define _MATERIALIZE_LAYOUT_CHARTIST_MODULE_H_
+#pragma once
 
 #include "../../ComponentFactory/ComponentFactory.h"
 #include "../../MaterializeLayoutTypes.h"
@@ -15,5 +14,3 @@ enum class ChartistComponentEnum {
 };
 
 const MaterializeLayoutModule getChartistModule();
-
-#endif //_MATERIALIZE_LAYOUT_CHARTIST_MODULE_H_

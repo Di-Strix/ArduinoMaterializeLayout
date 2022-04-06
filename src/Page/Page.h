@@ -1,5 +1,4 @@
-#ifndef _MATERIALIZE_LAYOUT_PAGE_H_
-#define _MATERIALIZE_LAYOUT_PAGE_H_
+#pragma once
 
 #include <Arduino.h>
 #include <functional>
@@ -51,5 +50,3 @@ class Page : public HTMLElement<dynamicValueGetter> {
    */
   void setPageTitle(String title);
 };
-
-#endif //_MATERIALIZE_LAYOUT_PAGE_H_

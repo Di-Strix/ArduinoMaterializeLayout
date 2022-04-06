@@ -1,5 +1,4 @@
-#ifndef _MATERIALIZE_LAYOUT_PAGE_TYPES_H_
-#define _MATERIALIZE_LAYOUT_PAGE_TYPES_H_
+#pragma once
 
 #include <functional>
 
@@ -32,5 +31,3 @@ template <template <typename> class TemplateClass>
 using MaterializeLayoutComponent = MaterializeLayoutComponent_t<TemplateClass>*;
 
 using DCRS_t = MaterializeLayoutComponent_t<DynamicComponentRegistrationService>;
-
-#endif //_MATERIALIZE_LAYOUT_PAGE_TYPES_H_

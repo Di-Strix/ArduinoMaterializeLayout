@@ -1,5 +1,4 @@
-#ifndef _MATERIALIZE_LAYOUT_HTML_ELEMENT_TYPES_H_
-#define _MATERIALIZE_LAYOUT_HTML_ELEMENT_TYPES_H_
+#pragma once
 
 enum class Color {
   defaultColor,
@@ -50,5 +49,3 @@ enum class ScreenSize {
   large,
   extraLarge
 };
-
-#endif //_MATERIALIZE_LAYOUT_HTML_ELEMENT_TYPES_H_
