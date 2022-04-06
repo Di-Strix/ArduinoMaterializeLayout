@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        examples: [examples]
+        examples: [examples/**]
 
     steps:
     - uses: actions/checkout@v2
