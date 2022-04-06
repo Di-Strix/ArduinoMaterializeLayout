@@ -3,8 +3,8 @@
 #include <Arduino.h>
 #include <memory>
 
-#include "../../../../DynamicComponentRegistrationService/DynamicComponentRegistrationService.h"
-#include "../../../../HTMLElement/HTMLElement.h"
+#include "DynamicComponentRegistrationService/DynamicComponentRegistrationService.h"
+#include "HTMLElement/HTMLElement.h"
 
 enum class TextType {
   h1,
@@ -33,7 +33,7 @@ class StaticText : public HTMLElement<T> {
   String getHTML();
   /**
    * @brief Constructs a new Static Text object
-   * 
+   *
    * @param text
    * @param textType text type from the TextType enum
    */
@@ -41,28 +41,28 @@ class StaticText : public HTMLElement<T> {
 
   /**
    * @brief Gets the current text
-   * 
-   * @return String 
+   *
+   * @return String
    */
   String getText();
 
   /**
    * @brief Sets the text. If text is static, it will be updated only from the next render
-   * 
+   *
    * @param text new text
    */
   void setText(String text);
 
   /**
    * @brief Set the type of the text from the TextType enum. If text is static, it will be updated only from the next render
-   * 
-   * @param textType 
+   *
+   * @param textType
    */
   void setTextType(TextType textType);
 
   /**
    * @brief Gets the type of the text
-   * 
+   *
    * @return TextType enum
    */
   TextType getTextType();

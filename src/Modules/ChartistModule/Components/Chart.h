@@ -5,8 +5,9 @@
 #include <DebugPrintMacros.h>
 #include <list>
 
-#include "../../../DynamicComponentRegistrationService/DynamicComponentRegistrationService.h"
-#include "../../../HTMLElement/HTMLElement.h"
+#include "DynamicComponentRegistrationService/DynamicComponentRegistrationService.h"
+#include "HTMLElement/HTMLElement.h"
+
 #include "ChartLine/ChartLine.h"
 
 enum class ChartAspectRatio {

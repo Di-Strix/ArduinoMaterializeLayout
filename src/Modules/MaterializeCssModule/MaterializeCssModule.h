@@ -1,7 +1,8 @@
 #pragma once
 
-#include "../../ComponentFactory/ComponentFactory.h"
-#include "../../MaterializeLayoutTypes.h"
+#include "ComponentFactory/ComponentFactory.h"
+#include "MaterializeLayoutTypes.h"
+
 #include "Components/Button/Button.h"
 #include "Components/Field/Field.h"
 #include "Components/Layout/Layout.h"

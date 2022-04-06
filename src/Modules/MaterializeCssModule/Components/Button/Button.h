@@ -3,8 +3,8 @@
 #include <Arduino.h>
 #include <functional>
 
-#include "../../../../DynamicComponentRegistrationService/DynamicComponentRegistrationService.h"
-#include "../../../../HTMLElement/HTMLElement.h"
+#include "DynamicComponentRegistrationService/DynamicComponentRegistrationService.h"
+#include "HTMLElement/HTMLElement.h"
 
 typedef std::function<void()> ButtonCallback;
 
@@ -22,36 +22,36 @@ class Button : public HTMLElement<T> {
 
   public:
   /**
-  * @brief Constructs a new Button object
-  * 
-  * @param caption the caption of the button
-  * @param callback callback that is called when the button is clicked
-  */
+   * @brief Constructs a new Button object
+   *
+   * @param caption the caption of the button
+   * @param callback callback that is called when the button is clicked
+   */
   Button(DynamicComponentRegistrationService<T>* registrationService);
 
   virtual String getHTML();
 
   /**
    * @brief Gets the caption of the button
-   * 
-   * @return String 
+   *
+   * @return String
    */
   String getCaption();
 
   /**
    * @brief Sets the caption of the button
-   * 
+   *
    * @param caption the new caption of the button
-   * 
+   *
    * @return void
    */
   void setCaption(String caption);
 
   /**
    * @brief Sets callback that is called when the button is clicked
-   * 
-   * @param callback 
-   * 
+   *
+   * @param callback
+   *
    * @return void
    */
   void setCallback(ButtonCallback callback);

@@ -2,8 +2,8 @@
 
 #include <Arduino.h>
 
-#include "../../../../DynamicComponentRegistrationService/DynamicComponentRegistrationService.h"
-#include "../../../../HTMLElement/HTMLElement.h"
+#include "DynamicComponentRegistrationService/DynamicComponentRegistrationService.h"
+#include "HTMLElement/HTMLElement.h"
 
 template <typename T>
 class Field : public HTMLElement<T> {
@@ -21,7 +21,7 @@ class Field : public HTMLElement<T> {
   public:
   /**
    * @brief Constructs a new Field object
-   * 
+   *
    * @param name the name of the field
    * @param defaultValue default value of the field
    */
@@ -31,40 +31,40 @@ class Field : public HTMLElement<T> {
 
   /**
    * @brief Gets the name of the field
-   * 
-   * @return String 
+   *
+   * @return String
    */
   String getName();
 
   /**
    * @brief Sets the name of the field
-   * 
+   *
    * @param name the new name of the field
-   * 
+   *
    * @return void
    */
   void setName(String name);
 
   /**
    * @brief Gets the default value of the field
-   * 
-   * @return String 
+   *
+   * @return String
    */
   String getDefaultValue();
 
   /**
    * @brief Sets the default value of the field
-   * 
+   *
    * @param defaultValue default value of the field
-   * 
+   *
    * @return void
    */
   void setDefaultValue(String defaultValue);
 
   /**
    * @brief Gets the text that is currently written in the field
-   * 
-   * @return String 
+   *
+   * @return String
    */
   String getCurrentValue();
 };

@@ -5,8 +5,8 @@
 #include <memory>
 #include <variant>
 
-#include "../../../../DynamicComponentRegistrationService/DynamicComponentRegistrationService.h"
-#include "../../../../HTMLElement/HTMLElement.h"
+#include "DynamicComponentRegistrationService/DynamicComponentRegistrationService.h"
+#include "HTMLElement/HTMLElement.h"
 
 #include "LayoutHelperFunctions.h"
 #include "LayoutTypes.h"
@@ -26,9 +26,9 @@ class Layout : public HTMLElement<T> {
   public:
   /**
    * @brief Enables or disables vertical align in the container
-   * 
-   * @param state 
-   * 
+   *
+   * @param state
+   *
    * @return void
    */
   void setVerticalAlign(bool state);

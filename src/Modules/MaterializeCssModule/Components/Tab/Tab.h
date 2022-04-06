@@ -5,7 +5,8 @@
 #include <memory>
 #include <variant>
 
-#include "../../../../DynamicComponentRegistrationService/DynamicComponentRegistrationService.h"
+#include "DynamicComponentRegistrationService/DynamicComponentRegistrationService.h"
+
 #include "../Layout/Layout.h"
 
 template <typename T>
@@ -16,7 +17,7 @@ class Tab : public HTMLElement<T> {
   public:
   /**
    * @brief Constructs a new Tab object
-   * 
+   *
    * @param registrationService dynamic component registration service that is used in the current page
    * @param tabName the name of the tab
    */
@@ -24,8 +25,8 @@ class Tab : public HTMLElement<T> {
 
   /**
    * @brief Gets the name of the tab
-   * 
-   * @return String 
+   *
+   * @return String
    */
   String getTabName();
 

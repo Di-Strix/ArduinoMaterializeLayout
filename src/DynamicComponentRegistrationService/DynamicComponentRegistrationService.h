@@ -15,14 +15,14 @@ class DynamicComponentRegistrationService {
   public:
   /**
    * @brief Constructs a new Dynamic Component Registration Service
-   * 
+   *
    * @param areEqualChecker function that returns true if the two given variables are equal, or false if not
    */
   DynamicComponentRegistrationService(std::function<bool(T, T)> areEqualChecker);
 
   /**
    * @brief Registers the dynamic data getter of the component in the service
-   * 
+   *
    * @param dynamicDataGetter the dynamic data getter of the component
    * @return unregisterFn function that performs component unregistration from the service
    */
@@ -30,14 +30,14 @@ class DynamicComponentRegistrationService {
 
   /**
    * @brief Unregisters a component with the given dynamic value getter of the component
-   * 
-   * @param dynamicDataGetter 
+   *
+   * @param dynamicDataGetter
    */
   void unregisterGetter(T dynamicDataGetter);
 
   /**
    * @brief Gets all registered components
-   * 
+   *
    * @return std::list<T> the list which contains all registered components
    */
   std::list<T> getRegistrations();

@@ -1,7 +1,8 @@
 #pragma once
 
-#include "HTMLElemetTypes.h"
 #include <Arduino.h>
+
+#include "HTMLElemetTypes.h"
 
 String getWidthClassPrefix(ScreenSize screenSize);
 

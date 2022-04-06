@@ -2,7 +2,7 @@
 
 #include <functional>
 
-#include "../DynamicComponentRegistrationService/DynamicComponentRegistrationService.h"
+#include "DynamicComponentRegistrationService/DynamicComponentRegistrationService.h"
 
 struct PageSource {
   String fileName;
