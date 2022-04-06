@@ -1,6 +1,6 @@
 name: PlatformIO CI
 
-on: [pull_request, workflow_dispatch, push]
+on: [pull_request, push, workflow_dispatch]
 
 jobs:
   build:
@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        example: [path/to/test/file.c, examples/file.ino, path/to/test/directory]
+        example: [examples]
 
     steps:
     - uses: actions/checkout@v2
@@ -32,4 +32,4 @@ jobs:
     - name: Install library dependencies
       run: pio lib -g install 1
     - name: Run PlatformIO
-      run: pio ci
+      run: pio ci --lib="." --board=d1_mini
