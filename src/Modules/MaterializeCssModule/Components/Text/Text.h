@@ -5,6 +5,7 @@
 
 #include "DynamicComponentRegistrationService/DynamicComponentRegistrationService.h"
 #include "HTMLElement/HTMLElement.h"
+#include "MaterializeLayoutTypes.h"
 
 enum class TextType {
   h1,
