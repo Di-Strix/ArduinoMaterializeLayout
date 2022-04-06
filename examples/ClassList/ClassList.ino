@@ -1,6 +1,5 @@
 /**
  * This example shows how to use class list
- * In this example used ESPAsyncWebServer.h which is used to provide the easiest page hosting setup
  */
 
 #include <MaterializeLayout.h>
@@ -15,9 +14,9 @@ void setup()
   delay(5000);
 
   /**
-   * The classList propert has every element that is derivied from HTMLElement class
+   * The classList property has every element that is inherited from HTMLElement class
    */
-  auto rootLayout = page.createAndAppendComponent<Layout>(MATERIALIZE_CSS_MODULE, MaterializeCssComponent::Layout, &page);
+  auto rootLayout = page.createAndAppendComponent<Layout>();
 
   /**
    * Class list is used to operate with element's css classes (add or remove them)

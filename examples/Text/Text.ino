@@ -1,6 +1,5 @@
 /**
  * This example shows what options are available in text components (DynamicText and StaticText) and how to use them
- * In this example used ESPAsyncWebServer.h which is used to provide the easiest page hosting setup
  */
 
 #include <ESP8266WiFi.h>
@@ -12,7 +11,7 @@
 
 AsyncWebServer server(80);
 
-MaterializeLayout page("DynamicText example");
+MaterializeLayout page("StaticText example");
 
 void setup()
 {
@@ -33,22 +32,22 @@ void setup()
 
   page.registerInEspAsyncWebServer(&server);
 
-  auto rootLayout = page.createAndAppendComponent<Layout>(MATERIALIZE_CSS_MODULE, MaterializeCssComponent::Layout, &page);
-  auto rootRow = page.createAndAppendComponent<Layout>(MATERIALIZE_CSS_MODULE, MaterializeCssComponent::Layout, rootLayout);
+  auto rootLayout = page.createAndAppendComponent<Layout>();
+  auto rootRow = page.createAndAppendComponent<Layout>(rootLayout);
   rootRow->setLayoutType(LayoutType::ROW);
 
   /**
    * Create color-demo-row and text-type-demo-row to place topic-related demos in it
    */
-  auto colorDemoRow = page.createAndAppendComponent<Layout>(MATERIALIZE_CSS_MODULE, MaterializeCssComponent::Layout, rootRow);
+  auto colorDemoRow = page.createAndAppendComponent<Layout>(rootRow);
   colorDemoRow->setLayoutType(LayoutType::ROW);
-  auto textTypeDemoRow = page.createAndAppendComponent<Layout>(MATERIALIZE_CSS_MODULE, MaterializeCssComponent::Layout, rootRow);
+  auto textTypeDemoRow = page.createAndAppendComponent<Layout>(rootRow);
   textTypeDemoRow->setLayoutType(LayoutType::ROW);
 
   /**
    * Let's create several text components and set different colors to them
    */
-  auto text1 = page.createAndAppendComponent<StaticText>(MATERIALIZE_CSS_MODULE, MaterializeCssComponent::StaticText, colorDemoRow);
+  auto text1 = page.createAndAppendComponent<StaticText>(colorDemoRow);
   text1->setText("I have black background and white text");
 
   /**
@@ -64,7 +63,7 @@ void setup()
    */
   text1->setTextColor(Color::white);
 
-  auto text2 = page.createAndAppendComponent<StaticText>(MATERIALIZE_CSS_MODULE, MaterializeCssComponent::StaticText, colorDemoRow);
+  auto text2 = page.createAndAppendComponent<StaticText>(colorDemoRow);
   text2->setText("I have light-green color background with darken-4 shade and teal text with accent-3 shade");
 
   /**
@@ -83,7 +82,7 @@ void setup()
   /**
    * Now let's create text-type demos
    */
-  auto text3 = page.createAndAppendComponent<StaticText>(MATERIALIZE_CSS_MODULE, MaterializeCssComponent::StaticText, textTypeDemoRow);
+  auto text3 = page.createAndAppendComponent<StaticText>(textTypeDemoRow);
   text3->setText("I'm h2");
   /**
    * Set text type for it. For more info about text types go to: https://www.w3schools.com/html/html_headings.asp
@@ -91,11 +90,11 @@ void setup()
    */
   text3->setTextType(TextType::h2);
 
-  auto text4 = page.createAndAppendComponent<StaticText>(MATERIALIZE_CSS_MODULE, MaterializeCssComponent::StaticText, textTypeDemoRow);
+  auto text4 = page.createAndAppendComponent<StaticText>(textTypeDemoRow);
   text4->setText("I'm h3");
   text4->setTextType(TextType::h3);
 
-  auto text5 = page.createAndAppendComponent<StaticText>(MATERIALIZE_CSS_MODULE, MaterializeCssComponent::StaticText, rootRow);
+  auto text5 = page.createAndAppendComponent<StaticText>(rootRow);
   text5->setText("Styles can be combined");
   text5->setTextType(TextType::h4);
   text5->setBackgroundColor(Color::grey, ColorShade::darken4);

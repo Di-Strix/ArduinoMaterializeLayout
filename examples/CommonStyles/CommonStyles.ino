@@ -1,6 +1,5 @@
 /**
  * This example shows what options are available to almost every component and how to use them
- * In this example used ESPAsyncWebServer.h which is used to provide the easiest page hosting setup
  */
 
 #include <ESP8266WiFi.h>
@@ -38,7 +37,7 @@ void setup()
 
   page.registerInEspAsyncWebServer(&server);
 
-  auto rootLayout = page.createAndAppendComponent<Layout>(MATERIALIZE_CSS_MODULE, MaterializeCssComponent::Layout, &page);
+  auto rootLayout = page.createAndAppendComponent<Layout>();
 
   /**
    * list of available settings:
@@ -84,7 +83,7 @@ MaterializeLayoutComponent<Layout> createSection(String sectionHeading, Material
   /**
    * Create container for the section
    */
-  auto sectionContainer = page.createAndAppendComponent<Layout>(MATERIALIZE_CSS_MODULE, MaterializeCssComponent::Layout, root);
+  auto sectionContainer = page.createAndAppendComponent<Layout>(root);
   sectionContainer->setLayoutType(LayoutType::ROW);
 
   /**
@@ -92,7 +91,7 @@ MaterializeLayoutComponent<Layout> createSection(String sectionHeading, Material
    * layout component with LayoutType=NONE is plain div(just container)
    */
   if (createDivider) {
-    auto divider = page.createAndAppendComponent<Layout>(MATERIALIZE_CSS_MODULE, MaterializeCssComponent::Layout, sectionContainer);
+    auto divider = page.createAndAppendComponent<Layout>(sectionContainer);
     /**
      * MaterializeCss provide 'divider' class to make a divider, so just use it
      * 
@@ -103,16 +102,15 @@ MaterializeLayoutComponent<Layout> createSection(String sectionHeading, Material
 
   /**
    * Create section heading
-   * 
    */
-  auto sectionContainerHeading = page.createAndAppendComponent<StaticText>(MATERIALIZE_CSS_MODULE, MaterializeCssComponent::StaticText, sectionContainer);
+  auto sectionContainerHeading = page.createAndAppendComponent<StaticText>(sectionContainer);
   sectionContainerHeading->setText(sectionHeading);
   sectionContainerHeading->setTextType(TextType::h4);
 
   /**
    * Create container for contents and set its type to column with class 'offset-s1' to add left margin
    */
-  auto sectionContentsContainer = page.createAndAppendComponent<Layout>(MATERIALIZE_CSS_MODULE, MaterializeCssComponent::Layout, sectionContainer);
+  auto sectionContentsContainer = page.createAndAppendComponent<Layout>(sectionContainer);
   sectionContentsContainer->setLayoutType(LayoutType::COLUMN);
   sectionContentsContainer->classList.add("offset-s1");
   sectionContentsContainer->setWidth(12, ScreenSize::small);
@@ -129,13 +127,13 @@ void createTextColorExample(MaterializeLayoutComponent<Layout> root)
    * Here we create coloredTextContainer in which we will specify text color and which will override 
    * page's color setting and will be applied to all nested components
    */
-  auto coloredTextContainer = page.createAndAppendComponent<Layout>(MATERIALIZE_CSS_MODULE, MaterializeCssComponent::Layout, root);
+  auto coloredTextContainer = page.createAndAppendComponent<Layout>(root);
   coloredTextContainer->setTextColor(Color::teal);
 
-  auto coloredText = page.createAndAppendComponent<StaticText>(MATERIALIZE_CSS_MODULE, MaterializeCssComponent::StaticText, coloredTextContainer);
+  auto coloredText = page.createAndAppendComponent<StaticText>(coloredTextContainer);
   coloredText->setText("I and all my nested components will have teal text color");
-  auto nestedComponent = page.createAndAppendComponent<Layout>(MATERIALIZE_CSS_MODULE, MaterializeCssComponent::Layout, coloredTextContainer);
-  auto nestedText = page.createAndAppendComponent<StaticText>(MATERIALIZE_CSS_MODULE, MaterializeCssComponent::StaticText, nestedComponent);
+  auto nestedComponent = page.createAndAppendComponent<Layout>(coloredTextContainer);
+  auto nestedText = page.createAndAppendComponent<StaticText>(nestedComponent);
   nestedText->setText("I got text color from my parent, because I don't have my own");
 }
 
@@ -152,12 +150,12 @@ void createLayoutExample(MaterializeLayoutComponent<Layout> root)
   /**
    * So let's create a row to place in it two columns
    */
-  auto rootRow = page.createAndAppendComponent<Layout>(MATERIALIZE_CSS_MODULE, MaterializeCssComponent::Layout, root);
+  auto rootRow = page.createAndAppendComponent<Layout>(root);
   rootRow->setLayoutType(LayoutType::ROW);
 
-  auto column1 = page.createAndAppendComponent<Layout>(MATERIALIZE_CSS_MODULE, MaterializeCssComponent::Layout, rootRow);
+  auto column1 = page.createAndAppendComponent<Layout>(rootRow);
   column1->setLayoutType(LayoutType::COLUMN);
-  auto column2 = page.createAndAppendComponent<Layout>(MATERIALIZE_CSS_MODULE, MaterializeCssComponent::Layout, rootRow);
+  auto column2 = page.createAndAppendComponent<Layout>(rootRow);
   column2->setLayoutType(LayoutType::COLUMN);
 
   /**
@@ -176,15 +174,15 @@ void createLayoutExample(MaterializeLayoutComponent<Layout> root)
   /**
    * And place some text into them to see the layout
    */
-  auto text1 = page.createAndAppendComponent<StaticText>(MATERIALIZE_CSS_MODULE, MaterializeCssComponent::StaticText, column1);
+  auto text1 = page.createAndAppendComponent<StaticText>(column1);
   text1->setText("I am in the first column");
   /**
    * And add some lorem text to make one column height bigger than the other one
    */
-  auto lorem = page.createAndAppendComponent<StaticText>(MATERIALIZE_CSS_MODULE, MaterializeCssComponent::StaticText, column1);
+  auto lorem = page.createAndAppendComponent<StaticText>(column1);
   lorem->setText("Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae necessitatibus eaque magnam ratione ipsa veritatis? Unde eum vel quibusdam pariatur eaque nesciunt reiciendis expedita maiores iste. Saepe nihil in ea.");
 
-  auto text2 = page.createAndAppendComponent<StaticText>(MATERIALIZE_CSS_MODULE, MaterializeCssComponent::StaticText, column2);
+  auto text2 = page.createAndAppendComponent<StaticText>(column2);
   text2->setText("I am in the second column and aligned vertically");
 
   /**

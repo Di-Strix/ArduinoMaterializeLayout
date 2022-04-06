@@ -1,6 +1,5 @@
 /**
  * This example shows how to use DynamicText component
- * In this example used ESPAsyncWebServer.h which is used to provide the easiest page hosting setup
  */
 
 #include <ESP8266WiFi.h>
@@ -39,18 +38,18 @@ void setup()
 
   page.registerInEspAsyncWebServer(&server);
 
-  auto rootLayout = page.createAndAppendComponent<Layout>(MATERIALIZE_CSS_MODULE, MaterializeCssComponent::Layout, &page);
-  auto rootRow = page.createAndAppendComponent<Layout>(MATERIALIZE_CSS_MODULE, MaterializeCssComponent::Layout, rootLayout);
+  auto rootLayout = page.createAndAppendComponent<Layout>();
+  auto rootRow = page.createAndAppendComponent<Layout>(rootLayout);
   rootRow->setLayoutType(LayoutType::ROW);
 
   /**
    * Unlike StaticText, DynamicText updates its contents on the page dynamically, without reloading the page
    * At this moment DynamicText updates only its contents, without styles, so if you change text style you'll have to reload the page to see new styles
-   * 
+   *
    * Let's create StaticText and DynamicText components to demonstrate the difference
    */
-  staticText = page.createAndAppendComponent<StaticText>(MATERIALIZE_CSS_MODULE, MaterializeCssComponent::StaticText, rootRow);
-  dynamicText = page.createAndAppendComponent<DynamicText>(MATERIALIZE_CSS_MODULE, MaterializeCssComponent::DynamicText, rootRow);
+  staticText = page.createAndAppendComponent<StaticText>(rootRow);
+  dynamicText = page.createAndAppendComponent<DynamicText>(rootRow);
 
   server.begin();
 }
