@@ -3,9 +3,9 @@
 MaterializeLayout::MaterializeLayout(String pageTitle)
     : Page(pageTitle, [this]() -> PageSources { return this->compileSrc(); })
 {
-  this->injectModule(F("normalize"), getNormalizeCssModule());
-  this->injectModule(MATERIALIZE_CSS_MODULE, getMaterializeCssModule());
-  this->injectModule(F("mainApp"), getMainAppModule());
+  this->injectModule(getNormalizeCssModule());
+  this->injectModule(getMaterializeCssModule());
+  this->injectModule(getMainAppModule());
 }
 
 PageSources MaterializeLayout::compileSrc()
@@ -14,7 +14,7 @@ PageSources MaterializeLayout::compileSrc()
   String moduleHandlers;
   size_t counter = 0;
 
-  for (auto [moduleName, moduleInfo] : this->modules) {
+  for (auto moduleInfo : this->modules) {
     if ((moduleInfo.CSS.fileName && moduleInfo.CSS.file) || moduleInfo.inlineCSS) {
       src.styles.push_front({ moduleInfo.CSS.fileName, moduleInfo.inlineCSS });
     }
@@ -52,37 +52,57 @@ PageSources MaterializeLayout::compileSrc()
   return src;
 }
 
-bool MaterializeLayout::injectModule(String moduleName, MaterializeLayoutModule moduleInfo)
+bool MaterializeLayout::injectModule(const MaterializeLayoutModule& moduleInfo)
 {
-  auto it = this->modules.find(moduleName);
+  auto it = std::find(this->modules.begin(), this->modules.end(), moduleInfo);
   if (it != this->modules.end())
     return false;
 
-  this->modules[moduleName] = moduleInfo;
+  this->modules.push_back(moduleInfo);
 
   return true;
 }
 
+void MaterializeLayout::unregisterHandlers()
+{
+  if (!this->server || this->handlers.size() <= 0)
+    return;
+
+  for (auto handler : this->handlers) {
+    this->server->removeHandler(&handler);
+  }
+
+  this->handlers.clear();
+}
+
 void MaterializeLayout::registerInEspAsyncWebServer(AsyncWebServer* s)
 {
-  s->on("/index.html", HTTP_GET, [=](AsyncWebServerRequest* request) {
+  if (!s)
+    return;
+
+  this->unregisterHandlers();
+
+  this->server = s;
+
+  this->handlers.push_back(this->server->on("/index.html", HTTP_GET, [=](AsyncWebServerRequest* request) {
     String page = this->getHTML();
     AsyncWebServerResponse* res = request->beginResponse(200, F("text/html;charset=utf-8"), page);
     res->addHeader(F("Cache-Control"), F("no-cache"));
     res->addHeader(F("X-Content-Type-Options"), F("nosniff"));
     request->send(res);
-  });
+  }));
+  
+  for (auto moduleInfo : this->modules) {
 
-  for (auto [moduleName, moduleInfo] : this->modules) {
     if (moduleInfo.CSS.fileName && moduleInfo.CSS.file) {
-      s->on(("/" + moduleInfo.CSS.fileName + ".css").c_str(), [=](AsyncWebServerRequest* r) { this->serveSharedStatic(r, SharedStaticType::CSS, moduleInfo.CSS.file, moduleInfo.CSS.fileLength); });
+      this->handlers.push_back(this->server->on(("/" + moduleInfo.CSS.fileName + ".css").c_str(), [=](AsyncWebServerRequest* r) { this->serveSharedStatic(r, SharedStaticType::CSS, moduleInfo.CSS.file, moduleInfo.CSS.fileLength); }));
     }
     if (moduleInfo.JS.fileName && moduleInfo.JS.file) {
-      s->on(("/" + moduleInfo.JS.fileName + ".js").c_str(), [=](AsyncWebServerRequest* r) { this->serveSharedStatic(r, SharedStaticType::JS, moduleInfo.JS.file, moduleInfo.JS.fileLength); });
+      this->handlers.push_back(this->server->on(("/" + moduleInfo.JS.fileName + ".js").c_str(), [=](AsyncWebServerRequest* r) { this->serveSharedStatic(r, SharedStaticType::JS, moduleInfo.JS.file, moduleInfo.JS.fileLength); }));
     }
   }
 
-  s->on(
+  this->handlers.push_back(this->server->on(
       String(F("/materializeLayoutActions/emitAction")).c_str(), HTTP_POST, [=](AsyncWebServerRequest* request) {}, NULL,
       [&](AsyncWebServerRequest* request, uint8_t* data, size_t len, size_t index, size_t total) {
         for (size_t i = 0; i < len; i++) {
@@ -98,9 +118,9 @@ void MaterializeLayout::registerInEspAsyncWebServer(AsyncWebServer* s)
           this->tempData.clear();
           this->emit(doc["id"].as<size_t>(), doc["value"].as<String>());
         }
-      });
+      }));
 
-  s->on(
+  this->handlers.push_back(this->server->on(
       String(F("/materializeLayoutActions/update")).c_str(), HTTP_GET, [=](AsyncWebServerRequest* request) {
         auto registrations = this->getRegistrationService()->getRegistrations();
 
@@ -141,7 +161,7 @@ void MaterializeLayout::registerInEspAsyncWebServer(AsyncWebServer* s)
         response->addHeader(F("Cache-Control"), F("no-cache"));
         response->addHeader(F("X-Content-Type-Options"), F("nosniff"));
         request->send(response);
-      });
+      }));
 }
 
 void MaterializeLayout::serveSharedStatic(AsyncWebServerRequest* request, SharedStaticType type, const uint8_t* file, size_t fileLength)

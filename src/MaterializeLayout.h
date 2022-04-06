@@ -1,10 +1,11 @@
 #pragma once
 
 #include <ArduinoJson.h>
-#include <map>
 #include <ESPAsyncWebServer.h>
+#include <list>
+#include <type_traits>
+#include <utility>
 
-#include "ComponentFactory/ComponentFactory.h"
 #include "MaterializeLayoutTypes.h"
 #include "Modules/ChartistModule/ChartistModule.h"
 #include "Modules/MainAppModule/MainAppModule.h"
@@ -26,74 +27,77 @@ class MaterializeLayout : public Page {
   using Page::getRegistrationService;
   String tempData;
 
-  std::map<String, MaterializeLayoutModule> modules;
+  std::list<MaterializeLayoutModule> modules;
+  std::list<AsyncCallbackWebHandler> handlers;
+
+  AsyncWebServer* server;
 
   PageSources compileSrc();
+  void unregisterHandlers();
 
   public:
+  /**
+   * @brief Construct a new Materialize Layout object
+   *
+   * @param pageTitle title displayed on the tab
+   */
   MaterializeLayout(String pageTitle);
 
-  bool injectModule(String moduleName, MaterializeLayoutModule moduleInfo);
+  /**
+   * @brief prepares module static files to be served
+   *
+   * @param moduleInfo
+   * @return true on success
+   * @return false on failure
+   */
+  bool injectModule(const MaterializeLayoutModule& moduleInfo);
 
-  template <template <class> class C>
-  MaterializeLayoutComponent<C> createComponent(String moduleName, int component);
+  template <template <class> class C, typename... Args>
+  MaterializeLayoutComponent<C> constexpr createComponent(Args... args);
 
-  template <template <class> class C>
-  MaterializeLayoutComponent<C> createAndAppendComponent(String moduleName, int component, MaterializeLayoutComponent<HTMLElement> parent);
-
-  template <template <class> class C>
-  MaterializeLayoutComponent<C> createAndAppendComponent(String moduleName, int component, MaterializeLayout* parent);
+  template <template <class> class C, typename... Args>
+  MaterializeLayoutComponent<C> constexpr createAndAppendComponent(MaterializeLayoutComponent<HTMLElement> parent = nullptr, Args... args);
 
   /**
    * @brief registers callbacks to provide MaterializeLayout functionality
-   * 
+   *
    * @param s pointer to the the AsyncWebServer instance
    */
   void registerInEspAsyncWebServer(AsyncWebServer* s);
 
   /**
    * @brief responds to the AsyncWebServerRequest request with the necessary headers and data according to the given SharedStaticType type
-   * 
+   *
    * @param request AsyncWebServerRequest request
    * @param type SharedStaticType content type
    */
   void serveSharedStatic(AsyncWebServerRequest* request, SharedStaticType type, const uint8_t* file, size_t fileLength);
 };
 
-template <template <class> class C>
-MaterializeLayoutComponent<C> MaterializeLayout::createComponent(String moduleName, int component)
+template <template <class> class C, typename... Args>
+MaterializeLayoutComponent<C> constexpr MaterializeLayout::createComponent(Args... args)
 {
-  auto it = this->modules.find(moduleName);
-  if (it == this->modules.end())
-    return 0;
+  const bool isInherited = std::is_base_of_v<MaterializeLayoutComponent_t<HTMLElement>, MaterializeLayoutComponent_t<C>>;
+  const bool isConstructible = std::is_constructible_v<MaterializeLayoutComponent_t<C>, DCRS_t*, Args...>;
 
-  auto moduleInfo = this->modules[moduleName];
+  static_assert(isInherited, "Component must be inherited from HTMLElement");
+  static_assert(isConstructible, "Incompatible args");
 
-  auto mit = moduleInfo.declarations.find(component);
-  if (mit == moduleInfo.declarations.end())
-    return 0;
-
-  auto componentCreator = moduleInfo.declarations[component];
-  return static_cast<MaterializeLayoutComponent<C>>(componentCreator->create(this->getRegistrationService()));
+  if constexpr (isInherited && isConstructible)
+    return new C<dynamicValueGetter>(this->getRegistrationService(), std::forward<Args>(args)...);
+  else
+    return nullptr;
 }
 
-template <template <class> class C>
-MaterializeLayoutComponent<C> MaterializeLayout::createAndAppendComponent(String moduleName, int component, MaterializeLayoutComponent<HTMLElement> parent)
+template <template <class> class C, typename... Args>
+MaterializeLayoutComponent<C> constexpr MaterializeLayout::createAndAppendComponent(MaterializeLayoutComponent<HTMLElement> parent, Args... args)
 {
-  auto el = this->createComponent<C>(moduleName, component);
-  if (!el)
-    return 0;
+  if (!parent)
+    parent = this;
 
-  parent->appendChild(el);
-  return el;
-}
-
-template <template <class> class C>
-MaterializeLayoutComponent<C> MaterializeLayout::createAndAppendComponent(String moduleName, int component, MaterializeLayout* parent)
-{
-  auto el = this->createComponent<C>(moduleName, component);
+  auto el = this->createComponent<C>(std::forward<Args>(args)...);
   if (!el)
-    return 0;
+    return nullptr;
 
   parent->appendChild(el);
   return el;

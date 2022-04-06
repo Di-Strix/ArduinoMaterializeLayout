@@ -12,9 +12,6 @@ const MaterializeLayoutModule getChartistModule()
         CHARTIST_JS_LENGTH },
     F(".chart-overflow-visible > svg {overflow: visible;}"),
     "",
-    {
-        { ChartistComponent::Chart, new ComponentCreator<MaterializeLayoutComponent_t<Chart>>() },
-    },
     { { F("ChartistHandler"),
         F(
             // clang-format off
