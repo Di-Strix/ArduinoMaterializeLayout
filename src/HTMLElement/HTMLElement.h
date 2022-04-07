@@ -175,9 +175,18 @@ bool HTMLElement<T>::emit(size_t id, String value)
 template <typename T>
 void HTMLElement<T>::dispatch(String value)
 {
+  typename std::remove_pointer_t<T> argCollection;
+
+  if constexpr (std::is_pointer_v<T>)
+    argCollection = *this->argCollection;
+  else
+    argCollection = this->argCollection;
+
+  auto dispatchArgs = argCollection.dispatch;
+
   static uint32_t lastDispatchTime = 0;
-  if (millis() - lastDispatchTime >= this->argCollection->dispatch.throttleTime) {
-    this->argCollection->dispatch.dispatcher(this->getHandlerId(), this->id, value);
+  if (millis() - lastDispatchTime >= dispatchArgs.throttleTime) {
+    dispatchArgs.dispatcher(this->getHandlerId(), this->id, value);
     lastDispatchTime = millis();
   }
 }
