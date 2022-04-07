@@ -6,6 +6,30 @@ MaterializeLayout::MaterializeLayout(String pageTitle)
   this->injectModule(getNormalizeCssModule());
   this->injectModule(getMaterializeCssModule());
   this->injectModule(getMainAppModule());
+
+  this->ws = new AsyncWebSocket("/ML" + String(IdGenerator::Instance().getId()));
+
+  this->ws->onEvent([this](AsyncWebSocket* server, AsyncWebSocketClient* client, AwsEventType type, void* arg, uint8_t* data, size_t len) {
+    if (type == WS_EVT_DATA) {
+      AwsFrameInfo* info = (AwsFrameInfo*)arg;
+      if (info->final && info->index == 0 && info->len == len && info->opcode == WS_TEXT) {
+        String json;
+        for (size_t i = 0; i < len; i++)
+          json += (char)data[i];
+
+        auto doc = dynamiclyDeserializeJson(json);
+        json.clear();
+
+        this->emit(doc["id"].as<size_t>(), doc["value"].as<String>());
+      }
+    }
+  });
+}
+
+MaterializeLayout::~MaterializeLayout()
+{
+  this->ws->closeAll();
+  this->ws->~AsyncWebSocket();
 }
 
 PageSources MaterializeLayout::compileSrc()
@@ -45,7 +69,9 @@ PageSources MaterializeLayout::compileSrc()
     }
   }
 
-  moduleHandlers += F("dynamicUpdateService.init();");
+  moduleHandlers += F("dynamicUpdateService.init(\"");
+  moduleHandlers += String(this->ws->url()).substring(1);
+  moduleHandlers += F("\");");
 
   src.scripts.push_back({ "", moduleHandlers });
 
@@ -91,7 +117,7 @@ void MaterializeLayout::registerInEspAsyncWebServer(AsyncWebServer* s)
     res->addHeader(F("X-Content-Type-Options"), F("nosniff"));
     request->send(res);
   }));
-  
+
   for (auto moduleInfo : this->modules) {
 
     if (moduleInfo.CSS.fileName && moduleInfo.CSS.file) {
@@ -101,24 +127,6 @@ void MaterializeLayout::registerInEspAsyncWebServer(AsyncWebServer* s)
       this->handlers.push_back(this->server->on(("/" + moduleInfo.JS.fileName + ".js").c_str(), [=](AsyncWebServerRequest* r) { this->serveSharedStatic(r, SharedStaticType::JS, moduleInfo.JS.file, moduleInfo.JS.fileLength); }));
     }
   }
-
-  this->handlers.push_back(this->server->on(
-      String(F("/materializeLayoutActions/emitAction")).c_str(), HTTP_POST, [=](AsyncWebServerRequest* request) {}, NULL,
-      [&](AsyncWebServerRequest* request, uint8_t* data, size_t len, size_t index, size_t total) {
-        for (size_t i = 0; i < len; i++) {
-          this->tempData += (char)data[i];
-        }
-        if (index + len == total) {
-          AsyncWebServerResponse* response = request->beginResponse(200, F("text/plain;charset=utf-8"), "");
-          response->addHeader(F("Cache-Control"), F("no-cache"));
-          response->addHeader(F("X-Content-Type-Options"), F("nosniff"));
-          request->send(response);
-
-          DynamicJsonDocument doc = dynamiclyDeserializeJson(this->tempData);
-          this->tempData.clear();
-          this->emit(doc["id"].as<size_t>(), doc["value"].as<String>());
-        }
-      }));
 
   this->handlers.push_back(this->server->on(
       String(F("/materializeLayoutActions/update")).c_str(), HTTP_GET, [=](AsyncWebServerRequest* request) {
@@ -162,6 +170,8 @@ void MaterializeLayout::registerInEspAsyncWebServer(AsyncWebServer* s)
         response->addHeader(F("X-Content-Type-Options"), F("nosniff"));
         request->send(response);
       }));
+
+  this->handlers.push_back(server->addHandler(this->ws));
 }
 
 void MaterializeLayout::serveSharedStatic(AsyncWebServerRequest* request, SharedStaticType type, const uint8_t* file, size_t fileLength)
