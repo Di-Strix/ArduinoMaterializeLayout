@@ -289,6 +289,8 @@ void HTMLElement<T>::setBackgroundColor(Color color, ColorShade colorShade)
   this->backgroundColor = color;
   if (colorShadeIsValid(color, colorShade))
     this->backgroundColorShade = colorShade;
+  else
+    this->backgroundColorShade = ColorShade::noShade;
 
   this->classList.add(this->getBackgroundColorClass());
 }
@@ -301,6 +303,8 @@ void HTMLElement<T>::setTextColor(Color color, ColorShade colorShade)
   this->textColor = color;
   if (colorShadeIsValid(color, colorShade))
     this->textColorShade = colorShade;
+  else
+    this->textColorShade = ColorShade::noShade;
 
   this->classList.add(this->getTextColorClass());
 }
