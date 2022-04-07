@@ -197,6 +197,9 @@ String HTMLElement<T>::getHTML()
 template <typename T>
 void HTMLElement<T>::appendChild(HTMLElement* child)
 {
+  if (std::find_if(this->children.cbegin(), this->children.cend(), [child](HTMLElement* el) { return el == child; }) != this->children.cend())
+    return;
+
   this->children.push_back(child);
 }
 
