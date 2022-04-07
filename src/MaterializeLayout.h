@@ -6,6 +6,7 @@
 #include <type_traits>
 #include <utility>
 
+#include "IdGenerator.h"
 #include "MaterializeLayoutTypes.h"
 #include "Modules/ChartistModule/ChartistModule.h"
 #include "Modules/MainAppModule/MainAppModule.h"
@@ -28,9 +29,10 @@ class MaterializeLayout : public Page {
   String tempData;
 
   std::list<MaterializeLayoutModule> modules;
-  std::list<AsyncCallbackWebHandler> handlers;
+  std::list<AsyncWebHandler> handlers;
 
   AsyncWebServer* server;
+  AsyncWebSocket* ws;
 
   PageSources compileSrc();
   void unregisterHandlers();
@@ -42,6 +44,7 @@ class MaterializeLayout : public Page {
    * @param pageTitle title displayed on the tab
    */
   MaterializeLayout(String pageTitle);
+  ~MaterializeLayout();
 
   /**
    * @brief prepares module static files to be served
