@@ -44,8 +44,7 @@ MaterializeLayout::MaterializeLayout(String pageTitle)
 
 MaterializeLayout::~MaterializeLayout()
 {
-  this->ws->closeAll();
-  this->ws->~AsyncWebSocket();
+  delete this->ws;
 }
 
 PageSources MaterializeLayout::compileSrc()
