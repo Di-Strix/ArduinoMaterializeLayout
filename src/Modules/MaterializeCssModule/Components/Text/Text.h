@@ -31,12 +31,7 @@ class StaticText : public HTMLElement<T> {
 
   public:
   String getHTML();
-  /**
-   * @brief Constructs a new Static Text object
-   *
-   * @param text
-   * @param textType text type from the TextType enum
-   */
+
   using HTMLElement<T>::HTMLElement;
 
   /**
@@ -74,8 +69,7 @@ class DynamicText : public StaticText<T> {
   constexpr virtual bool isDynamic() { return true; };
 
   public:
-  DynamicText(T argCollection);
-  ~DynamicText();
+  using StaticText<T>::StaticText;
 };
 
 // ======================= IMPLEMENTATION =======================
@@ -154,15 +148,4 @@ String StaticText<T>::getHTML()
   elemTemplate += F(">");
 
   return elemTemplate;
-}
-
-template <typename T>
-DynamicText<T>::DynamicText(T argCollection)
-    : StaticText<T>(argCollection)
-{
-}
-
-template <typename T>
-DynamicText<T>::~DynamicText()
-{
 }
