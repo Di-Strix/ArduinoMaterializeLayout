@@ -47,3 +47,16 @@ struct MaterializeLayoutModule {
     return (CSS == m.CSS && JS == m.JS && inlineCSS == m.inlineCSS && inlineJS == m.inlineJS && handlers == m.handlers);
   }
 };
+
+struct HTMLElementArgs {
+  struct {
+    std::function<void(String handlerId, size_t elementId, String value)> dispatcher;
+    uint32_t throttleTime;
+  } dispatch;
+};
+
+template <template <typename> class TemplateClass>
+using MaterializeLayoutComponent_t = TemplateClass<HTMLElementArgs*>;
+
+template <template <typename> class TemplateClass>
+using MaterializeLayoutComponent = MaterializeLayoutComponent_t<TemplateClass>*;

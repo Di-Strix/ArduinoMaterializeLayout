@@ -5,7 +5,6 @@
 #include <DebugPrintMacros.h>
 #include <list>
 
-#include "DynamicComponentRegistrationService/DynamicComponentRegistrationService.h"
 #include "HTMLElement/HTMLElement.h"
 
 #include "ChartLine/ChartLine.h"
@@ -37,14 +36,15 @@ class Chart : public HTMLElement<T> {
   std::list<ChartLine*> lines;
   std::list<String> legendNames;
 
-  unregisterFn unregister;
-
   ChartAspectRatio aspectRatio = ChartAspectRatio::goldenSection;
 
   String getAspectRatioClass(ChartAspectRatio ar);
 
+  protected:
+  virtual String getHandlerId() { return F("ChartistHandler"); };
+
   public:
-  Chart(DynamicComponentRegistrationService<T>* registrationService);
+  Chart(T argCollection);
   ~Chart();
 
   String collectChartData();
@@ -65,23 +65,17 @@ class Chart : public HTMLElement<T> {
 // ======================= IMPLEMENTATION =======================
 
 template <typename T>
-Chart<T>::Chart(DynamicComponentRegistrationService<T>* registrationService)
-    : HTMLElement<T>(registrationService)
+Chart<T>::Chart(T argCollection)
+    : HTMLElement<T>(argCollection)
 {
   this->classList.add(F("ct-chart"));
   this->classList.add(F("chart-overflow-visible"));
   this->setAspectRatio(this->aspectRatio);
-
-  this->unregister = registrationService->registerDynamicGetter({ this->getId(), [this]() -> UpdateMsg {
-                                                                   return { F("ChartistHandler"), this->collectChartData() };
-                                                                 } });
 }
 
 template <typename T>
 Chart<T>::~Chart()
 {
-  this->unregister();
-
   for (auto chl : this->lines) {
     chl->~ChartLine();
     delete chl;
@@ -111,7 +105,7 @@ size_t Chart<T>::getArraySize()
 template <typename T>
 ChartLine* Chart<T>::createLine()
 {
-  auto chl = new ChartLine(this->arraySize);
+  auto chl = new ChartLine(this->arraySize, [this]() { this->dispatch(this->collectChartData()); });
   this->lines.push_back(chl);
   return chl;
 }
@@ -123,6 +117,8 @@ void Chart<T>::pushLegend(String legendName)
     this->legendNames.pop_front();
   }
   this->legendNames.push_back(legendName);
+
+  this->dispatch(this->collectChartData());
 }
 
 template <typename T>

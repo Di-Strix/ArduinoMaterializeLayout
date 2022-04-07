@@ -2,7 +2,6 @@
 
 #include <Arduino.h>
 
-#include "DynamicComponentRegistrationService/DynamicComponentRegistrationService.h"
 #include "HTMLElement/HTMLElement.h"
 
 template <typename T>
@@ -25,7 +24,7 @@ class Field : public HTMLElement<T> {
    * @param name the name of the field
    * @param defaultValue default value of the field
    */
-  Field(DynamicComponentRegistrationService<T>* registrationService);
+  Field(T argCollection);
 
   String getHTML();
 
@@ -72,8 +71,8 @@ class Field : public HTMLElement<T> {
 // ======================= IMPLEMENTATION =======================
 
 template <typename T>
-Field<T>::Field(DynamicComponentRegistrationService<T>* registrationService)
-    : HTMLElement<T>(registrationService)
+Field<T>::Field(T argCollection)
+    : HTMLElement<T>(argCollection)
 {
   this->name = (String)this->getId();
 

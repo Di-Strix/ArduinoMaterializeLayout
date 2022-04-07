@@ -4,7 +4,6 @@
 #include <list>
 #include <memory>
 
-#include "DynamicComponentRegistrationService/DynamicComponentRegistrationService.h"
 #include "HTMLElement/HTMLElement.h"
 
 #include "../Tab/Tab.h"

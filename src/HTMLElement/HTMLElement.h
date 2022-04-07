@@ -3,7 +3,6 @@
 #include <Arduino.h>
 
 #include "ClassList/ClassList.h"
-#include "DynamicComponentRegistrationService/DynamicComponentRegistrationService.h"
 #include "IdGenerator.h"
 
 #include "HTMLElementHelperFunctions.h"
@@ -12,7 +11,7 @@
 template <typename T>
 class HTMLElement {
   private:
-  DynamicComponentRegistrationService<T>* registrationService;
+  T argCollection;
 
   size_t id = 0;
 
@@ -28,6 +27,8 @@ class HTMLElement {
   String getTextColorClass();
 
   protected:
+  virtual String getHandlerId() { return F("MaterializeCssHandler"); };
+
   std::list<HTMLElement*> children;
 
   virtual void onEmit(String value) {};
@@ -35,7 +36,7 @@ class HTMLElement {
   public:
   ClassList classList;
 
-  HTMLElement(DynamicComponentRegistrationService<T>* registrationService);
+  HTMLElement(T argCollection);
 
   /**
    * @brief Returns an id of the element. The id is used to emit an event on certain component
@@ -67,6 +68,13 @@ class HTMLElement {
    * @return bool
    */
   bool emit(size_t id, String value = "");
+
+  /**
+   * @brief Dispatches event to the page
+   *
+   * @param value
+   */
+  void dispatch(String value);
 
   /**
    * @brief Sets width of the component in HTML if it's possible.
@@ -137,9 +145,9 @@ class HTMLElement {
 // ======================= IMPLEMENTATION =======================
 
 template <typename T>
-HTMLElement<T>::HTMLElement(DynamicComponentRegistrationService<T>* registrationService)
+HTMLElement<T>::HTMLElement(T argCollection)
 {
-  this->registrationService = registrationService;
+  this->argCollection = argCollection;
   this->id = IdGenerator::Instance().getId();
 }
 
@@ -161,6 +169,16 @@ bool HTMLElement<T>::emit(size_t id, String value)
   }
 
   return found;
+}
+
+template <typename T>
+void HTMLElement<T>::dispatch(String value)
+{
+  static uint32_t lastDispatchTime = 0;
+  if (millis() - lastDispatchTime >= this->argCollection->dispatch.throttleTime) {
+    this->argCollection->dispatch.dispatcher(this->getHandlerId(), this->id, value);
+    lastDispatchTime = millis();
+  }
 }
 
 template <typename T>

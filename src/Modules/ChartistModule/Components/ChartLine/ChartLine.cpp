@@ -1,8 +1,9 @@
 #include "ChartLine.h"
 
-ChartLine::ChartLine(size_t arraySize)
+ChartLine::ChartLine(size_t arraySize, std::function<void()> dispatcher)
 {
   this->arraySize = arraySize;
+  this->dispatcher = dispatcher;
 }
 
 void ChartLine::setArraySize(size_t newSize)
@@ -22,6 +23,8 @@ size_t ChartLine::getArraySize()
 void ChartLine::clear()
 {
   this->array.clear();
+
+  this->dispatcher();
 }
 
 void ChartLine::pushValue(String value)
@@ -30,6 +33,8 @@ void ChartLine::pushValue(String value)
     this->array.pop_front();
   }
   this->array.push_back(value);
+
+  this->dispatcher();
 }
 
 std::list<String> ChartLine::getValues()

@@ -3,7 +3,6 @@
 #include <Arduino.h>
 #include <memory>
 
-#include "DynamicComponentRegistrationService/DynamicComponentRegistrationService.h"
 #include "HTMLElement/HTMLElement.h"
 #include "MaterializeLayoutTypes.h"
 
@@ -72,12 +71,10 @@ class StaticText : public HTMLElement<T> {
 template <typename T>
 class DynamicText : public StaticText<T> {
   private:
-  unregisterFn unregister;
-
   constexpr virtual bool isDynamic() { return true; };
 
   public:
-  DynamicText(DynamicComponentRegistrationService<T>* registrationService);
+  DynamicText(T argCollection);
   ~DynamicText();
 };
 
@@ -88,6 +85,9 @@ void StaticText<T>::setText(String text)
 {
   text.trim();
   this->text = text;
+
+  if (this->isDynamic())
+    this->dispatch(this->text);
 }
 
 template <typename T>
@@ -157,14 +157,12 @@ String StaticText<T>::getHTML()
 }
 
 template <typename T>
-DynamicText<T>::DynamicText(DynamicComponentRegistrationService<T>* registrationService)
-    : StaticText<T>(registrationService)
+DynamicText<T>::DynamicText(T argCollection)
+    : StaticText<T>(argCollection)
 {
-  this->unregister = registrationService->registerDynamicGetter({ this->getId(), [this]() -> UpdateMsg { return { F("MaterializeCssHandler"), this->getText() }; } });
 }
 
 template <typename T>
 DynamicText<T>::~DynamicText()
 {
-  this->unregister();
 }

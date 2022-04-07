@@ -3,7 +3,6 @@
 #include <Arduino.h>
 #include <functional>
 
-#include "DynamicComponentRegistrationService/DynamicComponentRegistrationService.h"
 #include "HTMLElement/HTMLElement.h"
 
 typedef std::function<void()> ButtonCallback;
@@ -27,7 +26,7 @@ class Button : public HTMLElement<T> {
    * @param caption the caption of the button
    * @param callback callback that is called when the button is clicked
    */
-  Button(DynamicComponentRegistrationService<T>* registrationService);
+  Button(T argCollection);
 
   virtual String getHTML();
 
@@ -60,8 +59,8 @@ class Button : public HTMLElement<T> {
 // ======================= IMPLEMENTATION =======================
 
 template <typename T>
-Button<T>::Button(DynamicComponentRegistrationService<T>* registrationService)
-    : HTMLElement<T>(registrationService)
+Button<T>::Button(T argCollection)
+    : HTMLElement<T>(argCollection)
 {
   this->classList.add(F("waves-effect"));
   this->classList.add(F("waves-light"));
