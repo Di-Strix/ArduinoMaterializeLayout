@@ -1,7 +1,7 @@
 #include "MaterializeLayout.h"
 
 MaterializeLayout::MaterializeLayout(String pageTitle)
-    : Page(pageTitle, [this]() -> PageSources { return this->compileSrc(); })
+    : Page(this->getArgs(), pageTitle, [this]() -> PageSources { return this->compileSrc(); })
 {
   this->injectModule(getNormalizeCssModule());
   this->injectModule(getMaterializeCssModule());
@@ -24,6 +24,22 @@ MaterializeLayout::MaterializeLayout(String pageTitle)
       }
     }
   });
+
+  this->argCollection.dispatch.dispatcher = [this](String handlerId, size_t id, String value) {
+    DynamicJsonDocument doc(JSON_OBJECT_SIZE(3) + JSON_STRING_SIZE(value.length()) + JSON_STRING_SIZE(handlerId.length()));
+    doc["handlerId"] = handlerId;
+    doc["id"] = id;
+    doc["value"] = value;
+
+    String json;
+    serializeJson(doc, json);
+
+    if (json == F("null"))
+      json = F("{}");
+
+    this->ws->textAll(json);
+  };
+  this->argCollection.dispatch.throttleTime = 0;
 }
 
 MaterializeLayout::~MaterializeLayout()
@@ -128,49 +144,6 @@ void MaterializeLayout::registerInEspAsyncWebServer(AsyncWebServer* s)
     }
   }
 
-  this->handlers.push_back(this->server->on(
-      String(F("/materializeLayoutActions/update")).c_str(), HTTP_GET, [=](AsyncWebServerRequest* request) {
-        auto registrations = this->getRegistrationService()->getRegistrations();
-
-        struct updateValue_t {
-          String id;
-          UpdateMsg data;
-        };
-
-        std::list<updateValue_t> updateData;
-        size_t size = 0;
-
-        for (auto reg : registrations) {
-          updateValue_t v = { (String)reg.id, reg.getter() };
-
-          size += v.id.length() + 1;
-          size += v.data.handlerId.length() + 1;
-          size += v.data.value.length() + 1;
-
-          updateData.push_back(v);
-        }
-
-        DynamicJsonDocument doc(size + JSON_OBJECT_SIZE(updateData.size()) * JSON_OBJECT_SIZE(2));
-        for (auto val : updateData) {
-          auto obj = doc.createNestedObject(val.id);
-
-          obj[F("handlerId")] = val.data.handlerId;
-          obj[F("value")] = val.data.value;
-        }
-        doc.shrinkToFit();
-
-        String res;
-        serializeJson(doc, res);
-
-        if (res == F("null"))
-          res = F("{}");
-
-        AsyncWebServerResponse* response = request->beginResponse(200, F("application/json;charset=utf-8"), res);
-        response->addHeader(F("Cache-Control"), F("no-cache"));
-        response->addHeader(F("X-Content-Type-Options"), F("nosniff"));
-        request->send(response);
-      }));
-
   this->handlers.push_back(server->addHandler(this->ws));
 }
 
@@ -191,4 +164,9 @@ void MaterializeLayout::serveSharedStatic(AsyncWebServerRequest* request, Shared
   res->addHeader(F("Cache-Control"), F("max-age=31536000, immutable"));
   res->addHeader(F("X-Content-Type-Options"), F("nosniff"));
   request->send(res);
+}
+
+HTMLElementArgs* MaterializeLayout::getArgs()
+{
+  return &this->argCollection;
 }

@@ -7,9 +7,10 @@ class ChartLine {
   private:
   std::list<String> array;
   size_t arraySize;
+  std::function<void()> dispatcher;
 
   public:
-  ChartLine(size_t arraySize);
+  ChartLine(size_t arraySize, std::function<void()> dispatcher);
 
   void setArraySize(size_t newSize);
   size_t getArraySize();

@@ -23,10 +23,9 @@ inline DynamicJsonDocument dynamiclyDeserializeJson(T data)
   return doc;
 }
 
-class MaterializeLayout : public Page {
+class MaterializeLayout : public Page<HTMLElementArgs*> {
   private:
-  using Page::getRegistrationService;
-  String tempData;
+  HTMLElementArgs argCollection;
 
   std::list<MaterializeLayoutModule> modules;
   std::list<AsyncWebHandler> handlers;
@@ -36,6 +35,8 @@ class MaterializeLayout : public Page {
 
   PageSources compileSrc();
   void unregisterHandlers();
+
+  HTMLElementArgs* getArgs();
 
   public:
   /**
@@ -81,13 +82,13 @@ template <template <class> class C, typename... Args>
 MaterializeLayoutComponent<C> constexpr MaterializeLayout::createComponent(Args... args)
 {
   const bool isInherited = std::is_base_of_v<MaterializeLayoutComponent_t<HTMLElement>, MaterializeLayoutComponent_t<C>>;
-  const bool isConstructible = std::is_constructible_v<MaterializeLayoutComponent_t<C>, DCRS_t*, Args...>;
+  const bool isConstructible = std::is_constructible_v<MaterializeLayoutComponent_t<C>, HTMLElementArgs*, Args...>;
 
   static_assert(isInherited, "Component must be inherited from HTMLElement");
   static_assert(isConstructible, "Incompatible args");
 
   if constexpr (isInherited && isConstructible)
-    return new C<dynamicValueGetter>(this->getRegistrationService(), std::forward<Args>(args)...);
+    return new MaterializeLayoutComponent_t<C>(this->getArgs(), std::forward<Args>(args)...);
   else
     return nullptr;
 }

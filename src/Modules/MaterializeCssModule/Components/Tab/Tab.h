@@ -5,8 +5,6 @@
 #include <memory>
 #include <variant>
 
-#include "DynamicComponentRegistrationService/DynamicComponentRegistrationService.h"
-
 #include "../Layout/Layout.h"
 
 template <typename T>
@@ -21,7 +19,7 @@ class Tab : public HTMLElement<T> {
    * @param registrationService dynamic component registration service that is used in the current page
    * @param tabName the name of the tab
    */
-  Tab(DynamicComponentRegistrationService<T>* registrationService);
+  Tab(T argCollection);
 
   /**
    * @brief Gets the name of the tab
@@ -36,8 +34,8 @@ class Tab : public HTMLElement<T> {
 // ======================= IMPLEMENTATION =======================
 
 template <typename T>
-Tab<T>::Tab(DynamicComponentRegistrationService<T>* registrationService)
-    : HTMLElement<T>(registrationService)
+Tab<T>::Tab(T argCollection)
+    : HTMLElement<T>(argCollection)
 {
 }
 
