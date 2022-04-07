@@ -23,8 +23,8 @@ class HTMLElement {
   Color textColor = Color::defaultColor;
   ColorShade textColorShade = ColorShade::noShade;
 
-  String getBackgroundColorClass();
   String getTextColorClass();
+  String getTextColorShadeClass();
 
   protected:
   virtual String getHandlerId() { return F("MaterializeCssHandler"); };
@@ -227,23 +227,21 @@ std::list<HTMLElement<T>*> HTMLElement<T>::removeAllChildren()
 }
 
 template <typename T>
-String HTMLElement<T>::getBackgroundColorClass()
-{
-  return colorToString(this->backgroundColor) + F(" ") + colorShadeToString(this->backgroundColorShade);
-}
-
-template <typename T>
 String HTMLElement<T>::getTextColorClass()
 {
   if (this->textColor == Color::defaultColor)
     return String();
 
-  String cClass = colorToString(this->textColor) + F("-text");
+  return colorToString(this->textColor) + F("-text");
+}
 
-  if (this->textColorShade != ColorShade::noShade)
-    cClass += F(" text-") + colorShadeToString(this->textColorShade);
+template <typename T>
+String HTMLElement<T>::getTextColorShadeClass()
+{
+  if (this->textColor == Color::defaultColor || this->textColorShade == ColorShade::noShade)
+    return String();
 
-  return cClass;
+  return F(" text-") + colorShadeToString(this->textColorShade);
 }
 
 template <typename T>
@@ -284,7 +282,8 @@ size_t HTMLElement<T>::getId()
 template <typename T>
 void HTMLElement<T>::setBackgroundColor(Color color, ColorShade colorShade)
 {
-  this->classList.remove(this->getBackgroundColorClass());
+  this->classList.remove(colorToString(this->backgroundColor));
+  this->classList.remove(colorShadeToString(this->backgroundColorShade));
 
   this->backgroundColor = color;
   if (colorShadeIsValid(color, colorShade))
@@ -292,13 +291,15 @@ void HTMLElement<T>::setBackgroundColor(Color color, ColorShade colorShade)
   else
     this->backgroundColorShade = ColorShade::noShade;
 
-  this->classList.add(this->getBackgroundColorClass());
+  this->classList.add(colorToString(this->backgroundColor));
+  this->classList.add(colorShadeToString(this->backgroundColorShade));
 }
 
 template <typename T>
 void HTMLElement<T>::setTextColor(Color color, ColorShade colorShade)
 {
   this->classList.remove(this->getTextColorClass());
+  this->classList.remove(this->getTextColorShadeClass());
 
   this->textColor = color;
   if (colorShadeIsValid(color, colorShade))
@@ -307,6 +308,7 @@ void HTMLElement<T>::setTextColor(Color color, ColorShade colorShade)
     this->textColorShade = ColorShade::noShade;
 
   this->classList.add(this->getTextColorClass());
+  this->classList.add(this->getTextColorShadeClass());
 }
 
 template <typename T>
