@@ -185,7 +185,7 @@ void HTMLElement<T>::dispatch(String value)
   auto dispatchArgs = argCollection.dispatch;
 
   static uint32_t lastDispatchTime = 0;
-  if (millis() - lastDispatchTime >= dispatchArgs.throttleTime) {
+  if (dispatchArgs.dispatcher && millis() - lastDispatchTime >= dispatchArgs.throttleTime) {
     dispatchArgs.dispatcher(this->getHandlerId(), this->id, value);
     lastDispatchTime = millis();
   }
