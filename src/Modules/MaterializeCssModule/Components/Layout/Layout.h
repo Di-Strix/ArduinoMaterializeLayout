@@ -12,17 +12,14 @@
 
 template <typename T>
 class Layout : public HTMLElement<T> {
-  using HTMLElement<T>::HTMLElement;
-
   private:
-  using HTMLElement<T>::children;
-
   LayoutType layoutType = LayoutType::NONE;
 
-  protected:
-  String getHTML();
-
   public:
+  using HTMLElement<T>::HTMLElement;
+
+  virtual String getHTML();
+
   /**
    * @brief Enables or disables vertical align in the container
    *
