@@ -264,13 +264,12 @@ template <typename T>
 uint8_t HTMLElement<T>::getWidth(ScreenSize screenSize)
 {
   String className = this->widths[(uint8_t)screenSize];
-
   if (className.isEmpty())
     return 0;
 
   size_t classPrefixLength = getWidthClassPrefix(screenSize).length();
 
-  return className.substring(classPrefixLength - 1).toInt();
+  return className.substring(classPrefixLength).toInt();
 }
 
 template <typename T>
