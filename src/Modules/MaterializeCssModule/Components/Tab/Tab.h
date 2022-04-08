@@ -37,6 +37,7 @@ template <typename T>
 Tab<T>::Tab(T argCollection)
     : HTMLElement<T>(argCollection)
 {
+  this->setTabName(String(this->getId()));
 }
 
 template <typename T>
