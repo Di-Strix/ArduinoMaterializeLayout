@@ -13,8 +13,8 @@ enum class SharedStaticType {
 
 struct SrcFile {
   String fileName;
-  const uint8_t* file;
-  size_t fileLength;
+  const uint8_t* file = nullptr;
+  size_t fileLength = 0;
 
   bool operator==(const SrcFile& f) const
   {
