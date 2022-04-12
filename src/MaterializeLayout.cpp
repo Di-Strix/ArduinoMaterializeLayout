@@ -1,7 +1,7 @@
 #include "MaterializeLayout.h"
 
 MaterializeLayout::MaterializeLayout(String pageTitle)
-    : Page(this->getArgs(), pageTitle, [this]() -> PageSources { return this->compileSrc(); })
+    : Page(this->getArgs(), pageTitle)
 {
   this->injectModule(getNormalizeCssModule());
   this->injectModule(getMaterializeCssModule());

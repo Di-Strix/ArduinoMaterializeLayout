@@ -13,7 +13,9 @@ template <typename T>
 class Page : public HTMLElement<T> {
   private:
   String pageTitle;
-  std::function<PageSources()> srcGetter;
+
+  protected:
+  virtual PageSources compileSrc();
 
   public:
   /**
@@ -21,8 +23,9 @@ class Page : public HTMLElement<T> {
    *
    * @param title the title of the page which is displayed on the tab
    */
-  Page(
-      T argCollection, String title, std::function<PageSources()> srcGetter = []() -> PageSources { return {}; });
+  Page(T argCollection, String title);
+
+  virtual ~Page() = default;
 
   /**
    * @brief Recursively compiles all nested elements and returns HTML layout of the page using current params
@@ -49,11 +52,10 @@ class Page : public HTMLElement<T> {
 // ======================= IMPLEMENTATION =======================
 
 template <typename T>
-Page<T>::Page(T argCollection, String title, std::function<PageSources()> srcGetter)
+Page<T>::Page(T argCollection, String title)
     : HTMLElement<T>(argCollection)
 {
   this->setPageTitle(title);
-  this->srcGetter = srcGetter;
 }
 
 template <typename T>
@@ -61,7 +63,7 @@ String Page<T>::getHTML()
 {
   String contents;
 
-  PageSources src = this->srcGetter();
+  PageSources src = this->compileSrc();
 
   for (auto el : this->children) {
     contents += el->getHTML();
@@ -119,4 +121,10 @@ void Page<T>::setPageTitle(String title)
 {
   title.trim();
   this->pageTitle = title;
+}
+
+template <typename T>
+PageSources Page<T>::compileSrc()
+{
+  return PageSources();
 }
