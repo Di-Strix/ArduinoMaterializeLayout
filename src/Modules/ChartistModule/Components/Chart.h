@@ -2,7 +2,6 @@
 
 #include <Arduino.h>
 #include <ArduinoJson.h>
-#include <DebugPrintMacros.h>
 #include <list>
 
 #include "HTMLElement/HTMLElement.h"
@@ -222,7 +221,6 @@ String Chart<T>::collectChartData()
   DynamicJsonDocument doc(size + 128);
 
   if (doc.capacity() == 0) {
-    DEBUG_ESP_PRINTF("Not enough memory to allocate DynamicJsonDocument. Required space: %i", size);
     return "";
   }
 
