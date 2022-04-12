@@ -51,7 +51,6 @@ PageSources MaterializeLayout::compileSrc()
 {
   PageSources src;
   String moduleHandlers;
-  size_t counter = 0;
 
   for (auto moduleInfo : this->modules) {
     if ((moduleInfo.CSS.fileName && moduleInfo.CSS.file) || moduleInfo.inlineCSS) {
@@ -79,8 +78,6 @@ PageSources MaterializeLayout::compileSrc()
       moduleHandlers += F("', new ");
       moduleHandlers += handler.name;
       moduleHandlers += F("());");
-
-      counter++;
     }
   }
 
