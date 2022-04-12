@@ -42,6 +42,7 @@ MaterializeLayout::MaterializeLayout(String pageTitle)
 
 MaterializeLayout::~MaterializeLayout()
 {
+  this->unregisterHandlers();
 }
 
 PageSources MaterializeLayout::compileSrc()
