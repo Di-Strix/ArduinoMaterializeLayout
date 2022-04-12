@@ -7,9 +7,7 @@ MaterializeLayout::MaterializeLayout(String pageTitle)
   this->injectModule(getMaterializeCssModule());
   this->injectModule(getMainAppModule());
 
-  this->ws = new AsyncWebSocket("/ML" + String(IdGenerator::Instance().getId()));
-
-  this->ws->onEvent([this](AsyncWebSocket* server, AsyncWebSocketClient* client, AwsEventType type, void* arg, uint8_t* data, size_t len) {
+  this->ws.onEvent([this](AsyncWebSocket* server, AsyncWebSocketClient* client, AwsEventType type, void* arg, uint8_t* data, size_t len) {
     if (type == WS_EVT_DATA) {
       AwsFrameInfo* info = (AwsFrameInfo*)arg;
       if (info->final && info->index == 0 && info->len == len && info->opcode == WS_TEXT) {
@@ -37,14 +35,13 @@ MaterializeLayout::MaterializeLayout(String pageTitle)
     if (json == F("null"))
       json = F("{}");
 
-    this->ws->textAll(json);
+    this->ws.textAll(json);
   };
   this->argCollection.dispatch.throttleTime = 0;
 }
 
 MaterializeLayout::~MaterializeLayout()
 {
-  delete this->ws;
 }
 
 PageSources MaterializeLayout::compileSrc()
@@ -82,7 +79,7 @@ PageSources MaterializeLayout::compileSrc()
   }
 
   moduleHandlers += F("dynamicUpdateService.init(\"");
-  moduleHandlers += String(this->ws->url()).substring(1);
+  moduleHandlers += String(this->ws.url()).substring(1);
   moduleHandlers += F("\");");
 
   src.scripts.push_back({ "", moduleHandlers });
@@ -140,7 +137,7 @@ void MaterializeLayout::registerInEspAsyncWebServer(AsyncWebServer* s)
     }
   }
 
-  this->handlers.push_back(server->addHandler(this->ws));
+  this->handlers.push_back(server->addHandler(&this->ws));
 }
 
 void MaterializeLayout::serveSharedStatic(AsyncWebServerRequest* request, SharedStaticType type, const uint8_t* file, size_t fileLength)
