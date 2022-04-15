@@ -204,6 +204,7 @@ String Chart<T>::getAspectRatioClass(ChartAspectRatio ar)
     return "";
   }
 }
+
 template <typename T>
 String Chart<T>::collectChartData()
 {
