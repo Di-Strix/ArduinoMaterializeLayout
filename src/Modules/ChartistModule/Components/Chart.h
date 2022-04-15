@@ -76,7 +76,6 @@ template <typename T>
 Chart<T>::~Chart()
 {
   for (auto chl : this->lines) {
-    chl->~ChartLine();
     delete chl;
   }
 }
