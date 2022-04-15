@@ -36,7 +36,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install --upgrade platformio
       - name: Run PlatformIO
-        run: pio ci --lib="." -c"CI_config.ini" -e d1_mini
+        run: pio ci --lib="." -c"ExamplesConfig.ini" -e d1_mini
         env:
           PLATFORMIO_CI_SRC: ${{ matrix.examples }}
   test:
@@ -66,6 +66,6 @@ jobs:
           pio project init -d ./MLTesting
           rsync -av --progress ./ ./MLTesting/lib/ArduinoMaterializeLayout --exclude MLTesting -q
           rsync -av --progress ./test/ ./MLTesting/test/ -q
-          cp ./CI_config.ini ./MLTesting/platformio.ini
+          cp ./TestingConfig.ini ./MLTesting/platformio.ini
           cd ./MLTesting
           pio test -e native
