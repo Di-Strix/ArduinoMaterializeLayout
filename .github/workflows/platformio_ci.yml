@@ -64,8 +64,8 @@ jobs:
         run: |
           mkdir MLTesting
           pio project init -d ./MLTesting
-          rsync -av --progress ./ ./MLTesting/lib/ArduinoMaterializeLayout --exclude MLTesting
-          rsync -av --progress ./test ./MLTesting/test
+          rsync -av --progress ./ ./MLTesting/lib/ArduinoMaterializeLayout --exclude MLTesting -q
+          rsync -av --progress ./test/ ./MLTesting/test/ -q
           cp ./CI_config.ini ./MLTesting/platformio.ini
           cd ./MLTesting
           pio test -e native
