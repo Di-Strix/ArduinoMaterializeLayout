@@ -36,6 +36,36 @@ jobs:
           python -m pip install --upgrade pip
           pip install --upgrade platformio
       - name: Run PlatformIO
-        run: pio ci --lib="." -c"CI_config.ini"
+        run: pio ci --lib="." -c"ExamplesConfig.ini"
         env:
           PLATFORMIO_CI_SRC: ${{ matrix.examples }}
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Cache pip
+        uses: actions/cache@v2
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: ${{ runner.os }}-pip-
+      - name: Cache PlatformIO
+        uses: actions/cache@v2
+        with:
+          path: ~/.platformio
+          key: ${{ runner.os }}-${{ hashFiles('**/lockfiles') }}
+      - name: Set up Python
+        uses: actions/setup-python@v2
+      - name: Install PlatformIO
+        run: |
+          python -m pip install --upgrade pip
+          pip install --upgrade platformio
+      - name: Run tests
+        run: |
+          mkdir MLTesting
+          pio project init -d ./MLTesting
+          rsync -av --progress ./ ./MLTesting/lib/ArduinoMaterializeLayout --exclude MLTesting -q
+          rsync -av --progress ./test/ ./MLTesting/test/ -q
+          cp ./TestingConfig.ini ./MLTesting/platformio.ini
+          cd ./MLTesting
+          pio test -e native
