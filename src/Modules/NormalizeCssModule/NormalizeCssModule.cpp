@@ -3,8 +3,10 @@
 MaterializeLayoutModule getNormalizeCssModule()
 {
   return {
-    "normalize",
-    NORMALIZE_CSS,
-    NORMALIZE_CSS_LENGTH,
+    {
+        NORMALIZE_CSS_HASH,
+        NORMALIZE_CSS,
+        NORMALIZE_CSS_LENGTH,
+    }
   };
 }

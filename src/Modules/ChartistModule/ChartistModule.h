@@ -2,7 +2,9 @@
 
 #include "MaterializeLayoutTypes.h"
 
-#include "ChartistModuleStatic.h"
+#include "Static/chartist.css.h"
+#include "Static/chartist.js.h"
+
 #include "Components/Chart.h"
 #include "Components/ChartLine/ChartLine.h"
 

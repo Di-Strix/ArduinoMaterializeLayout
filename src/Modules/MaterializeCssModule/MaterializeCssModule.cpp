@@ -3,14 +3,8 @@
 MaterializeLayoutModule getMaterializeCssModule()
 {
   return {
-    { "materialize",
-        MATERIALIZE_CSS,
-        MATERIALIZE_CSS_LENGTH },
-
-    { "materialize",
-        MATERIALIZE_JS,
-        MATERIALIZE_JS_LENGTH },
-
+    { MATERIALIZE_CSS_HASH, MATERIALIZE_CSS, MATERIALIZE_CSS_LENGTH },
+    { MATERIALIZE_JS_HASH, MATERIALIZE_JS, MATERIALIZE_JS_LENGTH },
     "",
     "",
     { { F("MaterializeCssHandler"),

@@ -2,6 +2,6 @@
 
 #include "MaterializeLayoutTypes.h"
 
-#include "NormalizeCssStatic.h"
+#include "Static/normalize.css.h"
 
 MaterializeLayoutModule getNormalizeCssModule();

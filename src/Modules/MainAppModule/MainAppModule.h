@@ -2,6 +2,6 @@
 
 #include "MaterializeLayoutTypes.h"
 
-#include "MainAppModuleStatic.h"
+#include "Static/MainApp.js.h"
 
 MaterializeLayoutModule getMainAppModule();

@@ -3,13 +3,8 @@
 const MaterializeLayoutModule getChartistModule()
 {
   return {
-    { "chartist",
-        CHARTIST_CSS,
-        CHARTIST_CSS_LENGTH },
-
-    { "chartist",
-        CHARTIST_JS,
-        CHARTIST_JS_LENGTH },
+    { CHARTIST_CSS_HASH, CHARTIST_CSS, CHARTIST_CSS_LENGTH },
+    { CHARTIST_JS_HASH, CHARTIST_JS, CHARTIST_JS_LENGTH },
     F(".chart-overflow-visible > svg {overflow: visible;}"),
     "",
     { { F("ChartistHandler"),
