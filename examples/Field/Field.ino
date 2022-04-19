@@ -1,6 +1,6 @@
 /**
  * This example shows how to use Field component
- * Button and Layout component is used. See corresponding examples if needed
+ * Button and Layout component are used. See corresponding examples if needed
  */
 
 #include <ESP8266WiFi.h>
