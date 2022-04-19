@@ -12,7 +12,7 @@
 
 AsyncWebServer server(80);
 
-MaterializeLayout page("Button example");
+MaterializeLayout page("Field example");
 
 /**
  * To store a pointer to the component you can use MaterializeLayoutComponent<T> type, where T is desired component type
