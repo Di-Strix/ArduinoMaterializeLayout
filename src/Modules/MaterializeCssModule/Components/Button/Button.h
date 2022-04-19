@@ -95,7 +95,7 @@ String Button<T>::getHTML()
   elemTemplate += this->classList.value();
   elemTemplate += F("\"");
   if (this->getWidth() > 0) {
-    elemTemplate += F("\"style=\"width:calc(100%/12*");
+    elemTemplate += F("style=\"width:calc(100%/12*");
     elemTemplate += this->getWidth();
     elemTemplate += F(");\"");
   }
