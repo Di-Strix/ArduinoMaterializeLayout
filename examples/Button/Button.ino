@@ -57,7 +57,7 @@ void setup()
   });
 
   /**
-   * Button can be styled as well as all the other MaterializeLayout components
+   * Button can be styled as well as all other MaterializeLayout components
    * For example:
    */
   button->setBackgroundColor(Color::grey);

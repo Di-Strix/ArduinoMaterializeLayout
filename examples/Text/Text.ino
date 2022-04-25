@@ -67,13 +67,13 @@ void setup()
   text2->setText("I have light-green color background with darken-4 shade and teal text with accent-3 shade");
 
   /**
-   * Set the backround color to black. Black has no color shades available
+   * Set the backround color to light green with darken4 shade.
    * 
    * See "Color Palette" section - https://materializecss.com/color.html
    */
   text2->setBackgroundColor(Color::lightGreen, ColorShade::darken4);
   /**
-   * Set the text color to white. White has no color shades available too
+   * Set the text color to teal with accent3 shade.
    * 
    * See "Color Palette" section - https://materializecss.com/color.html
    */
