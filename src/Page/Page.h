@@ -13,6 +13,7 @@ template <typename T>
 class Page : public HTMLElement<T> {
   private:
   String pageTitle;
+  String lang;
 
   protected:
   virtual PageSources compileSrc();
@@ -47,6 +48,20 @@ class Page : public HTMLElement<T> {
    * @param title the new title
    */
   void setPageTitle(String title);
+
+  /**
+   * @brief Sets the language code of the contents on the page. 'en' by default
+   *
+   * @param languageCode language code in ISO 639-1 format
+   */
+  void setPageLanguage(String languageCode);
+
+  /**
+   * @brief Returns page contents' language code (that was previously set or 'en' by default)
+   *
+   * @return String language code in ISO 639-1 format
+   */
+  String getPageLanguage();
 };
 
 // ======================= IMPLEMENTATION =======================
@@ -56,6 +71,7 @@ Page<T>::Page(T argCollection, String title)
     : HTMLElement<T>(argCollection)
 {
   this->setPageTitle(title);
+  this->setPageLanguage("en");
 }
 
 template <typename T>
@@ -69,7 +85,9 @@ String Page<T>::getHTML()
     contents += el->getHTML();
   }
 
-  String elemTemplate = F("<!DOCTYPE html><html lang=\"ru\"><head><meta charset=\"UTF-8\"/><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"/><title>");
+  String elemTemplate = F("<!DOCTYPE html><html lang=\"");
+  elemTemplate += this->lang;
+  elemTemplate += F("\"><head><meta charset=\"UTF-8\"/><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"/><title>");
   elemTemplate += this->pageTitle;
   elemTemplate += F("</title>");
 
@@ -127,4 +145,18 @@ template <typename T>
 PageSources Page<T>::compileSrc()
 {
   return PageSources();
+}
+
+template <typename T>
+void Page<T>::setPageLanguage(String languageCode)
+{
+  languageCode.trim();
+  if (!languageCode.isEmpty())
+    this->lang = languageCode;
+}
+
+template <typename T>
+String Page<T>::getPageLanguage()
+{
+  return this->lang;
 }

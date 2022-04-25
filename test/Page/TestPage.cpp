@@ -26,6 +26,7 @@ void test_render_classes();
 void test_page_title();
 void test_src();
 void test_children();
+void test_page_language();
 
 void setup()
 {
@@ -36,6 +37,7 @@ void setup()
   RUN_TEST(test_page_title);
   RUN_TEST(test_src);
   RUN_TEST(test_children);
+  RUN_TEST(test_page_language);
 
   UNITY_END();
 }
@@ -110,4 +112,18 @@ void test_children()
   child.HTML = "Custom child's HTML";
 
   TEST_ASSERT_GREATER_THAN_MESSAGE(0, page.getHTML().indexOf("Custom child's HTML"), "Should render children's HTML");
+}
+
+void test_page_language()
+{
+  TEST_ASSERT_GREATER_THAN_MESSAGE(0, page.getPageLanguage().length(), "Should have lang code by default");
+
+  String langCode = "SomeLanguageCode";
+  page.setPageLanguage(langCode);
+  TEST_ASSERT_GREATER_THAN_MESSAGE(0, page.getHTML().indexOf(langCode), "Should render page's lang code");
+  TEST_ASSERT_EQUAL_STRING_MESSAGE(langCode.c_str(), page.getPageLanguage().c_str(), "Should return current page lang code");
+
+  page.setPageLanguage(String("   ") + langCode + String("     "));
+
+  TEST_ASSERT_EQUAL_STRING_MESSAGE(langCode.c_str(), page.getPageLanguage().c_str(), "Should trim spaces");
 }
