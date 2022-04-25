@@ -29,8 +29,18 @@ class Layout : public HTMLElement<T> {
    */
   void setVerticalAlign(bool state);
 
+  /**
+   * @brief Sets layout type for the node
+   *
+   * @param lt layout type
+   */
   void setLayoutType(LayoutType lt);
 
+  /**
+   * @brief Returns current layout type
+   *
+   * @return current layout type
+   */
   LayoutType getLayoutType();
 };
 
