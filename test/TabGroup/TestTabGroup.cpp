@@ -53,8 +53,8 @@ void test_get_html()
 
 void test_render_classes()
 {
-  TEST_ASSERT_EQUAL_MESSAGE(0, tabGroup.classList.value().length(), "Should not have any classes by default");
+  TEST_ASSERT_GREATER_THAN_MESSAGE(0, tabGroup.classList.value().length(), "Should have classes by default");
 
   tabGroup.classList.add("custom-class");
-  TEST_ASSERT_EQUAL_MESSAGE(-1, tabGroup.getHTML().indexOf("custom-class"), "Should not render its classes");
+  TEST_ASSERT_GREATER_THAN_MESSAGE(0, tabGroup.getHTML().indexOf("custom-class"), "Should render its classes");
 }

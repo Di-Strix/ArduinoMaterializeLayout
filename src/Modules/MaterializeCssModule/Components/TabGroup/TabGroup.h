@@ -11,7 +11,7 @@
 template <class T>
 class TabGroup : public HTMLElement<T> {
   public:
-  using HTMLElement<T>::HTMLElement;
+  TabGroup(T argCollection);
 
   virtual ~TabGroup() = default;
 
@@ -19,6 +19,15 @@ class TabGroup : public HTMLElement<T> {
 };
 
 // ======================= IMPLEMENTATION =======================
+
+template <class T>
+TabGroup<T>::TabGroup(T argCollection)
+    : HTMLElement<T>(argCollection)
+{
+  this->classList.add("tabs");
+  this->classList.add("tabs-fixed-width");
+  this->classList.add("z-depth-1");
+}
 
 template <class T>
 String TabGroup<T>::getHTML()
@@ -43,7 +52,9 @@ String TabGroup<T>::getHTML()
     contents += F("</div>");
   }
 
-  String elemTemplate = F("<div class=\"row\"><ul class=\"tabs\">");
+  String elemTemplate = F("<div class=\"row\"><ul class=\"");
+  elemTemplate += this->classList.value();
+  elemTemplate += F("\">");
   elemTemplate += contentsList;
   elemTemplate += F("</ul></div>");
   elemTemplate += contents;
