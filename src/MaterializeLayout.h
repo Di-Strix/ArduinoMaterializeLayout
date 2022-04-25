@@ -45,6 +45,7 @@ class MaterializeLayout : public Page<HTMLElementArgs*> {
    * @param pageTitle title displayed on the tab
    */
   MaterializeLayout(String pageTitle);
+
   ~MaterializeLayout();
 
   /**

@@ -31,7 +31,7 @@ class Tab : public HTMLElement<T> {
   String getTabName();
 
   /**
-   * @brief Sets the name of the tab 
+   * @brief Sets the name of the tab
    *
    * @param tabName
    */
