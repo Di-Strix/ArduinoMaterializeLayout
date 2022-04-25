@@ -21,6 +21,8 @@ class Tab : public HTMLElement<T> {
    */
   Tab(T argCollection);
 
+  virtual ~Tab() = default;
+
   /**
    * @brief Gets the name of the tab
    *

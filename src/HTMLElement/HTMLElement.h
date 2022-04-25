@@ -37,7 +37,8 @@ class HTMLElement {
   ClassList classList;
 
   HTMLElement(T argCollection);
-  ~HTMLElement() = default;
+
+  virtual ~HTMLElement() = default;
 
   /**
    * @brief Returns an id of the element. The id is used to emit an event on certain component

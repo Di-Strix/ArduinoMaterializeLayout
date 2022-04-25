@@ -34,6 +34,8 @@ class StaticText : public HTMLElement<T> {
 
   using HTMLElement<T>::HTMLElement;
 
+  virtual ~StaticText() = default;
+
   /**
    * @brief Gets the current text
    *
@@ -70,6 +72,8 @@ class DynamicText : public StaticText<T> {
 
   public:
   using StaticText<T>::StaticText;
+
+  virtual ~DynamicText() = default;
 };
 
 // ======================= IMPLEMENTATION =======================

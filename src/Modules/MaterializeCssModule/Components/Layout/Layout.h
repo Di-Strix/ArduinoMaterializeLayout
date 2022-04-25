@@ -18,6 +18,8 @@ class Layout : public HTMLElement<T> {
   public:
   using HTMLElement<T>::HTMLElement;
 
+  virtual ~Layout() = default;
+
   virtual String getHTML();
 
   /**

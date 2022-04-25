@@ -26,6 +26,8 @@ class Field : public HTMLElement<T> {
    */
   Field(T argCollection);
 
+  virtual ~Field() = default;
+
   String getHTML();
 
   /**

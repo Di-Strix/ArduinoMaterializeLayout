@@ -28,6 +28,8 @@ class Button : public HTMLElement<T> {
    */
   Button(T argCollection);
 
+  virtual ~Button() = default;
+
   virtual String getHTML();
 
   /**

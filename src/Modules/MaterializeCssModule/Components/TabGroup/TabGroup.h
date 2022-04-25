@@ -11,6 +11,7 @@
 template <class T>
 class TabGroup : public HTMLElement<T> {
   using HTMLElement<T>::HTMLElement;
+  virtual ~TabGroup() = default;
 
   public:
   String getHTML();
