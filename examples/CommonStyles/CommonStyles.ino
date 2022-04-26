@@ -11,7 +11,7 @@
 
 AsyncWebServer server(80);
 
-MaterializeLayout page("DynamicText example");
+MaterializeLayout page("Common styles example");
 
 void createTextColorExample(MaterializeLayoutComponent<Layout> root);
 void createLayoutExample(MaterializeLayoutComponent<Layout> root);
