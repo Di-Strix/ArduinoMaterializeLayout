@@ -16,6 +16,8 @@ jobs:
             examples/Text/*,
             examples/Button/*,
             examples/Field/*,
+            examples/Layout/*,
+            examples/Tabs/*,
           ]
 
     steps:
