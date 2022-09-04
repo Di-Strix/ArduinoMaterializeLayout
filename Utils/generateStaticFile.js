@@ -26,7 +26,7 @@ switch (from.match(/\..+$/)[0]) {
     )
     break
   default:
-    processFile(Array.from(fs.readFileSync(from)))
+    processFile(fs.readFileSync(from))
     break
 }
 
