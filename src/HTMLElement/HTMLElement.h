@@ -12,6 +12,8 @@
 
 template <typename T>
 class HTMLElement {
+  static_assert(std::is_pointer_v<T>, "Template argument for HTMLElement must be a pointer");
+
   private:
   T argCollection;
 
