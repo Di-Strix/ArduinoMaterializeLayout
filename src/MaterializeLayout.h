@@ -1,7 +1,14 @@
 #pragma once
 
-#include <ArduinoJson.h>
+#if UNIT_TEST
+#include "Mocks/Arduino/Arduino.h"
+#include "Mocks/ESPAsyncWebServer/ESPAsyncWebServer.h"
+#else
+#include <Arduino.h>
 #include <ESPAsyncWebServer.h>
+#endif
+
+#include <ArduinoJson.h>
 #include <list>
 #include <type_traits>
 #include <utility>
