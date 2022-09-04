@@ -11,7 +11,7 @@
 template <class T>
 class TabGroup : public HTMLElement<T> {
   public:
-  TabGroup(T argCollection);
+  TabGroup(T* argCollection);
 
   virtual ~TabGroup() = default;
 
@@ -21,7 +21,7 @@ class TabGroup : public HTMLElement<T> {
 // ======================= IMPLEMENTATION =======================
 
 template <class T>
-TabGroup<T>::TabGroup(T argCollection)
+TabGroup<T>::TabGroup(T* argCollection)
     : HTMLElement<T>(argCollection)
 {
   this->classList.add("tabs");

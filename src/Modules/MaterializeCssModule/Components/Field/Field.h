@@ -24,7 +24,7 @@ class Field : public HTMLElement<T> {
    * @param name the name of the field
    * @param defaultValue default value of the field
    */
-  Field(T argCollection);
+  Field(T* argCollection);
 
   virtual ~Field() = default;
 
@@ -73,7 +73,7 @@ class Field : public HTMLElement<T> {
 // ======================= IMPLEMENTATION =======================
 
 template <typename T>
-Field<T>::Field(T argCollection)
+Field<T>::Field(T* argCollection)
     : HTMLElement<T>(argCollection)
 {
   this->name = (String)this->getId();

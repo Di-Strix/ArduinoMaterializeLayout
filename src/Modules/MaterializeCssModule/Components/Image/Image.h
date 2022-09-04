@@ -25,7 +25,7 @@ class Image : public HTMLElement<T> {
   WebSourceHandler* sourceHandler = nullptr;
 
   public:
-  Image(T argCollection);
+  Image(T* argCollection);
   virtual ~Image() = default;
 
   virtual String getHTML() override;
@@ -70,7 +70,7 @@ class Image : public HTMLElement<T> {
 // ======================= IMPLEMENTATION =======================
 
 template <typename T>
-Image<T>::Image(T argCollection)
+Image<T>::Image(T* argCollection)
     : HTMLElement<T>(argCollection)
 {
   this->classList.add(F("materialboxed"));

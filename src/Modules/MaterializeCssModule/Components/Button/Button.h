@@ -26,7 +26,7 @@ class Button : public HTMLElement<T> {
    * @param caption the caption of the button
    * @param callback callback that is called when the button is clicked
    */
-  Button(T argCollection);
+  Button(T* argCollection);
 
   virtual ~Button() = default;
 
@@ -61,7 +61,7 @@ class Button : public HTMLElement<T> {
 // ======================= IMPLEMENTATION =======================
 
 template <typename T>
-Button<T>::Button(T argCollection)
+Button<T>::Button(T* argCollection)
     : HTMLElement<T>(argCollection)
 {
   this->classList.add(F("waves-effect"));

@@ -58,7 +58,7 @@ struct HTMLElementArgs {
 };
 
 template <template <typename> class TemplateClass>
-using MaterializeLayoutComponent_t = TemplateClass<HTMLElementArgs*>;
+using MaterializeLayoutComponent_t = TemplateClass<HTMLElementArgs>;
 
 template <template <typename> class TemplateClass>
 using MaterializeLayoutComponent = MaterializeLayoutComponent_t<TemplateClass>*;

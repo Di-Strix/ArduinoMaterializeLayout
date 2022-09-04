@@ -19,7 +19,7 @@ class Tab : public HTMLElement<T> {
    * @param registrationService dynamic component registration service that is used in the current page
    * @param tabName the name of the tab
    */
-  Tab(T argCollection);
+  Tab(T* argCollection);
 
   virtual ~Tab() = default;
 
@@ -41,7 +41,7 @@ class Tab : public HTMLElement<T> {
 // ======================= IMPLEMENTATION =======================
 
 template <typename T>
-Tab<T>::Tab(T argCollection)
+Tab<T>::Tab(T* argCollection)
     : HTMLElement<T>(argCollection)
 {
   this->setTabName(String(this->getId()));

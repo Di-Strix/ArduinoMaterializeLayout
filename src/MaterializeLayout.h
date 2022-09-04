@@ -30,7 +30,7 @@ inline DynamicJsonDocument dynamiclyDeserializeJson(T data)
   return doc;
 }
 
-class MaterializeLayout : public Page<HTMLElementArgs*> {
+class MaterializeLayout : public MaterializeLayoutComponent_t<Page> {
   private:
   HTMLElementArgs argCollection;
 

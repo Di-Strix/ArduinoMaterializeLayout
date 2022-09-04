@@ -43,7 +43,7 @@ class Chart : public HTMLElement<T> {
   virtual String getHandlerId() { return F("ChartistHandler"); };
 
   public:
-  Chart(T argCollection);
+  Chart(T* argCollection);
   ~Chart();
 
   String collectChartData();
@@ -64,7 +64,7 @@ class Chart : public HTMLElement<T> {
 // ======================= IMPLEMENTATION =======================
 
 template <typename T>
-Chart<T>::Chart(T argCollection)
+Chart<T>::Chart(T* argCollection)
     : HTMLElement<T>(argCollection)
 {
   this->classList.add(F("ct-chart"));

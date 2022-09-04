@@ -24,7 +24,7 @@ class Page : public HTMLElement<T> {
    *
    * @param title the title of the page which is displayed on the tab
    */
-  Page(T argCollection, String title);
+  Page(T* argCollection, String title);
 
   virtual ~Page() = default;
 
@@ -67,7 +67,7 @@ class Page : public HTMLElement<T> {
 // ======================= IMPLEMENTATION =======================
 
 template <typename T>
-Page<T>::Page(T argCollection, String title)
+Page<T>::Page(T *argCollection, String title)
     : HTMLElement<T>(argCollection)
 {
   this->setPageTitle(title);

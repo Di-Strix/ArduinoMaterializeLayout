@@ -12,10 +12,10 @@
 
 template <typename T>
 class HTMLElement {
-  static_assert(std::is_pointer_v<T>, "Template argument for HTMLElement must be a pointer");
+  static_assert(!std::is_pointer_v<T>, "Template argument for HTMLElement must not be a pointer");
 
   private:
-  T argCollection;
+  T* argCollection;
 
   size_t id = 0;
 
@@ -46,12 +46,12 @@ class HTMLElement {
    */
   String getInlineStyles();
 
-  T getArgCollection();
+  T* getArgCollection();
 
   public:
   ClassList classList;
 
-  HTMLElement(T argCollection);
+  HTMLElement(T* argCollection);
 
   virtual ~HTMLElement() = default;
 
@@ -187,7 +187,7 @@ class HTMLElement {
 // ======================= IMPLEMENTATION =======================
 
 template <typename T>
-HTMLElement<T>::HTMLElement(T argCollection)
+HTMLElement<T>::HTMLElement(T* argCollection)
 {
   this->argCollection = argCollection;
   this->id = IdGenerator::Instance().getId();
@@ -414,7 +414,7 @@ String HTMLElement<T>::getInlineStyles()
 }
 
 template <typename T>
-T HTMLElement<T>::getArgCollection()
+T* HTMLElement<T>::getArgCollection()
 {
   return this->argCollection;
 }
