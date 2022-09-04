@@ -13,9 +13,6 @@
 
 #define PROGMEM
 
-extern void setup();
-extern void loop();
-
 uint32_t millis();
 
 void delay(unsigned long);
