@@ -1,7 +1,7 @@
 #include "MaterializeLayout.h"
 
 MaterializeLayout::MaterializeLayout(String pageTitle)
-    : Page(this->getArgs(), pageTitle)
+    : Page(new MLArgs(), pageTitle)
 {
   this->injectModule(getNormalizeCssModule());
   this->injectModule(getMaterializeCssModule());
@@ -23,7 +23,7 @@ MaterializeLayout::MaterializeLayout(String pageTitle)
     }
   });
 
-  this->argCollection.dispatch.dispatcher = [this](String handlerId, size_t id, String value) {
+  this->getArgCollection()->dispatch.dispatcher = [this](String handlerId, size_t id, String value) {
     DynamicJsonDocument doc(JSON_OBJECT_SIZE(3) + JSON_STRING_SIZE(value.length()) + JSON_STRING_SIZE(handlerId.length()));
     doc["handlerId"] = handlerId;
     doc["id"] = id;
@@ -37,9 +37,9 @@ MaterializeLayout::MaterializeLayout(String pageTitle)
 
     this->ws.textAll(json);
   };
-  this->argCollection.dispatch.throttleTime = 0;
+  this->getArgCollection()->dispatch.throttleTime = 0;
 
-  this->argCollection.registerSource = [this](String path, const uint8_t* content, size_t contentLength, String contentType) -> WebSourceHandler* {
+  this->getArgCollection()->registerSource = [this](String path, const uint8_t* content, size_t contentLength, String contentType) -> WebSourceHandler* {
     auto srcHandler = new WebSourceHandler(path, content, contentLength, contentType);
     this->registeredSources.push_back(srcHandler);
 
@@ -58,6 +58,8 @@ MaterializeLayout::~MaterializeLayout()
   }
 
   this->registeredSources.clear();
+
+  delete this->getArgCollection();
 }
 
 PageSources MaterializeLayout::compileSrc()
@@ -177,9 +179,4 @@ void MaterializeLayout::serveSharedStatic(AsyncWebServerRequest* request, Shared
   res->addHeader(F("Cache-Control"), F("max-age=31536000, immutable"));
   res->addHeader(F("X-Content-Type-Options"), F("nosniff"));
   request->send(res);
-}
-
-HTMLElementArgs* MaterializeLayout::getArgs()
-{
-  return &this->argCollection;
 }

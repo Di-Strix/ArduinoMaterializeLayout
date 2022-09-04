@@ -32,7 +32,6 @@ inline DynamicJsonDocument dynamiclyDeserializeJson(T data)
 
 class MaterializeLayout : public MaterializeLayoutComponent_t<Page> {
   private:
-  MLArgs argCollection;
 
   std::list<MaterializeLayoutModule> modules;
   std::list<AsyncWebHandler> handlers;
@@ -43,8 +42,6 @@ class MaterializeLayout : public MaterializeLayoutComponent_t<Page> {
 
   PageSources compileSrc();
   void unregisterHandlers();
-
-  MLArgs* getArgs();
 
   public:
   /**
@@ -97,7 +94,7 @@ MaterializeLayoutComponent<C> constexpr MaterializeLayout::createComponent(Args.
   static_assert(isConstructible, "Incompatible args");
 
   if constexpr (isInherited && isConstructible)
-    return new MaterializeLayoutComponent_t<C>(this->getArgs(), std::forward<Args>(args)...);
+    return new MaterializeLayoutComponent_t<C>(this->getArgCollection(), std::forward<Args>(args)...);
   else
     return nullptr;
 }
