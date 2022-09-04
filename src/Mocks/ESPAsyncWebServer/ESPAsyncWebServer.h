@@ -1,6 +1,7 @@
 #if UNIT_TEST
 
-#pragma once
+#ifndef ESP_ASYNC_WEB_SERVER_MOCK
+#define ESP_ASYNC_WEB_SERVER_MOCK
 
 #include <Arduino.h>
 #include <functional>
@@ -112,28 +113,29 @@ class AsyncWebServer {
   public:
   AsyncWebServer() = default;
   virtual ~AsyncWebServer() = default;
+  AsyncWebHandler h;
 
   virtual AsyncWebHandler& addHandler(AsyncWebHandler*)
   {
-    return *(new AsyncWebHandler());
+    return this->h;
   }
 
   virtual AsyncWebHandler& on(String, int, ArRequestHandlerFunction)
   {
-    return *(new AsyncWebHandler());
+    return this->h;
   }
 
   virtual AsyncWebHandler& on(String, ArRequestHandlerFunction)
   {
-    return *(new AsyncWebHandler());
+    return this->h;
   }
 
   virtual bool removeHandler(AsyncWebHandler* h)
   {
-    delete h;
-
     return true;
   }
 };
 
-#endif
+#endif //ESP_ASYNC_WEB_SERVER_MOCK
+
+#endif //UNIT_TEST
