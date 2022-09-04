@@ -16,5 +16,9 @@ struct PageSources {
 };
 
 struct PageArgs : public HTMLElementArgsBase {
+  /**
+   * @brief Used to inject elements to the root of the page
+   *
+   */
   HTMLElement<HTMLElementArgsBase>* rootPortal = nullptr;
 };
