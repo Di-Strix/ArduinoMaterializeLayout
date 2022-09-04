@@ -9,7 +9,7 @@
 
 template <typename T>
 class Tab : public HTMLElement<T> {
-  private:
+  protected:
   String name;
 
   public:
@@ -28,14 +28,14 @@ class Tab : public HTMLElement<T> {
    *
    * @return String
    */
-  String getTabName();
+  virtual String getTabName();
 
   /**
    * @brief Sets the name of the tab
    *
    * @param tabName
    */
-  void setTabName(String tabName);
+  virtual void setTabName(String tabName);
 };
 
 // ======================= IMPLEMENTATION =======================
