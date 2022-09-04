@@ -216,14 +216,7 @@ bool HTMLElement<T>::emit(size_t id, String value)
 template <typename T>
 void HTMLElement<T>::dispatch(String value)
 {
-  typename std::remove_pointer_t<T> argCollection;
-
-  if constexpr (std::is_pointer_v<T>)
-    argCollection = *this->argCollection;
-  else
-    argCollection = this->argCollection;
-
-  auto dispatchArgs = argCollection.dispatch;
+  auto dispatchArgs = this->getArgCollection()->dispatch;
 
   static uint32_t lastDispatchTime = 0;
   if (dispatchArgs.dispatcher && millis() - lastDispatchTime >= dispatchArgs.throttleTime) {
@@ -235,14 +228,7 @@ void HTMLElement<T>::dispatch(String value)
 template <typename T>
 WebSourceHandler* HTMLElement<T>::registerSource(String path, const uint8_t* content, size_t contentLength, String contentType)
 {
-  typename std::remove_pointer_t<T> argCollection;
-
-  if constexpr (std::is_pointer_v<T>)
-    argCollection = *this->argCollection;
-  else
-    argCollection = this->argCollection;
-
-  return argCollection.registerSource("/" + this->getHandlerId() + "/" + String(this->getId()) + "/" + path, content, contentLength, contentType);
+  return this->getArgCollection()->registerSource("/" + this->getHandlerId() + "/" + String(this->getId()) + "/" + path, content, contentLength, contentType);
 }
 
 template <typename T>
