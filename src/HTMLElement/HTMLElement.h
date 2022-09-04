@@ -46,6 +46,8 @@ class HTMLElement {
    */
   String getInlineStyles();
 
+  T getArgCollection();
+
   public:
   ClassList classList;
 
@@ -423,4 +425,10 @@ String HTMLElement<T>::getInlineStyles()
   }
 
   return result;
+}
+
+template <typename T>
+T HTMLElement<T>::getArgCollection()
+{
+  return this->argCollection;
 }
