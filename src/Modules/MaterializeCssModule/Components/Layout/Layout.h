@@ -59,6 +59,9 @@ String Layout<T>::getHTML()
 
   componentTemplate = F("<div class=\"");
   componentTemplate += this->classList.value();
+  componentTemplate += F("\" ");
+  componentTemplate += F("style=\"");
+  componentTemplate += this->getInlineStyles();
   componentTemplate += F("\">");
   componentTemplate += nestedLayout;
   componentTemplate += F("</div>");

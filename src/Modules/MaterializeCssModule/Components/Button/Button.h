@@ -96,11 +96,14 @@ String Button<T>::getHTML()
   elemTemplate += F("\" data-MCSS-emitOnClick=\"true\" class=\"");
   elemTemplate += this->classList.value();
   elemTemplate += F("\"");
+  elemTemplate += F("style=\"");
   if (this->getWidth() > 0) {
-    elemTemplate += F("style=\"width:calc(100%/12*");
+    elemTemplate += F("width:calc(100%/12*");
     elemTemplate += this->getWidth();
-    elemTemplate += F(");\"");
+    elemTemplate += F(");");
   }
+  elemTemplate += this->getInlineStyles();
+  elemTemplate += F("\"");
   elemTemplate += F(">");
   elemTemplate += this->caption;
   elemTemplate += F("</a>\n");

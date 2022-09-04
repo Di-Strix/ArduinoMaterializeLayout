@@ -121,6 +121,9 @@ String Field<T>::getHTML()
 
   String elemTemplate = F("<div class=\"");
   elemTemplate += this->classList.value();
+  elemTemplate += F("\" ");
+  elemTemplate += F("style=\"");
+  elemTemplate += this->getInlineStyles();
   elemTemplate += F("\"><input value=\"");
   elemTemplate += this->defaultValue;
   elemTemplate += F("\" type=\"text\" data-id=\"");

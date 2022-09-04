@@ -89,6 +89,9 @@ String Image<T>::getHTML()
   elemTemplate += F("\" ");
   elemTemplate += F("alt=\"");
   elemTemplate += this->alt;
+  elemTemplate += F("\" ");
+  elemTemplate += F("style=\"");
+  elemTemplate += this->getInlineStyles();
   elemTemplate += F("\">");
 
   return elemTemplate;

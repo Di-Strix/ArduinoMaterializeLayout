@@ -126,7 +126,11 @@ String Chart<T>::getHTML()
   html += this->classList.value();
   html += F("\" data-chart=\"true\" data-type=\"chart\" data-id=\"");
   html += (String)this->getId();
+  html += F("\" ");
+  html += F("style=\"");
+  html += this->getInlineStyles();
   html += F("\"></div>");
+
   return html;
 }
 

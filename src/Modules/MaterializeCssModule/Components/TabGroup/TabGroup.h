@@ -54,6 +54,9 @@ String TabGroup<T>::getHTML()
 
   String elemTemplate = F("<div class=\"row\"><ul class=\"");
   elemTemplate += this->classList.value();
+  elemTemplate += F("\" ");
+  elemTemplate += F("style=\"");
+  elemTemplate += this->getInlineStyles();
   elemTemplate += F("\">");
   elemTemplate += contentsList;
   elemTemplate += F("</ul></div>");

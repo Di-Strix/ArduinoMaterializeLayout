@@ -11,3 +11,5 @@ String colorShadeToString(ColorShade cs);
 bool colorShadeIsValid(Color c, ColorShade cs);
 
 String colorToString(Color c);
+
+String getCSSStyleKey(CSSStyleKey k);

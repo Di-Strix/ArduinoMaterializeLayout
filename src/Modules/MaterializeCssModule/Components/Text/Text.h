@@ -145,6 +145,9 @@ String StaticText<T>::getHTML()
   elemTemplate += id;
   elemTemplate += F("\" data-dynamic=\"");
   elemTemplate += this->isDynamic() ? F("true") : F("false");
+  elemTemplate += F("\" ");
+  elemTemplate += F("style=\"");
+  elemTemplate += this->getInlineStyles();
   elemTemplate += F("\">");
   elemTemplate += this->getText();
   elemTemplate += F("</");

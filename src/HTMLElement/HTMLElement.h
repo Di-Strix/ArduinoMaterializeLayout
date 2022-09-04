@@ -1,6 +1,7 @@
 #pragma once
 
 #include <Arduino.h>
+#include <map>
 
 #include "ClassList/ClassList.h"
 #include "IdGenerator.h"
@@ -23,6 +24,8 @@ class HTMLElement {
   Color textColor = Color::defaultColor;
   ColorShade textColorShade = ColorShade::noShade;
 
+  std::map<String, String> inlineStyles;
+
   String getTextColorClass();
   String getTextColorShadeClass();
 
@@ -32,6 +35,13 @@ class HTMLElement {
   std::list<HTMLElement*> children;
 
   virtual void onEmit(String value) {};
+
+  /**
+   * @brief Returns insert-ready inline css for the current node
+   *
+   * @return String
+   */
+  String getInlineStyles();
 
   public:
   ClassList classList;
@@ -151,6 +161,22 @@ class HTMLElement {
    * @return ColorShade
    */
   ColorShade getTextColorShade();
+
+  /**
+   * @brief Set style parameter for current node
+   *
+   * @param key Style key
+   * @param value Value to be assigned
+   */
+  void setStyle(CSSStyleKey key, String value);
+
+  /**
+   * @brief Returns current value for the provided key
+   *
+   * @param key Style key to search value for
+   * @return Value
+   */
+  String getStyle(CSSStyleKey key);
 };
 
 // ======================= IMPLEMENTATION =======================
@@ -355,4 +381,43 @@ template <typename T>
 ColorShade HTMLElement<T>::getTextColorShade()
 {
   return this->textColorShade;
+}
+
+template <typename T>
+void HTMLElement<T>::setStyle(CSSStyleKey key, String value)
+{
+  String mapKey = getCSSStyleKey(key);
+
+  if (mapKey.isEmpty())
+    return;
+
+  value.trim();
+  value.replace(F(";"), F(""));
+
+  if (value.isEmpty()) {
+    this->inlineStyles.erase(mapKey);
+  } else {
+    this->inlineStyles[mapKey] = value;
+  }
+}
+
+template <typename T>
+String HTMLElement<T>::getStyle(CSSStyleKey key)
+{
+  return this->inlineStyles[getCSSStyleKey(key)];
+}
+
+template <typename T>
+String HTMLElement<T>::getInlineStyles()
+{
+  String result;
+
+  for (auto style : this->inlineStyles) {
+    result += style.first;
+    result += F(":");
+    result += style.second;
+    result += F(";");
+  }
+
+  return result;
 }
