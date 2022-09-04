@@ -36,6 +36,7 @@ class MaterializeLayout : public Page<HTMLElementArgs*> {
 
   std::list<MaterializeLayoutModule> modules;
   std::list<AsyncWebHandler> handlers;
+  std::list<WebSourceHandler*> registeredSources;
 
   AsyncWebServer* server;
   AsyncWebSocket ws = AsyncWebSocket("/ML" + String(this->getId()));

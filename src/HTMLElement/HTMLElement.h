@@ -79,6 +79,15 @@ class HTMLElement {
   void dispatch(String value);
 
   /**
+   * @brief Registers custom source for the page
+   *
+   * @param path Path to the course. The final source will be available by path /${Module handler id}/${node id}/${path}
+   * @param content Source contents in PROGMEM
+   * @param contentType Type of the content according to the MIME type. See https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types#types
+   */
+  WebSourceHandler* registerSource(String path, const uint8_t* content, size_t contentLength, String contentType);
+
+  /**
    * @brief Sets width of the component in HTML if it's possible.
    * Doesn't work for row layout
    * Uses 12-column grid layout. See "Introduction" section - https://materializecss.com/grid.html
@@ -190,6 +199,19 @@ void HTMLElement<T>::dispatch(String value)
     dispatchArgs.dispatcher(this->getHandlerId(), this->id, value);
     lastDispatchTime = millis();
   }
+}
+
+template <typename T>
+WebSourceHandler* HTMLElement<T>::registerSource(String path, const uint8_t* content, size_t contentLength, String contentType)
+{
+  typename std::remove_pointer_t<T> argCollection;
+
+  if constexpr (std::is_pointer_v<T>)
+    argCollection = *this->argCollection;
+  else
+    argCollection = this->argCollection;
+
+  return argCollection.registerSource("/" + this->getHandlerId() + "/" + String(this->getId()) + "/" + path, content, contentLength, contentType);
 }
 
 template <typename T>

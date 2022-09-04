@@ -5,6 +5,7 @@
 #include <map>
 
 #include "Page/PageTypes.h"
+#include "WebSourceHandler/WebSourceHandler.h"
 
 enum class SharedStaticType {
   CSS,
@@ -53,6 +54,7 @@ struct HTMLElementArgs {
     std::function<void(String handlerId, size_t elementId, String value)> dispatcher;
     uint32_t throttleTime;
   } dispatch;
+  std::function<WebSourceHandler*(String path, const uint8_t* content, size_t contentLength, String contentType)> registerSource;
 };
 
 template <template <typename> class TemplateClass>

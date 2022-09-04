@@ -38,11 +38,26 @@ MaterializeLayout::MaterializeLayout(String pageTitle)
     this->ws.textAll(json);
   };
   this->argCollection.dispatch.throttleTime = 0;
+
+  this->argCollection.registerSource = [this](String path, const uint8_t* content, size_t contentLength, String contentType) -> WebSourceHandler* {
+    auto srcHandler = new WebSourceHandler(path, content, contentLength, contentType);
+    this->registeredSources.push_back(srcHandler);
+
+    this->registerInEspAsyncWebServer(this->server);
+
+    return srcHandler;
+  };
 }
 
 MaterializeLayout::~MaterializeLayout()
 {
   this->unregisterHandlers();
+
+  for (auto srcHandler : this->registeredSources) {
+    delete srcHandler;
+  }
+
+  this->registeredSources.clear();
 }
 
 PageSources MaterializeLayout::compileSrc()
@@ -139,6 +154,10 @@ void MaterializeLayout::registerInEspAsyncWebServer(AsyncWebServer* s)
   }
 
   this->handlers.push_back(server->addHandler(&this->ws));
+
+  for (auto srcHandler : this->registeredSources) {
+    srcHandler->performRegistration(this->server);
+  }
 }
 
 void MaterializeLayout::serveSharedStatic(AsyncWebServerRequest* request, SharedStaticType type, const uint8_t* file, size_t fileLength)
