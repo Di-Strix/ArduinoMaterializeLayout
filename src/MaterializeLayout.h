@@ -32,7 +32,6 @@ inline DynamicJsonDocument dynamiclyDeserializeJson(T data)
 
 class MaterializeLayout : public MaterializeLayoutComponent_t<Page> {
   private:
-
   std::list<MaterializeLayoutModule> modules;
   std::list<AsyncWebHandler> handlers;
   std::list<WebSourceHandler*> registeredSources;

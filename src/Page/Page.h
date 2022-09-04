@@ -28,7 +28,7 @@ class Page : public HTMLElement<T> {
    */
   Page(T* argCollection, String title);
 
-  virtual ~Page() = default;
+  virtual ~Page();
 
   /**
    * @brief Recursively compiles all nested elements and returns HTML layout of the page using current params
@@ -69,11 +69,20 @@ class Page : public HTMLElement<T> {
 // ======================= IMPLEMENTATION =======================
 
 template <typename T>
-Page<T>::Page(T *argCollection, String title)
+Page<T>::Page(T* argCollection, String title)
     : HTMLElement<T>(argCollection)
 {
   this->setPageTitle(title);
   this->setPageLanguage("en");
+
+  this->getArgCollection()->rootPortal = decltype(PageArgs::rootPortal)(new HTMLElement(this->getArgCollection()));
+}
+
+template <typename T>
+Page<T>::~Page()
+{
+  delete this->getArgCollection()->rootPortal;
+  this->getArgCollection()->rootPortal = nullptr;
 }
 
 template <typename T>
@@ -108,7 +117,12 @@ String Page<T>::getHTML()
 
   elemTemplate += F("</head><body class=\"");
   elemTemplate += this->classList.value();
-  elemTemplate += F("\"><div class=\"container row\">");
+  elemTemplate += F("\">");
+
+  if (this->getArgCollection()->rootPortal != nullptr)
+    elemTemplate += this->getArgCollection()->rootPortal->getHTML();
+
+  elemTemplate += F("<div class=\"container row\">");
   elemTemplate += contents;
   elemTemplate += F("</div>");
 
