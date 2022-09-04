@@ -39,7 +39,7 @@ function generateCPPVariableName(inputFileName) {
     .split('/')
     .pop()
     .replaceAll(/[A-Z]*[A-Z]/g, str => `_${str.trim().toUpperCase()}`)
-    .replaceAll(/[. ]/g, () => '_')
+    .replaceAll(/[. :\\\-()]/g, () => '_')
     .replace(/^_*/, () => '')
     .replaceAll(/_{2,}/g, () => '_')
     .toUpperCase()
