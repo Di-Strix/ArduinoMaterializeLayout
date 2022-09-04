@@ -11,6 +11,8 @@
 
 template <typename T>
 class Page : public HTMLElement<T> {
+  static_assert(std::is_base_of_v<PageArgs, T>, "Template arg of the Page must derive from PageArgs");
+
   private:
   String pageTitle;
   String lang;

@@ -49,16 +49,10 @@ struct MaterializeLayoutModule {
   }
 };
 
-struct HTMLElementArgs {
-  struct {
-    std::function<void(String handlerId, size_t elementId, String value)> dispatcher;
-    uint32_t throttleTime;
-  } dispatch;
-  std::function<WebSourceHandler*(String path, const uint8_t* content, size_t contentLength, String contentType)> registerSource;
-};
+struct MLArgs : public PageArgs {};
 
 template <template <typename> class TemplateClass>
-using MaterializeLayoutComponent_t = TemplateClass<HTMLElementArgs>;
+using MaterializeLayoutComponent_t = TemplateClass<MLArgs>;
 
 template <template <typename> class TemplateClass>
 using MaterializeLayoutComponent = MaterializeLayoutComponent_t<TemplateClass>*;

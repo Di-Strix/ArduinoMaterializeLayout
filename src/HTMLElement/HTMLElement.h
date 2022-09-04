@@ -13,6 +13,7 @@
 template <typename T>
 class HTMLElement {
   static_assert(!std::is_pointer_v<T>, "Template argument for HTMLElement must not be a pointer");
+  static_assert(std::is_base_of_v<HTMLElementArgsBase, std::remove_pointer_t<T>>, "Template arg of the HTMLElement must derive from HTMLElementArgsBase");
 
   private:
   T* argCollection;

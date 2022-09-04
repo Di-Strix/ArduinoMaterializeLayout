@@ -32,7 +32,7 @@ inline DynamicJsonDocument dynamiclyDeserializeJson(T data)
 
 class MaterializeLayout : public MaterializeLayoutComponent_t<Page> {
   private:
-  HTMLElementArgs argCollection;
+  MLArgs argCollection;
 
   std::list<MaterializeLayoutModule> modules;
   std::list<AsyncWebHandler> handlers;
@@ -44,7 +44,7 @@ class MaterializeLayout : public MaterializeLayoutComponent_t<Page> {
   PageSources compileSrc();
   void unregisterHandlers();
 
-  HTMLElementArgs* getArgs();
+  MLArgs* getArgs();
 
   public:
   /**
@@ -91,7 +91,7 @@ template <template <class> class C, typename... Args>
 MaterializeLayoutComponent<C> constexpr MaterializeLayout::createComponent(Args... args)
 {
   const bool isInherited = std::is_base_of_v<MaterializeLayoutComponent_t<HTMLElement>, MaterializeLayoutComponent_t<C>>;
-  const bool isConstructible = std::is_constructible_v<MaterializeLayoutComponent_t<C>, HTMLElementArgs*, Args...>;
+  const bool isConstructible = std::is_constructible_v<MaterializeLayoutComponent_t<C>, MLArgs*, Args...>;
 
   static_assert(isInherited, "Component must be inherited from HTMLElement");
   static_assert(isConstructible, "Incompatible args");
