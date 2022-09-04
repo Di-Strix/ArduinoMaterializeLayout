@@ -5,6 +5,7 @@
 
 #include "ClassList/ClassList.h"
 #include "IdGenerator.h"
+#include "WebSourceHandler/WebSourceHandler.h"
 
 #include "HTMLElementHelperFunctions.h"
 #include "HTMLElemetTypes.h"
