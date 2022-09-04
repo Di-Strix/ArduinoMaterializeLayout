@@ -38,6 +38,11 @@ class HTMLElement {
 
   std::list<HTMLElement*> children;
 
+  /**
+   * @brief Event handler that is called when event emitted on this component
+   *
+   * @param value Event data
+   */
   virtual void onEmit(String value) {};
 
   /**
