@@ -18,6 +18,7 @@ npm install
 ## Contents:
 
 - [Static file generator](#static-file-generator)
+- [Library composer](#library-composer)
 
 ---
 
@@ -38,6 +39,20 @@ Considering you are in the root of the library
 
 ```
 node Utils/generateStaticFile.js path/to/your/file.js
+```
+
+---
+
+## Library Composer
+
+Assembles all library files into one following dependencies
+
+### Usage
+
+Considering you are in the root of the library
+
+```
+node Utils/composeLib.js ./src
 ```
 
 ---
