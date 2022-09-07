@@ -1,14 +1,17 @@
 #include "ClassList.h"
 
-void ClassList::add(String className)
+void ClassList::add(String className, bool emit)
 {
   className.trim();
 
   if (className.isEmpty())
     return;
 
-  if (!this->contains(className))
+  if (!this->contains(className)) {
     this->classList.push_back(className);
+    if (emit)
+      this->onChange.emit(String(className), "", ClassChangeType::add);
+  }
 }
 
 bool ClassList::contains(String className)
@@ -38,7 +41,7 @@ String ClassList::item(size_t index)
   return *ref;
 }
 
-void ClassList::remove(String className)
+void ClassList::remove(String className, bool emit)
 {
   className.trim();
 
@@ -46,11 +49,14 @@ void ClassList::remove(String className)
     return;
 
   auto it = std::find(this->classList.cbegin(), this->classList.cend(), className);
-  if (it != this->classList.cend())
+  if (it != this->classList.cend()) {
     this->classList.erase(it);
+    if (emit)
+      this->onChange.emit(String(className), "", ClassChangeType::remove);
+  }
 }
 
-void ClassList::replace(String className, String newClassName)
+void ClassList::replace(String className, String newClassName, bool emit)
 {
   className.trim();
 
@@ -58,11 +64,14 @@ void ClassList::replace(String className, String newClassName)
     return;
 
   auto it = std::find(this->classList.begin(), this->classList.end(), className);
-  if (*it == className)
+  if (*it == className) {
     *it = newClassName;
+    if (emit)
+      this->onChange.emit(String(className), String(newClassName), ClassChangeType::replace);
+  }
 }
 
-void ClassList::toggle(String className)
+void ClassList::toggle(String className, bool emit)
 {
   className.trim();
 
@@ -70,9 +79,9 @@ void ClassList::toggle(String className)
     return;
 
   if (this->contains(className))
-    this->remove(className);
+    this->remove(className, emit);
   else
-    this->add(className);
+    this->add(className, emit);
 }
 
 String ClassList::value()
