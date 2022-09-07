@@ -68,6 +68,9 @@ Button<T>::Button(T* argCollection)
   this->classList.add(F("waves-effect"));
   this->classList.add(F("waves-light"));
   this->classList.add(F("btn"));
+
+  this->setAttribute("data-id", (String)this->getId());
+  this->setAttribute("data-MCSS-emitOnClick", "true");
 }
 
 template <typename T>
@@ -92,19 +95,14 @@ void Button<T>::setCallback(ButtonCallback callback)
 template <typename T>
 String Button<T>::getHTML()
 {
-  String elemTemplate = F("<a data-id=\"");
-  elemTemplate += (String)this->getId();
-  elemTemplate += F("\" data-MCSS-emitOnClick=\"true\" class=\"");
-  elemTemplate += this->classList.value();
-  elemTemplate += F("\"");
-  elemTemplate += F("style=\"");
+  String elemTemplate = F("<a ");
+  elemTemplate += this->getAttributes();
   if (this->getWidth() > 0) {
+    elemTemplate += F(" style=\"");
     elemTemplate += F("width:calc(100%/12*");
     elemTemplate += this->getWidth();
-    elemTemplate += F(");");
+    elemTemplate += F(");\"");
   }
-  elemTemplate += this->getInlineStyles();
-  elemTemplate += F("\"");
   elemTemplate += F(">");
   elemTemplate += this->caption;
   elemTemplate += F("</a>\n");
