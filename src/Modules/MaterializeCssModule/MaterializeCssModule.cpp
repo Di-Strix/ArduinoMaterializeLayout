@@ -36,6 +36,27 @@ MaterializeLayoutModule getMaterializeCssModule()
             // clang-format on
             ),
 
-        F("el.textContent = value") } }
+        F(
+            // clang-format off
+            "const data = JSON.parse(value);"
+            "if (data.styles)"
+                "Object.entries(data.styles).forEach(([key, value]) => el.style.setProperty(key, value));"
+            "if(Array.isArray(data.classListDiff))"
+                "data.classListDiff.forEach(diff => {"
+                    "switch(diff.changeType){"
+                      "case 'add':"
+                        "el.classList.add(diff.className);"
+                        "break;"
+                      "case 'remove':"
+                        "el.classList.remove(diff.className);"
+                        "break;"
+                      "case 'replace':"
+                        "el.classList.replace(diff.className, diff.newClassName);"
+                        "break;"
+                    "}"
+                  "});"
+            "if (data.textContent && el.textContent !== data.textContent) el.textContent = data.textContent;"
+            // clang-format on
+            ) } }
   };
 }
