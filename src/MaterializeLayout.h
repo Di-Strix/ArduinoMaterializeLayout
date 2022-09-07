@@ -23,7 +23,7 @@
 #include "Page/Page.h"
 
 #define ML_MAX_BAKED_EVENT_SIZE_BEFORE_FORCED_PUSH 2048
-#define ML_EVENT_DISPATCH_POLLING_TIME 250
+#define ML_EVENT_DISPATCH_POLLING_TIME 50
 
 template <typename T>
 inline DynamicJsonDocument dynamiclyDeserializeJson(T data)
