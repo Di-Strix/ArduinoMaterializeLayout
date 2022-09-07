@@ -10,7 +10,7 @@ void ClassList::add(String className, bool emit)
   if (!this->contains(className)) {
     this->classList.push_back(className);
     if (emit)
-      this->onChange.emit(String(className), "", ClassChangeType::add);
+      this->onChange.emit(className, "", ClassChangeType::add);
   }
 }
 
@@ -52,7 +52,7 @@ void ClassList::remove(String className, bool emit)
   if (it != this->classList.cend()) {
     this->classList.erase(it);
     if (emit)
-      this->onChange.emit(String(className), "", ClassChangeType::remove);
+      this->onChange.emit(className, "", ClassChangeType::remove);
   }
 }
 
@@ -67,7 +67,7 @@ void ClassList::replace(String className, String newClassName, bool emit)
   if (*it == className) {
     *it = newClassName;
     if (emit)
-      this->onChange.emit(String(className), String(newClassName), ClassChangeType::replace);
+      this->onChange.emit(className, newClassName, ClassChangeType::replace);
   }
 }
 
