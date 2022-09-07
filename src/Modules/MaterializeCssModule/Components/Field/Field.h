@@ -4,20 +4,20 @@
 
 #include "../BaseClass/MaterializeCssBaseClass.h"
 
+#include "../Input/Input.h"
+
 template <typename T>
 class Field : public MaterializeCssBaseClass<T> {
   private:
-  using HTMLElement<T>::appendChild;
-  using HTMLElement<T>::removeAllChildren;
-  using HTMLElement<T>::removeChild;
+  using MaterializeCssBaseClass<T>::appendChild;
+  using MaterializeCssBaseClass<T>::removeAllChildren;
+  using MaterializeCssBaseClass<T>::removeChild;
 
   String name;
-  String defaultValue;
-  String currentValue;
-
-  void onEmit(String value);
 
   public:
+  Input<T> inputElement;
+
   /**
    * @brief Constructs a new Field object
    *
@@ -75,11 +75,13 @@ class Field : public MaterializeCssBaseClass<T> {
 template <typename T>
 Field<T>::Field(T* argCollection)
     : MaterializeCssBaseClass<T>(argCollection)
-{
-  this->name = (String)this->getId();
+    , inputElement(argCollection)
 
+{
   this->classList.add(F("input-field"));
   this->classList.add(F("col"));
+
+  this->appendChild(&this->inputElement);
 }
 
 template <typename T>
@@ -98,20 +100,20 @@ void Field<T>::setName(String name)
 template <typename T>
 String Field<T>::getDefaultValue()
 {
-  return this->defaultValue;
+  return this->inputElement.getAttribute(F("value"));
 }
 
 template <typename T>
 void Field<T>::setDefaultValue(String defaultValue)
 {
   defaultValue.trim();
-  this->defaultValue = defaultValue;
+  this->inputElement.setAttribute(F("value"), defaultValue, false);
 }
 
 template <typename T>
 String Field<T>::getCurrentValue()
 {
-  return this->currentValue;
+  return this->inputElement.getCurrentValue();
 }
 
 template <typename T>
@@ -119,28 +121,15 @@ String Field<T>::getHTML()
 {
   String id = (String)this->getId();
 
-  String elemTemplate = F("<div class=\"");
-  elemTemplate += this->classList.value();
-  elemTemplate += F("\" ");
-  elemTemplate += F("style=\"");
-  elemTemplate += this->getInlineStyles();
-  elemTemplate += F("\"><input value=\"");
-  elemTemplate += this->defaultValue;
-  elemTemplate += F("\" type=\"text\" data-id=\"");
-  elemTemplate += id;
-  elemTemplate += F("\" data-MCSS-emitOnChange=\"true\" id=\"");
-  elemTemplate += id;
-  elemTemplate += F("\"><label for=\"");
-  elemTemplate += id;
+  String elemTemplate = F("<div ");
+  elemTemplate += this->getAttributes();
+  elemTemplate += F(">");
+  elemTemplate += this->inputElement.getHTML();
+  elemTemplate += F("<label for=\"");
+  elemTemplate += String(this->inputElement.getId());
   elemTemplate += F("\">");
   elemTemplate += this->name;
   elemTemplate += F("</label></div>");
 
   return elemTemplate;
-}
-
-template <typename T>
-void Field<T>::onEmit(String value)
-{
-  this->currentValue = value;
 }
