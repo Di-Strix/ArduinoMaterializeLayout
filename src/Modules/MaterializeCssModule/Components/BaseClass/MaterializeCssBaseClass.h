@@ -25,21 +25,21 @@ MaterializeCssBaseClass<T>::MaterializeCssBaseClass(T* argCollection)
 
       switch (changeType) {
       case ClassChangeType::add:
-        type = "add";
+        type = F("add");
         break;
       case ClassChangeType::remove:
-        type = "remove";
+        type = F("remove");
         break;
       case ClassChangeType::replace:
-        type = "replace";
+        type = F("replace");
         break;
       }
 
       DynamicJsonDocument doc(JSON_OBJECT_SIZE(1) + JSON_ARRAY_SIZE(1) * (JSON_OBJECT_SIZE(2) + JSON_STRING_SIZE(className.length()) + JSON_STRING_SIZE(type.length())) + 128);
-      auto obj = doc.createNestedArray("classListDiff").createNestedObject();
-      obj["className"] = className;
-      obj["newClassName"] = newClassName;
-      obj["changeType"] = type;
+      auto obj = doc.createNestedArray(F("classListDiff")).createNestedObject();
+      obj[F("className")] = className;
+      obj[F("newClassName")] = newClassName;
+      obj[F("changeType")] = type;
 
       serializeJson(doc, result);
     } while (false);
