@@ -4,6 +4,7 @@
 #include <map>
 
 #include "ClassList/ClassList.h"
+#include "EventEmitter/EventEmitter.h"
 #include "IdGenerator.h"
 #include "WebSourceHandler/WebSourceHandler.h"
 
@@ -56,6 +57,14 @@ class HTMLElement {
 
   public:
   ClassList classList;
+
+  /**
+   * @brief Event that is fired when inline CSS property changed
+   *
+   * @param String - Style key
+   * @param String - Style value
+   */
+  EventEmitter<String, String> onInlineStylesChange;
 
   HTMLElement(T* argCollection);
 
@@ -327,8 +336,8 @@ size_t HTMLElement<T>::getId()
 template <typename T>
 void HTMLElement<T>::setBackgroundColor(Color color, ColorShade colorShade)
 {
-  this->classList.remove(colorToString(this->backgroundColor));
-  this->classList.remove(colorShadeToString(this->backgroundColorShade));
+  auto oldColor = colorToString(this->backgroundColor);
+  auto oldColorShade = colorShadeToString(this->backgroundColorShade);
 
   this->backgroundColor = color;
   if (colorShadeIsValid(color, colorShade))
@@ -336,15 +345,21 @@ void HTMLElement<T>::setBackgroundColor(Color color, ColorShade colorShade)
   else
     this->backgroundColorShade = ColorShade::noShade;
 
-  this->classList.add(colorToString(this->backgroundColor));
-  this->classList.add(colorShadeToString(this->backgroundColorShade));
+  if (this->classList.contains(oldColor))
+    this->classList.replace(oldColor, colorToString(this->backgroundColor));
+  else
+    this->classList.add(colorToString(this->backgroundColor));
+  if (this->classList.contains(oldColorShade))
+    this->classList.replace(oldColorShade, colorShadeToString(this->backgroundColorShade));
+  else
+    this->classList.add(colorShadeToString(this->backgroundColorShade));
 }
 
 template <typename T>
 void HTMLElement<T>::setTextColor(Color color, ColorShade colorShade)
 {
-  this->classList.remove(this->getTextColorClass());
-  this->classList.remove(this->getTextColorShadeClass());
+  auto oldColor = colorToString(this->backgroundColor);
+  auto oldColorShade = colorShadeToString(this->backgroundColorShade);
 
   this->textColor = color;
   if (colorShadeIsValid(color, colorShade))
@@ -352,8 +367,14 @@ void HTMLElement<T>::setTextColor(Color color, ColorShade colorShade)
   else
     this->textColorShade = ColorShade::noShade;
 
-  this->classList.add(this->getTextColorClass());
-  this->classList.add(this->getTextColorShadeClass());
+  if (this->classList.contains(oldColor))
+    this->classList.replace(oldColor, this->getTextColorClass());
+  else
+    this->classList.add(this->getTextColorClass());
+  if (this->classList.contains(oldColorShade))
+    this->classList.replace(oldColorShade, this->getTextColorShadeClass());
+  else
+    this->classList.add(this->getTextColorShadeClass());
 }
 
 template <typename T>
@@ -396,6 +417,8 @@ void HTMLElement<T>::setStyle(CSSStyleKey key, String value)
   } else {
     this->inlineStyles[mapKey] = value;
   }
+
+  this->onInlineStylesChange.emit(String(mapKey), String(value));
 }
 
 template <typename T>
