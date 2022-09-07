@@ -41,6 +41,8 @@ MaterializeLayoutModule getMaterializeCssModule()
             "const data = JSON.parse(value);"
             "if (data.styles)"
                 "Object.entries(data.styles).forEach(([key, value]) => el.style.setProperty(key, value));"
+            "if (data.atributes)"
+                "Object.entries(data.attributes).forEach(([key, value]) => el.setAttribute(key, value));"
             "if(Array.isArray(data.classListDiff))"
                 "data.classListDiff.forEach(diff => {"
                     "switch(diff.changeType){"

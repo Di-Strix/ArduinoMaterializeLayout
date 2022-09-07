@@ -52,7 +52,21 @@ MaterializeCssBaseClass<T>::MaterializeCssBaseClass(T* argCollection)
 
     do {
       DynamicJsonDocument doc(JSON_OBJECT_SIZE(1) + JSON_STRING_SIZE(value.length()) + 128);
-      auto obj = doc.createNestedObject("styles");
+      auto obj = doc.createNestedObject(F("styles"));
+      obj[key] = value;
+
+      serializeJson(doc, result);
+    } while (false);
+
+    this->dispatch(result);
+  });
+
+  this->onAttributeChange.subscribe([this](String key, String value) {
+    String result;
+
+    do {
+      DynamicJsonDocument doc(JSON_OBJECT_SIZE(1) + JSON_STRING_SIZE(value.length()) + 128);
+      auto obj = doc.createNestedObject(F("attributes"));
       obj[key] = value;
 
       serializeJson(doc, result);
