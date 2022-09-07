@@ -40,9 +40,9 @@ class Subscription {
  * 
  * @param args 
  */
-  void emit(Args&&... args)
+  void emit(Args... args)
   {
-    this->subscriber(std::forward<Args>(args)...);
+    this->subscriber(args...);
   }
 
 /**

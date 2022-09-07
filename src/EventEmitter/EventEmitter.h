@@ -44,10 +44,10 @@ class EventEmitter {
  * 
  * @param args 
  */
-  void emit(Args&&... args)
+  void emit(Args... args)
   {
     for (auto subscriber : this->subscribers) {
-      subscriber->emit(std::forward<Args>(args)...);
+      subscriber->emit(args...);
     }
   }
 };
