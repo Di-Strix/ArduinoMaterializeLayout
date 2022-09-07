@@ -5,18 +5,18 @@
 #include <memory>
 #include <variant>
 
-#include "HTMLElement/HTMLElement.h"
+#include "../BaseClass/MaterializeCssBaseClass.h"
 
 #include "LayoutHelperFunctions.h"
 #include "LayoutTypes.h"
 
 template <typename T>
-class Layout : public HTMLElement<T> {
+class Layout : public MaterializeCssBaseClass<T> {
   private:
   LayoutType layoutType = LayoutType::NONE;
 
   public:
-  using HTMLElement<T>::HTMLElement;
+  using MaterializeCssBaseClass<T>::MaterializeCssBaseClass;
 
   virtual ~Layout() = default;
 

@@ -2,10 +2,10 @@
 
 #include <Arduino.h>
 
-#include "HTMLElement/HTMLElement.h"
+#include "../BaseClass/MaterializeCssBaseClass.h"
 
 template <typename T>
-class Field : public HTMLElement<T> {
+class Field : public MaterializeCssBaseClass<T> {
   private:
   using HTMLElement<T>::appendChild;
   using HTMLElement<T>::removeAllChildren;
@@ -74,7 +74,7 @@ class Field : public HTMLElement<T> {
 
 template <typename T>
 Field<T>::Field(T* argCollection)
-    : HTMLElement<T>(argCollection)
+    : MaterializeCssBaseClass<T>(argCollection)
 {
   this->name = (String)this->getId();
 

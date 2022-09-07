@@ -3,7 +3,8 @@
 #include <Arduino.h>
 #include <memory>
 
-#include "HTMLElement/HTMLElement.h"
+#include "../BaseClass/MaterializeCssBaseClass.h"
+
 #include "MaterializeLayoutTypes.h"
 
 enum class TextType {
@@ -17,7 +18,7 @@ enum class TextType {
 };
 
 template <typename T>
-class StaticText : public HTMLElement<T> {
+class StaticText : public MaterializeCssBaseClass<T> {
   private:
   using HTMLElement<T>::appendChild;
   using HTMLElement<T>::removeAllChildren;
@@ -32,7 +33,7 @@ class StaticText : public HTMLElement<T> {
   public:
   String getHTML();
 
-  using HTMLElement<T>::HTMLElement;
+  using MaterializeCssBaseClass<T>::MaterializeCssBaseClass;
 
   virtual ~StaticText() = default;
 
@@ -84,8 +85,18 @@ void StaticText<T>::setText(String text)
   text.trim();
   this->text = text;
 
-  if (this->isDynamic())
-    this->dispatch(this->text);
+  if (this->isDynamic()) {
+    String result;
+
+    do {
+      DynamicJsonDocument doc(JSON_OBJECT_SIZE(1) + JSON_STRING_SIZE(this->text.length()) + 128);
+      doc["textContent"] = this->text;
+
+      serializeJson(doc, result);
+    } while (false);
+
+    this->dispatch(result);
+  }
 }
 
 template <typename T>

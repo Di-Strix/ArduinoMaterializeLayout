@@ -5,10 +5,11 @@
 #include <memory>
 #include <variant>
 
+#include "../BaseClass/MaterializeCssBaseClass.h"
 #include "../Layout/Layout.h"
 
 template <typename T>
-class Tab : public HTMLElement<T> {
+class Tab : public MaterializeCssBaseClass<T> {
   protected:
   String name;
 
@@ -42,7 +43,7 @@ class Tab : public HTMLElement<T> {
 
 template <typename T>
 Tab<T>::Tab(T* argCollection)
-    : HTMLElement<T>(argCollection)
+    : MaterializeCssBaseClass<T>(argCollection)
 {
   this->setTabName(String(this->getId()));
 }

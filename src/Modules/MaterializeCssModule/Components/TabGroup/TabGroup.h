@@ -4,12 +4,12 @@
 #include <list>
 #include <memory>
 
-#include "HTMLElement/HTMLElement.h"
+#include "../BaseClass/MaterializeCssBaseClass.h"
 
 #include "../Tab/Tab.h"
 
 template <class T>
-class TabGroup : public HTMLElement<T> {
+class TabGroup : public MaterializeCssBaseClass<T> {
   public:
   TabGroup(T* argCollection);
 
@@ -22,7 +22,7 @@ class TabGroup : public HTMLElement<T> {
 
 template <class T>
 TabGroup<T>::TabGroup(T* argCollection)
-    : HTMLElement<T>(argCollection)
+    : MaterializeCssBaseClass<T>(argCollection)
 {
   this->classList.add("tabs");
   this->classList.add("tabs-fixed-width");

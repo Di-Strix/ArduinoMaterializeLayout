@@ -1,14 +1,15 @@
 #pragma once
 
 #include <Arduino.h>
+#include <ArduinoJson.h>
 #include <functional>
 
-#include "HTMLElement/HTMLElement.h"
+#include "../BaseClass/MaterializeCssBaseClass.h"
 
 typedef std::function<void()> ButtonCallback;
 
 template <typename T>
-class Button : public HTMLElement<T> {
+class Button : public MaterializeCssBaseClass<T> {
   private:
   using HTMLElement<T>::appendChild;
   using HTMLElement<T>::removeAllChildren;
@@ -62,7 +63,7 @@ class Button : public HTMLElement<T> {
 
 template <typename T>
 Button<T>::Button(T* argCollection)
-    : HTMLElement<T>(argCollection)
+    : MaterializeCssBaseClass<T>(argCollection)
 {
   this->classList.add(F("waves-effect"));
   this->classList.add(F("waves-light"));

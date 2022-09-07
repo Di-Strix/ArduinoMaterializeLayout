@@ -2,7 +2,7 @@
 
 #include <Arduino.h>
 
-#include "HTMLElement/HTMLElement.h"
+#include "../BaseClass/MaterializeCssBaseClass.h"
 
 enum ImageType {
   JPEG,
@@ -13,7 +13,7 @@ enum ImageType {
 };
 
 template <typename T>
-class Image : public HTMLElement<T> {
+class Image : public MaterializeCssBaseClass<T> {
   private:
   using HTMLElement<T>::appendChild;
   using HTMLElement<T>::removeAllChildren;
@@ -71,7 +71,7 @@ class Image : public HTMLElement<T> {
 
 template <typename T>
 Image<T>::Image(T* argCollection)
-    : HTMLElement<T>(argCollection)
+    : MaterializeCssBaseClass<T>(argCollection)
 {
   this->classList.add(F("materialboxed"));
 }
