@@ -30,6 +30,7 @@ class HTMLElement {
   ColorShade textColorShade = ColorShade::noShade;
 
   std::map<String, String> inlineStyles;
+  std::map<String, String> attributes;
 
   String getTextColorClass();
   String getTextColorShadeClass();
@@ -53,6 +54,13 @@ class HTMLElement {
    */
   String getInlineStyles();
 
+  /**
+   * @brief Returns insert-ready attribute list
+   *
+   * @return String
+   */
+  String getAttributes();
+
   T* getArgCollection();
 
   public:
@@ -65,6 +73,14 @@ class HTMLElement {
    * @param String - Style value
    */
   EventEmitter<String, String> onInlineStylesChange;
+
+  /**
+   * @brief Event that is fired when inline CSS property changed
+   *
+   * @param String - Attribute key
+   * @param String - Attribute value
+   */
+  EventEmitter<String, String> onAttributeChange;
 
   HTMLElement(T* argCollection);
 
@@ -197,6 +213,22 @@ class HTMLElement {
    * @return Value
    */
   String getStyle(CSSStyleKey key);
+
+  /**
+   * @brief Set the Attribute for the current node
+   *
+   * @param attr attribute name
+   * @param value attribute value
+   */
+  void setAttribute(String attr, String value, bool emit = true);
+
+  /**
+   * @brief Get the Attribute value for current node
+   *
+   * @param attr attribute name
+   * @return String attribute value
+   */
+  String getAttribute(String attr);
 };
 
 // ======================= IMPLEMENTATION =======================
@@ -206,6 +238,15 @@ HTMLElement<T>::HTMLElement(T* argCollection)
 {
   this->argCollection = argCollection;
   this->id = IdGenerator::Instance().getId();
+  this->setAttribute(F("data-id"), String(this->id));
+
+  this->classList.onChange.subscribe([this](String, String, ClassChangeType) {
+    this->setAttribute(F("class"), this->classList.value(), false);
+  });
+
+  this->onInlineStylesChange.subscribe([this](String, String) {
+    this->setAttribute(F("style"), this->getInlineStyles(), false);
+  });
 }
 
 template <typename T>
@@ -446,4 +487,36 @@ template <typename T>
 T* HTMLElement<T>::getArgCollection()
 {
   return this->argCollection;
+}
+
+template <typename T>
+void HTMLElement<T>::setAttribute(String attr, String value, bool emit)
+{
+  attr.trim();
+  this->attributes[attr] = value;
+
+  if (emit)
+    this->onAttributeChange.emit(attr, value);
+}
+
+template <typename T>
+String HTMLElement<T>::getAttribute(String attr)
+{
+  attr.trim();
+  return this->attributes[attr];
+}
+
+template <typename T>
+String HTMLElement<T>::getAttributes()
+{
+  String result;
+
+  for (auto attribute : this->attributes) {
+    result += attribute.first;
+    result += F("=\"");
+    result += attribute.second;
+    result += F("\" ");
+  }
+
+  return result;
 }
