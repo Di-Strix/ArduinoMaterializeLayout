@@ -140,10 +140,11 @@ class HTMLElement {
    *
    * @param width the width of the component. range: [0-12]. If 0, the component takes up as much space as needed
    * @param screenSize width that applies to the given screen size and bigger, if no values for bigger screen is set. See "Creating Responsive Layouts" section - https://materializecss.com/grid.html
+   * @param emit whether to dispatch an event or not
    *
    * @return void
    */
-  void setWidth(uint8_t width, ScreenSize screenSize = ScreenSize::small);
+  void setWidth(uint8_t width, ScreenSize screenSize = ScreenSize::small, bool emit = true);
 
   /**
    * @brief Gets the width of the component in HTML for the provided screen size.
@@ -158,17 +159,19 @@ class HTMLElement {
    *
    * @param color
    * @param colorShade
+   * @param emit whether to dispatch event or not
    * @return void
    */
-  void setBackgroundColor(Color color, ColorShade colorShade = ColorShade::noShade);
+  void setBackgroundColor(Color color, ColorShade colorShade = ColorShade::noShade, bool emit = true);
 
   /**
    * @brief Sets the text color of the component. See "Color Palette" section - https://materializecss.com/color.html
    *
    * @param color
    * @param colorShade
+   * @param emit whether to dispatch event or not
    */
-  void setTextColor(Color color, ColorShade colorShade = ColorShade::noShade);
+  void setTextColor(Color color, ColorShade colorShade = ColorShade::noShade, bool emit = true);
 
   /**
    * @brief Gets current background color
@@ -203,8 +206,9 @@ class HTMLElement {
    *
    * @param key Style key
    * @param value Value to be assigned
+   * @param emit whether to dispatch event or not
    */
-  void setStyle(CSSStyleKey key, String value);
+  void setStyle(CSSStyleKey key, String value, bool emit = true);
 
   /**
    * @brief Returns current value for the provided key
@@ -219,6 +223,7 @@ class HTMLElement {
    *
    * @param attr attribute name
    * @param value attribute value
+   * @param emit whether to dispatch event or not
    */
   void setAttribute(String attr, String value, bool emit = true);
 
@@ -341,18 +346,18 @@ String HTMLElement<T>::getTextColorShadeClass()
 }
 
 template <typename T>
-void HTMLElement<T>::setWidth(uint8_t width, ScreenSize screenSize)
+void HTMLElement<T>::setWidth(uint8_t width, ScreenSize screenSize, bool emit)
 {
   if (width > 12)
     return;
 
   String classPrefix = getWidthClassPrefix(screenSize);
 
-  this->classList.remove(this->widths[(size_t)screenSize]);
+  this->classList.remove(this->widths[(size_t)screenSize], emit);
 
   if (width != 0) {
     this->widths[(size_t)screenSize] = classPrefix + String(width);
-    this->classList.add(this->widths[(size_t)screenSize]);
+    this->classList.add(this->widths[(size_t)screenSize], emit);
   }
 }
 
@@ -375,7 +380,7 @@ size_t HTMLElement<T>::getId()
 }
 
 template <typename T>
-void HTMLElement<T>::setBackgroundColor(Color color, ColorShade colorShade)
+void HTMLElement<T>::setBackgroundColor(Color color, ColorShade colorShade, bool emit)
 {
   auto oldColor = colorToString(this->backgroundColor);
   auto oldColorShade = colorShadeToString(this->backgroundColorShade);
@@ -387,17 +392,17 @@ void HTMLElement<T>::setBackgroundColor(Color color, ColorShade colorShade)
     this->backgroundColorShade = ColorShade::noShade;
 
   if (this->classList.contains(oldColor))
-    this->classList.replace(oldColor, colorToString(this->backgroundColor));
+    this->classList.replace(oldColor, colorToString(this->backgroundColor), emit);
   else
-    this->classList.add(colorToString(this->backgroundColor));
+    this->classList.add(colorToString(this->backgroundColor), emit);
   if (this->classList.contains(oldColorShade))
-    this->classList.replace(oldColorShade, colorShadeToString(this->backgroundColorShade));
+    this->classList.replace(oldColorShade, colorShadeToString(this->backgroundColorShade), emit);
   else
-    this->classList.add(colorShadeToString(this->backgroundColorShade));
+    this->classList.add(colorShadeToString(this->backgroundColorShade), emit);
 }
 
 template <typename T>
-void HTMLElement<T>::setTextColor(Color color, ColorShade colorShade)
+void HTMLElement<T>::setTextColor(Color color, ColorShade colorShade, bool emit)
 {
   auto oldColor = colorToString(this->backgroundColor);
   auto oldColorShade = colorShadeToString(this->backgroundColorShade);
@@ -409,13 +414,13 @@ void HTMLElement<T>::setTextColor(Color color, ColorShade colorShade)
     this->textColorShade = ColorShade::noShade;
 
   if (this->classList.contains(oldColor))
-    this->classList.replace(oldColor, this->getTextColorClass());
+    this->classList.replace(oldColor, this->getTextColorClass(), emit);
   else
-    this->classList.add(this->getTextColorClass());
+    this->classList.add(this->getTextColorClass(), emit);
   if (this->classList.contains(oldColorShade))
-    this->classList.replace(oldColorShade, this->getTextColorShadeClass());
+    this->classList.replace(oldColorShade, this->getTextColorShadeClass(), emit);
   else
-    this->classList.add(this->getTextColorShadeClass());
+    this->classList.add(this->getTextColorShadeClass(), emit);
 }
 
 template <typename T>
@@ -443,7 +448,7 @@ ColorShade HTMLElement<T>::getTextColorShade()
 }
 
 template <typename T>
-void HTMLElement<T>::setStyle(CSSStyleKey key, String value)
+void HTMLElement<T>::setStyle(CSSStyleKey key, String value, bool emit)
 {
   String mapKey = getCSSStyleKey(key);
 
@@ -459,7 +464,8 @@ void HTMLElement<T>::setStyle(CSSStyleKey key, String value)
     this->inlineStyles[mapKey] = value;
   }
 
-  this->onInlineStylesChange.emit(String(mapKey), String(value));
+  if (emit)
+    this->onInlineStylesChange.emit(mapKey, value);
 }
 
 template <typename T>
