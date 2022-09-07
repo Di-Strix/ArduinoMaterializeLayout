@@ -5,6 +5,7 @@
 #include "Components/Button/Button.h"
 #include "Components/Field/Field.h"
 #include "Components/Image/Image.h"
+#include "Components/Input/Input.h"
 #include "Components/Layout/Layout.h"
 #include "Components/Tab/Tab.h"
 #include "Components/TabGroup/TabGroup.h"
