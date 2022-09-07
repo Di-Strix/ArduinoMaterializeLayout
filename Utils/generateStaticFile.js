@@ -3,6 +3,7 @@ const crypto = require('crypto')
 const zlib = require('zlib')
 const babel = require('@babel/core')
 const { minify: minifyCSS } = require('csso')
+const { extname } = require('path')
 
 if (!process.argv[2] || !process.argv[2].trim())
   throw new Error(`Source file hasn't been specified`)
@@ -10,7 +11,7 @@ if (!process.argv[2] || !process.argv[2].trim())
 const from = process.argv[2].trim()
 const to = generateOutputFileName(from)
 
-switch (from.match(/\..+$/)[0]) {
+switch (extname(from)) {
   case '.js':
     processFile(
       fs.readFileSync(from, { encoding: 'utf-8' }),
