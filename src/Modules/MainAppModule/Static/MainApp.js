@@ -19,14 +19,20 @@ class DynamicUpdateService {
     this.ws = new WebSocket(`ws://${location.host}/${wsPath}`)
 
     this.ws.addEventListener('message', ({ data }) => {
-      const { value, handlerId, id } = JSON.parse(data)
-      const el = document.querySelector(`[data-id='${id}']`)
-      const handler = this.handlers[handlerId] || {
-        update: () => console.error(`'${handlerId}' handler wasn't found`),
-      }
-
-      handler.update(el, value)
+      const events = JSON.parse(data)
+      if (Array.isArray(events))
+        events.forEach(event => this.handleServerEvent(event))
+      else this.this.handleServerEvent(events)
     })
+  }
+
+  handleServerEvent({ value, handlerId, id }) {
+    const el = document.querySelector(`[data-id='${id}']`)
+    const handler = this.handlers[handlerId] || {
+      update: () => console.error(`'${handlerId}' handler wasn't found`),
+    }
+
+    handler.update(el, value)
   }
 
   emitEvent({ target: { dataset, value } }) {

@@ -12,6 +12,7 @@
 #include <list>
 #include <type_traits>
 #include <utility>
+#include <Ticker.h>
 
 #include "IdGenerator.h"
 #include "MaterializeLayoutTypes.h"
@@ -20,6 +21,9 @@
 #include "Modules/MaterializeCssModule/MaterializeCssModule.h"
 #include "Modules/NormalizeCssModule/NormalizeCssModule.h"
 #include "Page/Page.h"
+
+#define ML_MAX_BAKED_EVENT_SIZE_BEFORE_FORCED_PUSH 2048
+#define ML_EVENT_DISPATCH_POLLING_TIME 250
 
 template <typename T>
 inline DynamicJsonDocument dynamiclyDeserializeJson(T data)
@@ -41,6 +45,11 @@ class MaterializeLayout : public MaterializeLayoutComponent_t<Page> {
 
   PageSources compileSrc();
   void unregisterHandlers();
+
+  std::list<String> bakedEvents;
+  Ticker dispatchTicker;
+  void _performDispatch();
+  void triggerDispatch();
 
   public:
   /**

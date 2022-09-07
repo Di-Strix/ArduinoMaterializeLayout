@@ -35,7 +35,8 @@ MaterializeLayout::MaterializeLayout(String pageTitle)
     if (json == F("null"))
       json = F("{}");
 
-    this->ws.textAll(json);
+    this->bakedEvents.push_back(json);
+    this->triggerDispatch();
   };
   this->getArgCollection()->dispatch.throttleTime = 0;
 
@@ -179,4 +180,45 @@ void MaterializeLayout::serveSharedStatic(AsyncWebServerRequest* request, Shared
   res->addHeader(F("Cache-Control"), F("max-age=31536000, immutable"));
   res->addHeader(F("X-Content-Type-Options"), F("nosniff"));
   request->send(res);
+}
+
+void MaterializeLayout::triggerDispatch()
+{
+  size_t totalLength = 0;
+  for (auto event : this->bakedEvents) {
+    totalLength += event.length();
+  }
+
+  if (totalLength >= ML_MAX_BAKED_EVENT_SIZE_BEFORE_FORCED_PUSH) {
+    this->dispatchTicker.detach();
+    this->_performDispatch();
+  } else if (!this->dispatchTicker.active()) {
+    this->dispatchTicker.once_ms(ML_EVENT_DISPATCH_POLLING_TIME, [this]() { this->_performDispatch(); });
+  }
+}
+
+void MaterializeLayout::_performDispatch()
+{
+  this->dispatchTicker.detach();
+
+  size_t totalLength = 0;
+  for (auto event : this->bakedEvents) {
+    totalLength += event.length();
+  }
+
+  String result;
+
+  do {
+    DynamicJsonDocument doc(JSON_ARRAY_SIZE(this->bakedEvents.size()) + JSON_STRING_SIZE(totalLength) + this->bakedEvents.size() + 128);
+    auto arr = doc.to<JsonArray>();
+
+    for (auto event : this->bakedEvents) {
+      arr.add(dynamiclyDeserializeJson(event));
+    }
+
+    serializeJson(doc, result);
+    this->bakedEvents.clear();
+  } while (false);
+
+  this->ws.textAll(result);
 }
