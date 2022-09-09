@@ -99,13 +99,13 @@ class HTMLElement {
   std::list<HTMLElement*> removeAllChildren();
 
   /**
-   * @brief Intended to return a filled HTML template of the component.
+   * @brief Intended to write filled HTML template of the component using writer.
    *
    * Placeholder for further implementation.
    *
-   * @return String
+   * @return void
    */
-  virtual String getHTML();
+  virtual void getHTML(ResponseWriter writer);
 
   /**
    * @brief Emits an event on the current node.
@@ -293,15 +293,11 @@ WebSourceHandler* HTMLElement<T>::registerSource(String path, const uint8_t* con
 }
 
 template <typename T>
-String HTMLElement<T>::getHTML()
+void HTMLElement<T>::getHTML(ResponseWriter writer)
 {
-  String html;
-
   for (auto el : this->children) {
-    html += el->getHTML();
+    el->getHTML(writer);
   }
-
-  return html;
 }
 
 template <typename T>

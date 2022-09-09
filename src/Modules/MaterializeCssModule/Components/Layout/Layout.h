@@ -20,7 +20,7 @@ class Layout : public MaterializeCssBaseClass<T> {
 
   virtual ~Layout() = default;
 
-  virtual String getHTML();
+  virtual void getHTML(ResponseWriter writer);
 
   /**
    * @brief Enables or disables vertical align in the container
@@ -49,30 +49,27 @@ class Layout : public MaterializeCssBaseClass<T> {
 // ======================= IMPLEMENTATION =======================
 
 template <typename T>
-String Layout<T>::getHTML()
+void Layout<T>::getHTML(ResponseWriter writer)
 {
-  String componentTemplate, nestedLayout, className;
-
+  writer(F("<div "));
+  writer(this->getAttributes());
+  writer(F(">"));
   for (auto l : this->children) {
-    nestedLayout += l->getHTML();
+    l->getHTML(writer);
   }
-
-  componentTemplate = F("<div class=\"");
-  componentTemplate += this->classList.value();
-  componentTemplate += F("\" ");
-  componentTemplate += F("style=\"");
-  componentTemplate += this->getInlineStyles();
-  componentTemplate += F("\">");
-  componentTemplate += nestedLayout;
-  componentTemplate += F("</div>");
-
-  return componentTemplate;
+  writer(F("</div>"));
 }
 
 template <typename T>
 void Layout<T>::setVerticalAlign(bool state)
 {
-  state ? this->classList.add(F("valign-wrapper")) : this->classList.remove(F("valign-wrapper"));
+  if (state) {
+    if (this->classList.contains(F("valign-wrapper")))
+      return;
+    this->classList.add(F("valign-wrapper"));
+  } else {
+    this->classList.remove(F("valign-wrapper"));
+  }
 }
 
 template <typename T>

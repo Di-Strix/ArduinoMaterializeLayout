@@ -20,15 +20,13 @@ class Image : public MaterializeCssBaseClass<T> {
   using HTMLElement<T>::removeChild;
 
   protected:
-  String src;
-  String alt;
   WebSourceHandler* sourceHandler = nullptr;
 
   public:
   Image(T* argCollection);
   virtual ~Image() = default;
 
-  virtual String getHTML() override;
+  virtual void getHTML(ResponseWriter writer) override;
 
   /**
    * @brief Sets the image source
@@ -77,24 +75,13 @@ Image<T>::Image(T* argCollection)
 }
 
 template <typename T>
-String Image<T>::getHTML()
+void Image<T>::getHTML(ResponseWriter writer)
 {
   String id = (String)this->getId();
 
-  String elemTemplate = F("<img class=\"");
-  elemTemplate += this->classList.value();
-  elemTemplate += F("\" ");
-  elemTemplate += F("src=\"");
-  elemTemplate += this->src;
-  elemTemplate += F("\" ");
-  elemTemplate += F("alt=\"");
-  elemTemplate += this->alt;
-  elemTemplate += F("\" ");
-  elemTemplate += F("style=\"");
-  elemTemplate += this->getInlineStyles();
-  elemTemplate += F("\">");
-
-  return elemTemplate;
+  writer(F("<img "));
+  writer(this->getAttributes());
+  writer(F(">"));
 }
 
 template <typename T>
@@ -104,7 +91,7 @@ void Image<T>::setSrc(String newSrc)
     this->sourceHandler->cancelRegistration();
   }
 
-  this->src = newSrc;
+  this->setAttribute("src", newSrc);
 }
 
 template <typename T>
@@ -135,24 +122,24 @@ void Image<T>::setSrc(const uint8_t* content, size_t contentLength, ImageType im
     this->sourceHandler->switchContent(content, MIMEType);
   } else {
     this->sourceHandler = this->registerSource(F("img") + String(millis()), content, contentLength, MIMEType);
-    this->src = this->sourceHandler->getPath();
+    this->setAttribute("src", this->sourceHandler->getPath());
   }
 }
 
 template <typename T>
 void Image<T>::setAlt(String newAlt)
 {
-  this->alt = newAlt;
+  this->setAttribute("alt", newAlt);
 }
 
 template <typename T>
 String Image<T>::getSrc()
 {
-  return this->src;
+  return this->getAttribute("src");
 }
 
 template <typename T>
 String Image<T>::getAlt()
 {
-  return this->alt;
+  return this->getAttribute("alt");
 }

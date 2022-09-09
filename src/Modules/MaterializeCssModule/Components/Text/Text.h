@@ -31,7 +31,7 @@ class StaticText : public MaterializeCssBaseClass<T> {
   constexpr virtual bool isDynamic() { return false; };
 
   public:
-  String getHTML();
+  void getHTML(ResponseWriter writer);
 
   using MaterializeCssBaseClass<T>::MaterializeCssBaseClass;
 
@@ -118,7 +118,7 @@ TextType StaticText<T>::getTextType()
 }
 
 template <typename T>
-String StaticText<T>::getHTML()
+void StaticText<T>::getHTML(ResponseWriter writer)
 {
   String tag = "";
   String id = (String)this->getId();
@@ -148,22 +148,20 @@ String StaticText<T>::getHTML()
     break;
   }
 
-  String elemTemplate = F("<");
-  elemTemplate += tag;
-  elemTemplate += F(" class=\"");
-  elemTemplate += this->classList.value();
-  elemTemplate += F("\" data-id=\"");
-  elemTemplate += id;
-  elemTemplate += F("\" data-dynamic=\"");
-  elemTemplate += this->isDynamic() ? F("true") : F("false");
-  elemTemplate += F("\" ");
-  elemTemplate += F("style=\"");
-  elemTemplate += this->getInlineStyles();
-  elemTemplate += F("\">");
-  elemTemplate += this->getText();
-  elemTemplate += F("</");
-  elemTemplate += tag;
-  elemTemplate += F(">");
-
-  return elemTemplate;
+  writer(F("<"));
+  writer(tag);
+  writer(F(" class=\""));
+  writer(this->classList.value());
+  writer(F("\" data-id=\""));
+  writer(id);
+  writer(F("\" data-dynamic=\""));
+  writer(this->isDynamic() ? F("true") : F("false"));
+  writer(F("\" "));
+  writer(F("style=\""));
+  writer(this->getInlineStyles());
+  writer(F("\">"));
+  writer(this->getText());
+  writer(F("</"));
+  writer(tag);
+  writer(F(">"));
 }

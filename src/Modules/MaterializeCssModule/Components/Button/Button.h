@@ -31,7 +31,7 @@ class Button : public MaterializeCssBaseClass<T> {
 
   virtual ~Button() = default;
 
-  virtual String getHTML();
+  virtual void getHTML(ResponseWriter writer);
 
   /**
    * @brief Gets the caption of the button
@@ -93,21 +93,19 @@ void Button<T>::setCallback(ButtonCallback callback)
 }
 
 template <typename T>
-String Button<T>::getHTML()
+void Button<T>::getHTML(ResponseWriter writer)
 {
-  String elemTemplate = F("<a ");
-  elemTemplate += this->getAttributes();
+  writer(F("<a "));
+  writer(this->getAttributes());
   if (this->getWidth() > 0) {
-    elemTemplate += F(" style=\"");
-    elemTemplate += F("width:calc(100%/12*");
-    elemTemplate += this->getWidth();
-    elemTemplate += F(");\"");
+    writer(F(" style=\""));
+    writer(F("width:calc(100%/12*"));
+    writer(String(this->getWidth()));
+    writer(F(");\""));
   }
-  elemTemplate += F(">");
-  elemTemplate += this->caption;
-  elemTemplate += F("</a>\n");
-
-  return elemTemplate;
+  writer(F(">"));
+  writer(this->caption);
+  writer(F("</a>\n"));
 }
 
 template <typename T>

@@ -231,3 +231,5 @@ enum class CSSStyleKey {
   wordWrap,
   zIndex,
 };
+
+typedef std::function<void(String data)> ResponseWriter;

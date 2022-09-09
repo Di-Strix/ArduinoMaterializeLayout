@@ -7,7 +7,7 @@
 
 struct PageSource {
   String fileName;
-  String inlineSrc;
+  std::function<void(ResponseWriter writer)> getInlineSrc = [](ResponseWriter writer) {};
 };
 
 struct PageSources {

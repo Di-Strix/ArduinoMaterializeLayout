@@ -20,7 +20,7 @@ class Input : public MaterializeCssBaseClass<T> {
   Input(T* argCollection);
   virtual ~Input() = default;
 
-  String getHTML() override;
+  void getHTML(ResponseWriter writer) override;
 
   /**
    * @brief Gets the text that is currently written in the field
@@ -40,13 +40,11 @@ Input<T>::Input(T* argCollection)
 }
 
 template <typename T>
-String Input<T>::getHTML()
+void Input<T>::getHTML(ResponseWriter writer)
 {
-  String elemTemplate = F("<input ");
-  elemTemplate += this->getAttributes();
-  elemTemplate += F(">");
-
-  return elemTemplate;
+  writer(String(F("<input ")));
+  writer(String(this->getAttributes()));
+  writer(String(F(">")));
 }
 
 template <typename T>

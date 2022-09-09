@@ -28,7 +28,7 @@ class Field : public MaterializeCssBaseClass<T> {
 
   virtual ~Field() = default;
 
-  String getHTML();
+  void getHTML(ResponseWriter writer);
 
   /**
    * @brief Gets the name of the field
@@ -117,19 +117,19 @@ String Field<T>::getCurrentValue()
 }
 
 template <typename T>
-String Field<T>::getHTML()
+void Field<T>::getHTML(ResponseWriter writer)
 {
   String id = (String)this->getId();
 
-  String elemTemplate = F("<div ");
-  elemTemplate += this->getAttributes();
-  elemTemplate += F(">");
-  elemTemplate += this->inputElement.getHTML();
-  elemTemplate += F("<label for=\"");
-  elemTemplate += String(this->inputElement.getId());
-  elemTemplate += F("\">");
-  elemTemplate += this->name;
-  elemTemplate += F("</label></div>");
+  writer(F("<div "));
+  writer(this->getAttributes());
+  writer(F(">"));
 
-  return elemTemplate;
+  this->inputElement.getHTML(writer);
+
+  writer(F("<label for=\""));
+  writer(String(this->inputElement.getId()));
+  writer(F("\">"));
+  writer(this->name);
+  writer(F("</label></div>"));
 }

@@ -15,7 +15,7 @@ class TabGroup : public MaterializeCssBaseClass<T> {
 
   virtual ~TabGroup() = default;
 
-  String getHTML();
+  void getHTML(ResponseWriter writer);
 };
 
 // ======================= IMPLEMENTATION =======================
@@ -30,37 +30,38 @@ TabGroup<T>::TabGroup(T* argCollection)
 }
 
 template <class T>
-String TabGroup<T>::getHTML()
+void TabGroup<T>::getHTML(ResponseWriter writer)
 {
+  writer(F("<div class=\"row\"><ul class=\""));
+  writer(this->classList.value());
+  writer(F("\" "));
+  writer(F("style=\""));
+  writer(this->getInlineStyles());
+  writer(F("\">"));
 
-  String contentsList, contents;
   for (auto ch : this->children) {
     auto t = static_cast<Tab<T>*>(ch);
-
     String tabRef = String(t->getId());
 
-    contentsList += F("<li class=\"tab col\"><a href=\"#");
-    contentsList += tabRef;
-    contentsList += F("\">");
-    contentsList += t->getTabName();
-    contentsList += F("</a></li>");
-
-    contents += F("<div id=\"");
-    contents += tabRef;
-    contents += F("\" class=\"col s12\">");
-    contents += t->getHTML();
-    contents += F("</div>");
+    writer(F("<li class=\"tab col\"><a href=\"#"));
+    writer(tabRef);
+    writer(F("\">"));
+    writer(t->getTabName());
+    writer(F("</a></li>"));
   }
 
-  String elemTemplate = F("<div class=\"row\"><ul class=\"");
-  elemTemplate += this->classList.value();
-  elemTemplate += F("\" ");
-  elemTemplate += F("style=\"");
-  elemTemplate += this->getInlineStyles();
-  elemTemplate += F("\">");
-  elemTemplate += contentsList;
-  elemTemplate += F("</ul></div>");
-  elemTemplate += contents;
+  writer(F("</ul></div>"));
 
-  return elemTemplate;
+  for (auto ch : this->children) {
+    auto t = static_cast<Tab<T>*>(ch);
+    String tabRef = String(t->getId());
+
+    writer(F("<div id=\""));
+    writer(tabRef);
+    writer(F("\" class=\"col s12\">"));
+
+    t->getHTML(writer);
+
+    writer(F("</div>"));
+  }
 }

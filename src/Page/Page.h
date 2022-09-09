@@ -35,7 +35,7 @@ class Page : public HTMLElement<T> {
    *
    * @return String
    */
-  virtual String getHTML();
+  virtual void getHTML(ResponseWriter writer);
 
   /**
    * @brief Gets the page title
@@ -86,62 +86,56 @@ Page<T>::~Page()
 }
 
 template <typename T>
-String Page<T>::getHTML()
+void Page<T>::getHTML(ResponseWriter writer)
 {
-  String contents;
-
   PageSources src = this->compileSrc();
 
-  for (auto el : this->children) {
-    contents += el->getHTML();
-  }
-
-  String elemTemplate = F("<!DOCTYPE html><html lang=\"");
-  elemTemplate += this->lang;
-  elemTemplate += F("\"><head><meta charset=\"UTF-8\"/><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"/><title>");
-  elemTemplate += this->pageTitle;
-  elemTemplate += F("</title>");
+  writer(F("<!DOCTYPE html><html lang=\""));
+  writer(this->lang);
+  writer(F("\"><head><meta charset=\"UTF-8\"/><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"/><title>"));
+  writer(this->pageTitle);
+  writer(F("</title>"));
 
   for (auto source : src.styles) {
     if (!source.fileName.isEmpty()) {
-      elemTemplate += F("<link rel=\"stylesheet\" href=\"");
-      elemTemplate += source.fileName;
-      elemTemplate += F(".css\"/>");
+      writer(F("<link rel=\"stylesheet\" href=\""));
+      writer(source.fileName);
+      writer(F(".css\"/>"));
     }
-    if (!source.inlineSrc.isEmpty()) {
-      elemTemplate += F("<style>");
-      elemTemplate += source.inlineSrc;
-      elemTemplate += F("</style>");
-    }
+
+    writer(F("<style>"));
+    source.getInlineSrc(writer);
+    writer(F("</style>"));
   }
 
-  elemTemplate += F("</head><body class=\"");
-  elemTemplate += this->classList.value();
-  elemTemplate += F("\">");
+  writer(F("</head><body class=\""));
+  writer(this->classList.value());
+  writer(F("\">"));
 
   if (this->getArgCollection()->rootPortal != nullptr)
-    elemTemplate += this->getArgCollection()->rootPortal->getHTML();
+    this->getArgCollection()->rootPortal->getHTML(writer);
 
-  elemTemplate += F("<div class=\"container row\">");
-  elemTemplate += contents;
-  elemTemplate += F("</div>");
+  writer(F("<div class=\"container row\">"));
+
+  for (auto el : this->children) {
+    el->getHTML(writer);
+  }
+
+  writer(F("</div>"));
 
   for (auto source : src.scripts) {
     if (!source.fileName.isEmpty()) {
-      elemTemplate += F("<script src=\"");
-      elemTemplate += source.fileName;
-      elemTemplate += F(".js\"></script>");
+      writer(F("<script src=\""));
+      writer(source.fileName);
+      writer(F(".js\"></script>"));
     }
-    if (!source.inlineSrc.isEmpty()) {
-      elemTemplate += F("<script>");
-      elemTemplate += source.inlineSrc;
-      elemTemplate += F("</script>");
-    }
+
+    writer(F("<script>"));
+    source.getInlineSrc(writer);
+    writer(F("</script>"));
   }
 
-  elemTemplate += F("</body></html>");
-
-  return elemTemplate;
+  writer(F("</body></html>"));
 }
 
 template <typename T>
