@@ -103,10 +103,6 @@ void Page<T>::getHTML(ResponseWriter writer)
       writer(F(".css\"/>"));
     }
   }
-  writer(F("<link rel=\"stylesheet\" href=\"inlineStyles"));
-  writer(String(this->getId()));
-  writer(F("\">"));
-  writer(F("</link>"));
 
   writer(F("</head><body class=\""));
   writer(this->classList.value());
@@ -130,10 +126,20 @@ void Page<T>::getHTML(ResponseWriter writer)
       writer(F(".js\"></script>"));
     }
   }
-  writer(F("<script src=\"inlineScripts"));
+
+  writer(F("<script>window.addEventListener('load', () => setTimeout(() => {"));
+  writer(F("const styleLink = document.createElement('link');"));
+  writer(F("styleLink.rel = 'stylesheet';"));
+  writer(F("styleLink.href = 'inlineStyles"));
   writer(String(this->getId()));
-  writer(F("\">"));
-  writer(F("</script>"));
+  writer(F("';"));
+  writer(F("document.head.appendChild(styleLink);"));
+  writer(F("const scriptLink = document.createElement('script');"));
+  writer(F("scriptLink.src = 'inlineScripts"));
+  writer(String(this->getId()));
+  writer(F("';"));
+  writer(F("document.body.appendChild(scriptLink);"));
+  writer(F("}, 100));</script>"));
 
   writer(F("</body></html>"));
 }
