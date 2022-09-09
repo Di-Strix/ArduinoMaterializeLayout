@@ -138,11 +138,49 @@ void MaterializeLayout::registerInEspAsyncWebServer(AsyncWebServer* s)
 
   this->server = s;
 
-  this->handlers.push_back(this->server->on("/index.html", HTTP_GET, [=](AsyncWebServerRequest* request) {
-    String page = this->getHTML();
-    AsyncWebServerResponse* res = request->beginResponse(200, F("text/html;charset=utf-8"), page);
+  this->handlers.push_back(this->server->on(this->baseURL.c_str(), HTTP_GET, [=](AsyncWebServerRequest* request) {
+    auto* res = request->beginResponseStream(F("text/html;charset=utf-8"));
+    res->setCode(200);
     res->addHeader(F("Cache-Control"), F("no-cache"));
     res->addHeader(F("X-Content-Type-Options"), F("nosniff"));
+    this->getHTML([res](String data) {
+      res->print(data);
+    });
+    request->send(res);
+  }));
+
+  auto inlineStylesUrl = String("/inlineStyles") + String(this->getId());
+  auto inlineScriptsUrl = String("/inlineScripts") + String(this->getId());
+
+  this->handlers.push_back(this->server->on(inlineStylesUrl.c_str(), HTTP_GET, [=](AsyncWebServerRequest* request) {
+    auto sources = this->compileSrc();
+    auto* res = request->beginResponseStream(F("text/css;charset=utf-8"));
+    res->setCode(200);
+    res->addHeader(F("Cache-Control"), F("no-cache"));
+    res->addHeader(F("X-Content-Type-Options"), F("nosniff"));
+
+    for (auto src : sources.styles) {
+      src.getInlineSrc([res](String data) {
+        res->print(data);
+      });
+    }
+
+    request->send(res);
+  }));
+
+  this->handlers.push_back(this->server->on(inlineScriptsUrl.c_str(), HTTP_GET, [=](AsyncWebServerRequest* request) {
+    auto sources = this->compileSrc();
+    auto* res = request->beginResponseStream(F("text/javascript;charset=utf-8"));
+    res->setCode(200);
+    res->addHeader(F("Cache-Control"), F("no-cache"));
+    res->addHeader(F("X-Content-Type-Options"), F("nosniff"));
+
+    for (auto src : sources.scripts) {
+      src.getInlineSrc([res](String data) {
+        res->print(data);
+      });
+    }
+
     request->send(res);
   }));
 

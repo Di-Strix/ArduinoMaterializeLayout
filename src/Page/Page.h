@@ -102,11 +102,11 @@ void Page<T>::getHTML(ResponseWriter writer)
       writer(source.fileName);
       writer(F(".css\"/>"));
     }
-
-    writer(F("<style>"));
-    source.getInlineSrc(writer);
-    writer(F("</style>"));
   }
+  writer(F("<link rel=\"stylesheet\" href=\"inlineStyles"));
+  writer(String(this->getId()));
+  writer(F("\">"));
+  writer(F("</link>"));
 
   writer(F("</head><body class=\""));
   writer(this->classList.value());
@@ -129,11 +129,11 @@ void Page<T>::getHTML(ResponseWriter writer)
       writer(source.fileName);
       writer(F(".js\"></script>"));
     }
-
-    writer(F("<script>"));
-    source.getInlineSrc(writer);
-    writer(F("</script>"));
   }
+  writer(F("<script src=\"inlineScripts"));
+  writer(String(this->getId()));
+  writer(F("\">"));
+  writer(F("</script>"));
 
   writer(F("</body></html>"));
 }
