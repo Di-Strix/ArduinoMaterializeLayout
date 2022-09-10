@@ -532,6 +532,9 @@ String HTMLElement<T>::getAttributes()
   String result;
 
   for (auto attribute : this->attributes) {
+    if (attribute.first.isEmpty())
+      continue;
+
     result += attribute.first;
     result += F("=\"");
     result += attribute.second;
