@@ -139,48 +139,91 @@ void MaterializeLayout::registerInEspAsyncWebServer(AsyncWebServer* s)
   this->server = s;
 
   this->handlers.push_back(this->server->on(this->baseURL.c_str(), HTTP_GET, [=](AsyncWebServerRequest* request) {
-    auto* res = request->beginResponseStream(F("text/html;charset=utf-8"));
-    res->setCode(200);
-    res->addHeader(F("Cache-Control"), F("no-cache"));
-    res->addHeader(F("X-Content-Type-Options"), F("nosniff"));
-    this->getHTML([res](String data) {
-      res->print(data);
-    });
-    request->send(res);
-  }));
+    AsyncWebServerResponse* res = nullptr;
 
-  auto inlineStylesUrl = String("/inlineStyles") + String(this->getId());
-  auto inlineScriptsUrl = String("/inlineScripts") + String(this->getId());
-
-  this->handlers.push_back(this->server->on(inlineStylesUrl.c_str(), HTTP_GET, [=](AsyncWebServerRequest* request) {
-    auto sources = this->compileSrc();
-    auto* res = request->beginResponseStream(F("text/css;charset=utf-8"));
-    res->setCode(200);
-    res->addHeader(F("Cache-Control"), F("no-cache"));
-    res->addHeader(F("X-Content-Type-Options"), F("nosniff"));
-
-    for (auto src : sources.styles) {
-      src.getInlineSrc([res](String data) {
-        res->print(data);
+    if (LittleFS.begin()) {
+      auto file = LittleFS.open(F("/__MLTemp/tmp.html"), "w+");
+        this->getHTML([&file](String data) {
+        Serial.println(ESP.getMaxFreeBlockSize());
+        file.print(data);
+      });
+      file.close();
+      res = request->beginResponse(LittleFS, F("/__MLTemp/tmp.html"), F("text/html;charset=utf-8"));
+    } else {
+      auto resStream = request->beginResponseStream(F("text/html;charset=utf-8"));
+      res = resStream;
+      this->getHTML([&resStream](String data) {
+        resStream->print(data);
       });
     }
 
+    res->setCode(200);
+    res->addHeader(F("Cache-Control"), F("no-cache"));
+    res->addHeader(F("X-Content-Type-Options"), F("nosniff"));
+    request->send(res);
+  }));
+
+  auto inlineStylesUrl = String(F("/inlineStyles")) + String(this->getId()) + String(F(".css"));
+  auto inlineScriptsUrl = String(F("/inlineScripts")) + String(this->getId()) + String(F(".js"));
+
+  this->handlers.push_back(this->server->on(inlineStylesUrl.c_str(), HTTP_GET, [=](AsyncWebServerRequest* request) {
+    auto sources = this->compileSrc();
+    AsyncWebServerResponse* res = nullptr;
+
+    if (LittleFS.begin()) {
+      auto file = LittleFS.open(F("/__MLTemp/tmp.css"), "w+");
+      for (auto src : sources.styles) {
+        src.getInlineSrc([&file](String data) {
+          Serial.println(ESP.getMaxFreeBlockSize());
+          file.print(data);
+        });
+      }
+      file.close();
+      res = request->beginResponse(LittleFS, F("/__MLTemp/tmp.css"), F("text/css;charset=utf-8"));
+    } else {
+      auto resStream = request->beginResponseStream(F("text/css;charset=utf-8"));
+      res = resStream;
+      for (auto src : sources.styles) {
+        src.getInlineSrc([&resStream](String data) {
+          resStream->print(data);
+        });
+      }
+    }
+
+    res->setCode(200);
+    res->addHeader(F("Cache-Control"), F("no-cache"));
+    res->addHeader(F("X-Content-Type-Options"), F("nosniff"));
     request->send(res);
   }));
 
   this->handlers.push_back(this->server->on(inlineScriptsUrl.c_str(), HTTP_GET, [=](AsyncWebServerRequest* request) {
     auto sources = this->compileSrc();
-    auto* res = request->beginResponseStream(F("text/javascript;charset=utf-8"));
+
+    AsyncWebServerResponse* res = nullptr;
+
+    if (LittleFS.begin()) {
+      auto file = LittleFS.open(F("/__MLTemp/tmp.js"), "w+");
+      for (auto src : sources.styles) {
+        src.getInlineSrc([&file](String data) {
+          Serial.println(ESP.getMaxFreeBlockSize());
+          file.print(data);
+        });
+      }
+      file.close();
+      res = request->beginResponse(LittleFS, F("/__MLTemp/tmp.js"), F("text/javascript;charset=utf-8"));
+    } else {
+      auto resStream = request->beginResponseStream(F("text/javascript;charset=utf-8"));
+      res = resStream;
+      for (auto src : sources.scripts) {
+        src.getInlineSrc([&resStream](String data) {
+          resStream->print(data);
+        });
+      }
+    }
+
     res->setCode(200);
     res->addHeader(F("Cache-Control"), F("no-cache"));
     res->addHeader(F("X-Content-Type-Options"), F("nosniff"));
-
-    for (auto src : sources.scripts) {
-      src.getInlineSrc([res](String data) {
-        res->print(data);
-      });
-    }
-
     request->send(res);
   }));
 
