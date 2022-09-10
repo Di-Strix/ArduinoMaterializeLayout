@@ -286,6 +286,12 @@ void MaterializeLayout::_performDispatch()
 {
   this->dispatchTicker.detach();
 
+  this->ws.cleanupClients();
+  if (!this->ws.count()) {
+    this->bakedEvents.clear();
+    return;
+  };
+
   size_t totalLength = 0;
   for (auto event : this->bakedEvents) {
     totalLength += event.length();
