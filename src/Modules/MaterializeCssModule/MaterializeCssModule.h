@@ -10,6 +10,7 @@
 #include "Components/Tab/Tab.h"
 #include "Components/TabGroup/TabGroup.h"
 #include "Components/Text/Text.h"
+#include "Components/VirtualRouter/VirtualRouter.h"
 
 #include "Static/materialize.css.h"
 #include "Static/materialize.js.h"
