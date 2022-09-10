@@ -5,7 +5,13 @@ const {
   readFileSync,
   writeFileSync,
 } = require('fs')
-const { join, basename, extname, normalize, resolve } = require('path')
+const {
+  join,
+  basename,
+  extname,
+  normalize,
+  resolve,
+} = require('path')
 
 const composerConfig = {
   excludeDirs: ['Mocks'],
@@ -37,7 +43,11 @@ const getDependencyMap = filePaths => {
       .forEach(include =>
         map[filePath].push(
           filePaths.find(f => {
-            return f.includes(include)
+            return f.includes(
+              include.match(/\.{0,}\.[\/\\]/)
+                ? resolve(filePath, '../', include)
+                : include
+            )
           })
         )
       )
@@ -83,11 +93,14 @@ const assemble = includeOrder => {
   return composedFiles.join('\n')
 }
 
-const path = process.argv[2]?.trim()
+let path = process.argv[2]?.trim()
 
 if (!path) throw new Error(`Source dir hasn't been specified`)
 
 if (!existsSync(path)) throw new Error(`Path does not exist`)
+
+path = resolve(path)
+
 if (!lstatSync(path).isDirectory())
   throw new Error(
     `You provided a path to the file. You need to provide the root of the library`
