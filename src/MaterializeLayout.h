@@ -41,6 +41,8 @@ class MaterializeLayout : public MaterializeLayoutComponent_t<Page> {
   std::list<AsyncWebHandler> handlers;
   std::list<WebSourceHandler*> registeredSources;
 
+  String baseURL;
+
   AsyncWebServer* server;
   AsyncWebSocket ws = AsyncWebSocket("/ML" + String(this->getId()));
 
@@ -58,7 +60,7 @@ class MaterializeLayout : public MaterializeLayoutComponent_t<Page> {
    *
    * @param pageTitle title displayed on the tab
    */
-  MaterializeLayout(String pageTitle);
+  MaterializeLayout(String pageTitle, String baseURL = "index.html");
 
   ~MaterializeLayout();
 

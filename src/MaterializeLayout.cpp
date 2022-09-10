@@ -1,8 +1,12 @@
 #include "MaterializeLayout.h"
 
-MaterializeLayout::MaterializeLayout(String pageTitle)
+MaterializeLayout::MaterializeLayout(String pageTitle, String baseURL)
     : Page(new MLArgs(), pageTitle)
 {
+  if (!baseURL.startsWith("/"))
+    baseURL = "/" + baseURL;
+  this->baseURL = baseURL;
+
   this->injectModule(getNormalizeCssModule());
   this->injectModule(getMaterializeCssModule());
   this->injectModule(getMainAppModule());
