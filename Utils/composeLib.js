@@ -5,16 +5,11 @@ const {
   readFileSync,
   writeFileSync,
 } = require('fs')
-const {
-  join,
-  basename,
-  extname,
-  normalize,
-  resolve,
-} = require('path')
+const { join, basename, extname, normalize, resolve } = require('path')
 
 const composerConfig = {
   excludeDirs: ['Mocks'],
+  excludeFiles: ['composedLibrary.h'],
 }
 
 const collectFiles = path => {
@@ -22,10 +17,11 @@ const collectFiles = path => {
     .map(itemName => {
       const filePath = join(path, itemName)
       if (lstatSync(filePath).isDirectory()) {
-        if (composerConfig.excludeDirs.includes(basename(filePath))) return []
+        if (composerConfig.excludeDirs.includes(itemName)) return []
         else return collectFiles(filePath)
       } else
-        return extname(itemName).match(/^\.(h|cpp|hpp|c)$/)
+        return extname(itemName).match(/^\.(h|cpp|hpp|c)$/) &&
+          !composerConfig.excludeFiles.includes(itemName)
           ? normalize(filePath)
           : []
     })
