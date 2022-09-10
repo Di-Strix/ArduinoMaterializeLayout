@@ -96,14 +96,6 @@ void Page<T>::getHTML(ResponseWriter writer)
   writer(this->pageTitle);
   writer(F("</title>"));
 
-  for (auto source : src.styles) {
-    if (!source.fileName.isEmpty()) {
-      writer(F("<link rel=\"stylesheet\" href=\""));
-      writer(source.fileName);
-      writer(F(".css\"/>"));
-    }
-  }
-
   writer(F("</head><body class=\""));
   writer(this->classList.value());
   writer(F("\">"));
@@ -119,27 +111,43 @@ void Page<T>::getHTML(ResponseWriter writer)
 
   writer(F("</div>"));
 
-  for (auto source : src.scripts) {
+  writer(F("<script>window.addEventListener('load', () => setTimeout(() => {"));
+  writer(F("const load = (url, type) => new Promise((resolve, reject) => {"));
+  writer( F("const src = document.createElement(type === 'js' ? 'script' : 'link');"));
+	writer( F("src[type === 'js' ? 'src' : 'href'] = url;"));
+	writer( F("if(type === 'js') src.async = false; else src.rel = 'stylesheet';"));
+	writer( F("src.onload = () => resolve();"));
+	writer( F("src.onerror = () => reject();"));
+	writer( F("document[type === 'js' ? 'body' : 'head'].appendChild(src);"));
+  writer(F("});"));
+  writer(F("const loadSequentially = async (urls) => {"));
+  writer( F("for(let src of urls) {"));
+	writer(   F("await load(src, src.split('.').at(-1));"));
+  writer( F("}"));
+  writer(F("};"));
+  writer(F("const urls = ["));
+  for (auto source : src.styles) {
     if (!source.fileName.isEmpty()) {
-      writer(F("<script src=\""));
+      writer(F("'"));
       writer(source.fileName);
-      writer(F(".js\"></script>"));
+      writer(F(".css',"));    
     }
   }
-
-  writer(F("<script>window.addEventListener('load', () => setTimeout(() => {"));
-  writer(F("const styleLink = document.createElement('link');"));
-  writer(F("styleLink.rel = 'stylesheet';"));
-  writer(F("styleLink.href = 'inlineStyles"));
+  for (auto source : src.scripts) {
+    if (!source.fileName.isEmpty()) {
+      writer(F("'"));
+      writer(source.fileName);
+      writer(F(".js',"));
+    }
+  }
+  writer(F("'inlineStyles"));
   writer(String(this->getId()));
-  writer(F("';"));
-  writer(F("document.head.appendChild(styleLink);"));
-  writer(F("const scriptLink = document.createElement('script');"));
-  writer(F("scriptLink.src = 'inlineScripts"));
+  writer(F(".css',"));
+  writer(F("'inlineScripts"));
   writer(String(this->getId()));
-  writer(F("';"));
-  writer(F("document.body.appendChild(scriptLink);"));
-  writer(F("}, 100));</script>"));
+  writer(F(".js',"));
+  writer(F("];loadSequentially(urls);"));
+  writer(F("}));</script>"));
 
   writer(F("</body></html>"));
 }
