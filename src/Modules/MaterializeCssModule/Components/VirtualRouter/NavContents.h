@@ -5,6 +5,7 @@
 #include <vector>
 
 #include "../BaseClass/MaterializeCssBaseClass.h"
+#include "../Tab/Tab.h"
 
 template <class T>
 class NavContents : public MaterializeCssBaseClass<T> {
