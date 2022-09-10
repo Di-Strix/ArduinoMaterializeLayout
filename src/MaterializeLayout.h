@@ -62,7 +62,7 @@ class MaterializeLayout : public MaterializeLayoutComponent_t<Page> {
    */
   MaterializeLayout(String pageTitle, String baseURL = "index.html");
 
-  ~MaterializeLayout();
+  virtual ~MaterializeLayout();
 
   /**
    * @brief prepares module static files to be served
