@@ -82,6 +82,14 @@ class HTMLElement {
    */
   EventEmitter<String, String> onAttributeChange;
 
+  /**
+   * @brief Event that is fired when child component is added or removed
+   *
+   * @param ChildChangeType type of the change
+   * @param HTMLElement* pointer to the element that caused event
+   */
+  EventEmitter<ChildChangeType, HTMLElement*> onChildChange;
+
   HTMLElement(T* argCollection);
 
   virtual ~HTMLElement() = default;
@@ -307,12 +315,17 @@ void HTMLElement<T>::appendChild(HTMLElement* child)
     return;
 
   this->children.push_back(child);
+  this->onChildChange.emit(ChildChangeType::add, child);
 }
 
 template <typename T>
 void HTMLElement<T>::removeChild(HTMLElement* child)
 {
-  this->children.remove_if([child](HTMLElement* el) { return el == child; });
+  bool removed = false;
+  this->children.remove_if([child, &removed](HTMLElement* el) { return removed = el == child; });
+
+  if (removed)
+    this->onChildChange.emit(ChildChangeType::remove, child);
 }
 
 template <typename T>
@@ -320,6 +333,11 @@ std::list<HTMLElement<T>*> HTMLElement<T>::removeAllChildren()
 {
   auto children = this->children;
   this->children.clear();
+
+  for (auto child : children) {
+    this->onChildChange.emit(ChildChangeType::remove, child);
+  }
+
   return children;
 }
 

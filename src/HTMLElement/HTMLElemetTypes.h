@@ -232,4 +232,9 @@ enum class CSSStyleKey {
   zIndex,
 };
 
+enum class ChildChangeType {
+  add,
+  remove,
+};
+
 typedef std::function<void(String data)> ResponseWriter;
