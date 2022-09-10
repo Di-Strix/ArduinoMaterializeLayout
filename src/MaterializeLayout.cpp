@@ -73,39 +73,42 @@ PageSources MaterializeLayout::compileSrc()
   String moduleHandlers;
 
   for (auto moduleInfo : this->modules) {
-    if ((moduleInfo.CSS.fileName && moduleInfo.CSS.file) || moduleInfo.inlineCSS) {
-      src.styles.push_front({ moduleInfo.CSS.fileName, moduleInfo.inlineCSS });
+    if ((moduleInfo.CSS.fileName && moduleInfo.CSS.file) || moduleInfo.getInlineCSS) {
+      src.styles.push_front({ moduleInfo.CSS.fileName, moduleInfo.getInlineCSS });
     }
-    if ((moduleInfo.JS.fileName && moduleInfo.JS.file) || moduleInfo.inlineJS) {
-      src.scripts.push_front({ moduleInfo.JS.fileName, moduleInfo.inlineJS });
+    if ((moduleInfo.JS.fileName && moduleInfo.JS.file) || moduleInfo.getInlineJS) {
+      src.scripts.push_front({ moduleInfo.JS.fileName, moduleInfo.getInlineJS });
     }
 
     for (auto handler : moduleInfo.handlers) {
-      if (handler.onInitFN.isEmpty() && handler.updateFN.isEmpty())
-        continue;
+      src.scripts.push_back({ "", [handler](ResponseWriter writer) {
+                               writer(F("class "));
+                               writer(handler.name);
+                               writer(F(" extends Handler {"
+                                        "onInit() {"));
 
-      moduleHandlers += F("class ");
-      moduleHandlers += handler.name;
-      moduleHandlers += F(" extends Handler {"
-                          "onInit() {");
-      moduleHandlers += handler.onInitFN;
-      moduleHandlers += F("}"
-                          "update(el, value) {");
-      moduleHandlers += handler.updateFN;
-      moduleHandlers += F("}};");
-      moduleHandlers += F("dynamicUpdateService.addHandler('");
-      moduleHandlers += handler.name;
-      moduleHandlers += F("', new ");
-      moduleHandlers += handler.name;
-      moduleHandlers += F("());");
+                               handler.getOnInitFN(writer);
+
+                               writer(F("}"
+                                        "update(el, value) {"));
+
+                               handler.getUpdateFN(writer);
+
+                               writer(F("}};"));
+                               writer(F("dynamicUpdateService.addHandler('"));
+                               writer(handler.name);
+                               writer(F("', new "));
+                               writer(handler.name);
+                               writer(F("());"));
+                             } });
     }
   }
 
-  moduleHandlers += F("dynamicUpdateService.init(\"");
-  moduleHandlers += String(this->ws.url()).substring(1);
-  moduleHandlers += F("\");");
-
-  src.scripts.push_back({ "", moduleHandlers });
+  src.scripts.push_back({ "", [this](ResponseWriter writer) {
+                           writer(F("dynamicUpdateService.init(\""));
+                           writer(String(this->ws.url()).substring(1));
+                           writer(F("\");"));
+                         } });
 
   return src;
 }

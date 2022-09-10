@@ -25,12 +25,12 @@ struct SrcFile {
 
 struct Handler {
   String name;
-  String onInitFN;
-  String updateFN;
+  std::function<void(ResponseWriter writer)> getOnInitFN = [](ResponseWriter writer) {};
+  std::function<void(ResponseWriter writer)> getUpdateFN = [](ResponseWriter writer) {};
 
   bool operator==(const Handler& h) const
   {
-    return (name == h.name && onInitFN == h.onInitFN && updateFN == h.updateFN);
+    return (name == h.name);
   }
 };
 
@@ -38,18 +38,18 @@ struct MaterializeLayoutModule {
   SrcFile CSS;
   SrcFile JS;
 
-  String inlineCSS;
-  String inlineJS;
+  std::function<void(ResponseWriter writer)> getInlineCSS = [](ResponseWriter writer) {};
+  std::function<void(ResponseWriter writer)> getInlineJS = [](ResponseWriter writer) {};
 
   std::list<Handler> handlers;
 
   bool operator==(const MaterializeLayoutModule& m) const
   {
-    return (CSS == m.CSS && JS == m.JS && inlineCSS == m.inlineCSS && inlineJS == m.inlineJS && handlers == m.handlers);
+    return (CSS == m.CSS && JS == m.JS && handlers == m.handlers);
   }
 };
 
-struct MLArgs : public PageArgs {};
+struct MLArgs : public PageArgs { };
 
 template <template <typename> class TemplateClass>
 using MaterializeLayoutComponent_t = TemplateClass<MLArgs>;
