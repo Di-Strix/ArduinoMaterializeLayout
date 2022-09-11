@@ -14,7 +14,7 @@ class NavContents : public MaterializeCssBaseClass<T> {
 
   virtual ~NavContents() = default;
 
-  void getHTML(ResponseWriter writer);
+  void getHTML(ResponseWriter writer) override;
 };
 
 // ======================= IMPLEMENTATION =======================

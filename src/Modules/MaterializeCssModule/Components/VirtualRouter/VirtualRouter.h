@@ -22,7 +22,7 @@ class VirtualRouter : public MaterializeCssBaseClass<T> {
 
   virtual ~VirtualRouter();
 
-  void getHTML(ResponseWriter writer);
+  void getHTML(ResponseWriter writer) override;
 };
 
 // ======================= IMPLEMENTATION =======================

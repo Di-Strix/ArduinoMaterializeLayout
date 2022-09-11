@@ -16,7 +16,7 @@ class NavHeader : public MaterializeCssBaseClass<T> {
 
   virtual ~NavHeader();
 
-  void getHTML(ResponseWriter writer);
+  void getHTML(ResponseWriter writer) override;
 };
 
 // ======================= IMPLEMENTATION =======================

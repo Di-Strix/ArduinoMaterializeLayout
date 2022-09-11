@@ -28,7 +28,7 @@ class Field : public MaterializeCssBaseClass<T> {
 
   virtual ~Field() = default;
 
-  void getHTML(ResponseWriter writer);
+  void getHTML(ResponseWriter writer) override;
 
   /**
    * @brief Gets the name of the field

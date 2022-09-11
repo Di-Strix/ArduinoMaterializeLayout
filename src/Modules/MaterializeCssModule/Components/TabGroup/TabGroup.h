@@ -15,7 +15,7 @@ class TabGroup : public MaterializeCssBaseClass<T> {
 
   virtual ~TabGroup() = default;
 
-  void getHTML(ResponseWriter writer);
+  void getHTML(ResponseWriter writer) override;
 };
 
 // ======================= IMPLEMENTATION =======================

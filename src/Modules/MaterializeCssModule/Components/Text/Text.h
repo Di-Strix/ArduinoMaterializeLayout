@@ -31,7 +31,7 @@ class StaticText : public MaterializeCssBaseClass<T> {
   constexpr virtual bool isDynamic() { return false; };
 
   public:
-  void getHTML(ResponseWriter writer);
+  void getHTML(ResponseWriter writer) override;
 
   using MaterializeCssBaseClass<T>::MaterializeCssBaseClass;
 

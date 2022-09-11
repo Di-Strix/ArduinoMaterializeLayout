@@ -20,7 +20,7 @@ class Layout : public MaterializeCssBaseClass<T> {
 
   virtual ~Layout() = default;
 
-  virtual void getHTML(ResponseWriter writer);
+  virtual void getHTML(ResponseWriter writer) override;
 
   /**
    * @brief Enables or disables vertical align in the container

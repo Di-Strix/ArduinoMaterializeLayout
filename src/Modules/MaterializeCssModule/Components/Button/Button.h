@@ -31,7 +31,7 @@ class Button : public MaterializeCssBaseClass<T> {
 
   virtual ~Button() = default;
 
-  virtual void getHTML(ResponseWriter writer);
+  virtual void getHTML(ResponseWriter writer) override;
 
   /**
    * @brief Gets the caption of the button

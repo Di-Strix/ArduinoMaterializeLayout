@@ -35,7 +35,7 @@ class Page : public HTMLElement<T> {
    *
    * @return String
    */
-  virtual void getHTML(ResponseWriter writer);
+  virtual void getHTML(ResponseWriter writer) override;
 
   /**
    * @brief Gets the page title
