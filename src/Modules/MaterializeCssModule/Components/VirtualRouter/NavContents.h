@@ -35,6 +35,16 @@ void NavContents<T>::getHTML(ResponseWriter writer)
   writer(this->getAttributes());
   writer(F(">"));
 
+  // clang-format off
+  writer(F("<script>"));
+  writer(F("(() => {"));
+  writer( F("const el = document.createElement('style');"));
+  writer( F("el.innerHTML = 'body > .root {padding-left: 300px;}@media only screen and (max-width : 992px) {body > .root {padding-left: 0;}}';"));
+  writer( F("document.head.insertAdjacentElement('afterbegin', el);"));
+  writer( F("})()"));
+  writer(F("</script>"));
+  // clang-format on
+
   for (auto ch : this->children) {
     auto t = static_cast<Tab<T>*>(ch);
 
