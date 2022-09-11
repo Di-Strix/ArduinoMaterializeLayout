@@ -85,6 +85,9 @@ Chart<T>::~Chart()
 template <typename T>
 void Chart<T>::setArraySize(size_t newSize)
 {
+  if (this->arraySize == newSize)
+    return;
+
   this->arraySize = newSize;
   for (auto chl : this->lines) {
     if (chl)
