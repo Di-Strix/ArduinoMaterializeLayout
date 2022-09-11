@@ -49,14 +49,19 @@ function generateCPPVariableName(inputFileName) {
 }
 
 function writeToTemplate(varName, data) {
-  const encodedData = Array.from(data).map(v => '0x' + v.toString(16))
+  const encodedData = Array.from(data).map(
+    (value, index) =>
+      (index % 5 === 0 ? '\n\t' : '') +
+      '0x' +
+      value.toString(16).padStart(2, '0')
+  )
   return `#pragma once
 
 #include <Arduino.h>
 
 #define ${varName}_HASH "${crypto.createHash('md5').update(data).digest('hex')}"
 #define ${varName}_LENGTH ${encodedData.length}
-const uint8_t ${varName}[] PROGMEM = {${encodedData.join()}};
+const uint8_t ${varName}[] PROGMEM = {${encodedData.join(', ')}\n};
 `
 }
 
