@@ -30,7 +30,7 @@ enum class ChartAspectRatio {
 
 template <typename T>
 class Chart : public HTMLElement<T> {
-  private:
+  protected:
   size_t arraySize = 24;
   std::list<ChartLine*> lines;
   std::list<String> legendNames;
