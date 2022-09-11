@@ -111,6 +111,7 @@ void Page<T>::getHTML(ResponseWriter writer)
 
   writer(F("</div>"));
 
+  // clang-format off
   writer(F("<script>window.addEventListener('load', () => setTimeout(() => {"));
   writer(F("const load = (url, type) => new Promise((resolve, reject) => {"));
   writer( F("const src = document.createElement(type === 'js' ? 'script' : 'link');"));
@@ -126,11 +127,13 @@ void Page<T>::getHTML(ResponseWriter writer)
   writer( F("}"));
   writer(F("};"));
   writer(F("const urls = ["));
+  // clang-format on
+
   for (auto source : src.styles) {
     if (!source.fileName.isEmpty()) {
       writer(F("'"));
       writer(source.fileName);
-      writer(F(".css',"));    
+      writer(F(".css',"));
     }
   }
   for (auto source : src.scripts) {
