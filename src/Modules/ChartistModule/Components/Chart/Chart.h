@@ -44,7 +44,7 @@ class Chart : public HTMLElement<T> {
 
   public:
   Chart(T* argCollection);
-  ~Chart();
+  virtual ~Chart();
 
   String collectChartData();
 
