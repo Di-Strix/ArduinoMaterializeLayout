@@ -103,7 +103,7 @@ void Page<T>::getHTML(ResponseWriter writer)
   if (this->getArgCollection()->rootPortal != nullptr)
     this->getArgCollection()->rootPortal->getHTML(writer);
 
-  writer(F("<div class=\"container row\">"));
+  writer(F("<div class=\"root container row\">"));
 
   for (auto el : this->children) {
     el->getHTML(writer);
