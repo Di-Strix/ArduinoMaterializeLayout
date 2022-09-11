@@ -48,7 +48,7 @@ class Chart : public HTMLElement<T> {
 
   String collectChartData();
 
-  String getHTML();
+  void getHTML(ResponseWriter writer) override;
 
   void setArraySize(size_t newSize);
   size_t getArraySize();
@@ -69,6 +69,8 @@ Chart<T>::Chart(T* argCollection)
 {
   this->classList.add(F("ct-chart"));
   this->classList.add(F("chart-overflow-visible"));
+  this->setAttribute(F("data-chart"), F("true"));
+  this->setAttribute(F("data-type"), F("chart"));
   this->setAspectRatio(this->aspectRatio);
 }
 
@@ -120,18 +122,11 @@ void Chart<T>::pushLegend(String legendName)
 }
 
 template <typename T>
-String Chart<T>::getHTML()
+void Chart<T>::getHTML(ResponseWriter writer)
 {
-  String html = F("<div class=\"");
-  html += this->classList.value();
-  html += F("\" data-chart=\"true\" data-type=\"chart\" data-id=\"");
-  html += (String)this->getId();
-  html += F("\" ");
-  html += F("style=\"");
-  html += this->getInlineStyles();
-  html += F("\"></div>");
-
-  return html;
+  writer(F("<div "));
+  writer(this->getAttributes());
+  writer(F("></div>"));
 }
 
 template <typename T>
