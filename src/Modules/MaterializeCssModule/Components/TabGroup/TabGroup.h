@@ -32,12 +32,9 @@ TabGroup<T>::TabGroup(T* argCollection)
 template <class T>
 void TabGroup<T>::getHTML(ResponseWriter writer)
 {
-  writer(F("<div class=\"row\"><ul class=\""));
-  writer(this->classList.value());
-  writer(F("\" "));
-  writer(F("style=\""));
-  writer(this->getInlineStyles());
-  writer(F("\">"));
+  writer(F("<div class=\"row\"><ul "));
+  writer(this->getAttributes());
+  writer(F(">"));
 
   for (auto ch : this->children) {
     auto t = static_cast<Tab<T>*>(ch);
@@ -52,16 +49,5 @@ void TabGroup<T>::getHTML(ResponseWriter writer)
 
   writer(F("</ul></div>"));
 
-  for (auto ch : this->children) {
-    auto t = static_cast<Tab<T>*>(ch);
-    String tabRef = String(t->getId());
-
-    writer(F("<div id=\""));
-    writer(tabRef);
-    writer(F("\" class=\"col s12\">"));
-
-    t->getHTML(writer);
-
-    writer(F("</div>"));
-  }
+  this->MaterializeCssBaseClass<T>::getHTML(writer);
 }

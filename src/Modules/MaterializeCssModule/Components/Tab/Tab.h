@@ -37,6 +37,8 @@ class Tab : public MaterializeCssBaseClass<T> {
    * @param tabName
    */
   virtual void setTabName(String tabName);
+
+  virtual void getHTML(ResponseWriter writer) override;
 };
 
 // ======================= IMPLEMENTATION =======================
@@ -46,6 +48,10 @@ Tab<T>::Tab(T* argCollection)
     : MaterializeCssBaseClass<T>(argCollection)
 {
   this->setTabName(String(this->getId()));
+  this->setAttribute(F("id"), String(this->getId()));
+  this->classList.add(F("col"));
+  this->classList.add(F("row"));
+  this->setWidth(12);
 }
 
 template <typename T>
@@ -62,4 +68,16 @@ void Tab<T>::setTabName(String tabName)
     return;
 
   this->name = tabName;
+}
+
+template <typename T>
+void Tab<T>::getHTML(ResponseWriter writer)
+{
+  writer(F("<div "));
+  writer(this->getAttributes());
+  writer(F(">"));
+
+  this->MaterializeCssBaseClass<T>::getHTML(writer);
+
+  writer(F("</div>"));
 }
