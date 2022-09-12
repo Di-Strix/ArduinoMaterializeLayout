@@ -90,6 +90,8 @@ class HTMLElement {
    */
   EventEmitter<ChildChangeType, HTMLElement*> onChildChange;
 
+  EventEmitter<uint8_t, ScreenSize> onWidthChange;
+
   HTMLElement(T* argCollection);
 
   virtual ~HTMLElement() = default;
@@ -373,6 +375,9 @@ void HTMLElement<T>::setWidth(uint8_t width, ScreenSize screenSize, bool emit)
     this->widths[(size_t)screenSize] = classPrefix + String(width);
     this->classList.add(this->widths[(size_t)screenSize], emit);
   }
+
+  if (emit)
+    this->onWidthChange.emit(width, screenSize);
 }
 
 template <typename T>
