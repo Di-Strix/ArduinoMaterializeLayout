@@ -69,8 +69,7 @@ Button<T>::Button(T* argCollection)
   this->classList.add(F("waves-light"));
   this->classList.add(F("btn"));
 
-  this->setAttribute("data-id", (String)this->getId());
-  this->setAttribute("data-MCSS-emitOnClick", "true");
+  this->setAttribute(F("data-MCSS-emitOnClick"), F("true"));
 }
 
 template <typename T>
@@ -97,12 +96,6 @@ void Button<T>::getHTML(ResponseWriter writer)
 {
   writer(F("<a "));
   writer(this->getAttributes());
-  if (this->getWidth() > 0) {
-    writer(F(" style=\""));
-    writer(F("width:calc(100%/12*"));
-    writer(String(this->getWidth()));
-    writer(F(");\""));
-  }
   writer(F(">"));
   writer(this->caption);
   writer(F("</a>\n"));

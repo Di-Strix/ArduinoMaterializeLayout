@@ -5,7 +5,127 @@ MaterializeLayoutModule getMaterializeCssModule()
   return {
     { MATERIALIZE_CSS_HASH, MATERIALIZE_CSS, MATERIALIZE_CSS_LENGTH },
     { MATERIALIZE_JS_HASH, MATERIALIZE_JS, MATERIALIZE_JS_LENGTH },
-    [](ResponseWriter writer) {},
+    [](ResponseWriter writer) {
+      std::pair<String, String> media[] = {
+        { F("s"), F("") },
+        { F("m"), F("only screen and (min-width: 601px)") },
+        { F("l"), F("only screen and (min-width: 993px)") },
+        { F("xl"), F("only screen and (min-width: 1201px)") }
+      };
+
+      for (auto caseItem : media) {
+        if (!caseItem.second.isEmpty()) {
+          writer(F("media "));
+          writer(caseItem.second);
+          writer(F("{"));
+        }
+
+        // clang-format off
+        writer(F("a:is(."));
+        writer(caseItem.first);
+        writer(F("1, ."));
+        writer(caseItem.first);
+        writer(F("2, ."));
+        writer(caseItem.first);
+        writer(F("3) {"));
+        writer( F("width: 8.3333333333%;"));
+        writer(F("}"));
+
+        writer(F("a:is(."));
+        writer(caseItem.first);
+        writer(F("2, ."));
+        writer(caseItem.first);
+        writer(F("3) {"));
+        writer( F("width: 16.6666666667%;"));
+        writer(F("}"));
+        
+        writer(F("a."));
+        writer(caseItem.first);
+        writer(F("3 {"));
+        writer( F("width: 25%;"));
+        writer(F("}"));
+
+
+        writer(F("a:is(."));
+        writer(caseItem.first);
+        writer(F("4, ."));
+        writer(caseItem.first);
+        writer(F("5, ."));
+        writer(caseItem.first);
+        writer(F("6) {"));
+        writer( F("width: 33.3333333333%;"));
+        writer(F("}"));
+
+        writer(F("a:is(."));
+        writer(caseItem.first);
+        writer(F("5, ."));
+        writer(caseItem.first);
+        writer(F("6) {"));
+        writer( F("width: 41.6666666667%;"));
+        writer(F("}"));
+        
+        writer(F("a."));
+        writer(caseItem.first);
+        writer(F("6 {"));
+        writer( F("width: 50%;"));
+        writer(F("}"));
+
+
+        writer(F("a:is(."));
+        writer(caseItem.first);
+        writer(F("7, ."));
+        writer(caseItem.first);
+        writer(F("8, ."));
+        writer(caseItem.first);
+        writer(F("9) {"));
+        writer( F("width: 58.3333333333%;"));
+        writer(F("}"));
+
+        writer(F("a:is(."));
+        writer(caseItem.first);
+        writer(F("8, ."));
+        writer(caseItem.first);
+        writer(F("9) {"));
+        writer( F("width: 66.6666666667%;"));
+        writer(F("}"));
+        
+        writer(F("a."));
+        writer(caseItem.first);
+        writer(F("9 {"));
+        writer( F("width: 75%;"));
+        writer(F("}"));
+
+
+        writer(F("a:is(."));
+        writer(caseItem.first);
+        writer(F("10, ."));
+        writer(caseItem.first);
+        writer(F("11, ."));
+        writer(caseItem.first);
+        writer(F("12) {"));
+        writer( F("width: 83.3333333333%"));
+        writer(F("}"));
+
+        writer(F("a:is(."));
+        writer(caseItem.first);
+        writer(F("11, ."));
+        writer(caseItem.first);
+        writer(F("12) {"));
+        writer( F("width: 91.6666666667%;"));
+        writer(F("}"));
+        
+        writer(F("a."));
+        writer(caseItem.first);
+        writer(F("12 {"));
+        writer( F("width: 100%;"));
+        writer(F("}"));
+        // clang-format on
+
+        if (!caseItem.second.isEmpty()) {
+          writer(F("}"));
+        }
+      }
+    },
     [](ResponseWriter writer) {},
     { { F("MaterializeCssHandler"),
         [](ResponseWriter writer) {
