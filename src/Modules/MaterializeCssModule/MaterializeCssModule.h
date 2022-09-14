@@ -9,6 +9,7 @@
 #include "Components/Image/Image.h"
 #include "Components/Input/Input.h"
 #include "Components/Layout/Layout.h"
+#include "Components/Range/Range.h"
 #include "Components/Tab/Tab.h"
 #include "Components/TabGroup/TabGroup.h"
 #include "Components/Text/Text.h"
