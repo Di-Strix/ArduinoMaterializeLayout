@@ -28,6 +28,7 @@ switch (extname(from)) {
     break
   case '.svg':
     processFile(fs.readFileSync(from, { encoding: 'utf-8' }), gzip)
+    break
   default:
     processFile(fs.readFileSync(from))
     break
