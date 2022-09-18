@@ -1,4 +1,7 @@
 {
+  "engines": {
+    "node": "16"
+  },
   "dependencies": {
     "@babel/core": "^7.17.9",
     "csso": "^5.0.3"
